@@ -17,6 +17,12 @@ public class GroupeUtilisateurs extends Observable {
 	// Liste des utilisateurs du groupe
 	private Set<Utilisateur> listeUtilisateurs = new HashSet<>();
 
+
+	public GroupeUtilisateurs(int idGroupe, String nom) {
+		this.idGroupe = idGroupe;
+		this.nom = nom;
+	}
+
 	/**
 	 * Permet d'ajouter un utilisateur à un groupe
 	 * 

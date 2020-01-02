@@ -14,6 +14,13 @@ public class Message extends Observable {
 	// Date d'envoi du message;
 	private Date date;
 
+	
+	public Message(int idMessage, String contenu, Date date) {
+		this.idMessage = idMessage;
+		this.contenu = contenu;
+		this.date = date;
+	}
+
 	/**
 	 * @return le contenu du message
 	 */

@@ -30,6 +30,35 @@ public class Utilisateur extends Observable {
 	// Liste des messages de l'utilisateur
 	private Set<Message> listeMessages = new HashSet<>();
 
+	public Utilisateur(String identifiant, String password, String nom, String prenom, String type, boolean connecte) {
+		this.identifiant = identifiant;
+		this.password = password;
+		this.nom = nom;
+		this.prenom = prenom;
+		
+		switch (type) {
+		case "ETUDIANT":
+			this.type = TypeUtilisateur.ETUDIANT;
+			break;
+		case "ENSEIGNANT":
+			this.type = TypeUtilisateur.ENSEIGNANT;
+			break;
+		case "SERVICE ADMINISTRATIF":
+			this.type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
+			break;
+		case "SERVICE TECHNIQUE":
+			this.type = TypeUtilisateur.SERVICE_TECHNIQUE;
+			break;
+		case "SECRETAIRE PEDAGOGIQUE":
+			this.type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
+			break;
+		default:
+			throw new IllegalArgumentException("TypeUtilisateur invalide");
+		}
+
+		this.connecte = connecte;
+	}
+
 	// Enumération donnant le type d'un utilisateur
 	public enum TypeUtilisateur {
 		ETUDIANT, ENSEIGNANT, SECRETAIRE_PEDAGOGIQUE, SERVICE_ADMINISTRATIF, SERVICE_TECHNIQUE

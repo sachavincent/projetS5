@@ -23,6 +23,14 @@ public class Ticket extends Observable {
 	// Liste des messages de ce ticket
 	private Set<Message> listeMessages;
 
+	
+	public Ticket(int idTicket, String titre, Date dateCreation, GroupeUtilisateurs groupeDestination) {
+		this.idTicket = idTicket;
+		this.titre = titre;
+		this.dateCreation = dateCreation;
+		this.groupeDestination = groupeDestination;
+	}
+
 	/**
 	 * Permet d'envoyer un message dans le ticket
 	 * 

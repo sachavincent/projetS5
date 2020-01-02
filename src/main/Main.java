@@ -1,6 +1,12 @@
 package main;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
+
+import database.DBConnection;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -13,7 +19,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		// Solution temporaire, faudra 2 applications séparés à la fin
+		// Solution temporaire, faudra 2 applications séparées à la fin
 		{
 			Scanner sc = new Scanner(System.in);
 			int choix;
@@ -32,6 +38,14 @@ public class Main {
 				break;
 			}
 		}
+		
+		DBConnection db = DBConnection.getInstance();
+		
+		JFrame frame = new JFrame("NeOCampus");
+		frame.setPreferredSize(new Dimension(500,500));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 }
