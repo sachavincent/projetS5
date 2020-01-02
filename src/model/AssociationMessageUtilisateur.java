@@ -9,6 +9,10 @@ import java.util.Observable;
  */
 public class AssociationMessageUtilisateur extends Observable {
 
+	// Version 1 du diagramme de classe : les idMessage et idUtilisateur
+	// Version 2 suggérée : Directement les objets pour pas s'emmerder
+	// TODO: Réfléchir dessus
+
 	// Id du message
 	private int idMessage;
 
