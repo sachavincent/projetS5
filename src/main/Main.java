@@ -7,6 +7,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import database.DBConnection;
+import view.FenetreServeur;
 
 /**
  * TODO Renommer cette classe parce que bon
