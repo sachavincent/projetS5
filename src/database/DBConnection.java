@@ -72,7 +72,7 @@ public class DBConnection {
 			while (rs.next()) {
 				int idGroupe = rs.getInt(3);
 				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
-						.orElseThrow(IllegalStateException::new);
+						.orElseThrow(IllegalStateException::new); // TODO Change?
 				listeTickets.add(new Ticket(rs.getInt(0), rs.getString(1), rs.getDate(2), groupe));
 			}
 
@@ -114,13 +114,14 @@ public class DBConnection {
 				}
 
 				listeUtilisateurs.add(utilisateur);
-
 			}
-			
+
 			rs.close();
-			rs2.close();
+			if (rs2 != null)
+				rs2.close();
 			st.close();
-			st2.close();
+			if (st2 != null)
+				st2.close();
 		} catch (SQLException | IllegalStateException e) {
 			e.printStackTrace();
 		}
