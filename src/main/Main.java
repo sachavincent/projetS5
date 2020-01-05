@@ -7,8 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import database.DBConnection;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -41,7 +44,7 @@ public class Main {
 		// }
 		// }
 		//
-		// DBConnection db = DBConnection.getInstance();
+		DBConnection db = DBConnection.getInstance();
 
 		JFrame frame = new JFrame("NeOCampus");
 		frame.setPreferredSize(new Dimension(500, 500));
@@ -88,7 +91,7 @@ public class Main {
 //		b6.setPreferredSize(new Dimension(200, 50));
 //		b7.setPreferredSize(new Dimension(200, 50));
 //		b8.setPreferredSize(new Dimension(200, 50));
-		
+
 		b1.setMinimumSize(new Dimension(200, 50));
 		b2.setMinimumSize(new Dimension(200, 50));
 		b3.setMinimumSize(new Dimension(200, 50));
