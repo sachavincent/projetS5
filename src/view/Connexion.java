@@ -2,6 +2,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Connexion extends JFrame {
+public class Connexion extends JFrame implements Observer {
 	private JTextField id ;
 	private JPasswordField mdp;
 	private JFrame frame;
@@ -65,6 +67,13 @@ public class Connexion extends JFrame {
 		frame.setVisible(true);
 		
 	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 
 }
