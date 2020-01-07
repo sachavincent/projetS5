@@ -1,9 +1,9 @@
-#DROP TABLE IF EXISTS `AssociationMessageUtilisateur`;
-#ALTER TABLE `Message` DROP FOREIGN KEY IF EXISTS message_ibfk_2;
-#DROP TABLE IF EXISTS `Ticket`;
-#DROP TABLE IF EXISTS `Message`;
-#DROP TABLE IF EXISTS `Utilisateur`;
-#DROP TABLE IF EXISTS `GroupeUtilisateurs`;
+DROP TABLE IF EXISTS `AssociationMessageUtilisateur`;
+DROP TABLE IF EXISTS `AssociationGroupeUtilisateur`;
+DROP TABLE IF EXISTS `Ticket`;
+DROP TABLE IF EXISTS `Message`;
+DROP TABLE IF EXISTS `Utilisateur`;
+DROP TABLE IF EXISTS `GroupeUtilisateurs`;
 
 CREATE TABLE GroupeUtilisateurs (
 	idgroupe INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -16,9 +16,7 @@ CREATE TABLE Utilisateur (
 	nom          VARCHAR(100),
 	prenom	     VARCHAR(100),
 	type		 ENUM('ETUDIANT', 'ENSEIGNANT', 'SECRETAIRE PEDAGOGIQUE', 'SERVICE TECHNIQUE', 'SERVICE ADMINISTRATIF'),
-	connecte	 INT(1) DEFAULT 0,
-	idgroupe	 INT(4) NOT NULL,
-	FOREIGN KEY (idgroupe) REFERENCES `GroupeUtilisateurs` (idgroupe)
+	connecte	 INT(1) DEFAULT 0
 );
 
 CREATE TABLE Message (
@@ -49,11 +47,19 @@ CREATE TABLE AssociationMessageUtilisateur (
 	PRIMARY KEY(idmessage, iduser)
 );
 
+CREATE TABLE AssociationGroupeUtilisateur (
+	idgroupe 	 INT(4) NOT NULL,
+	idmessage	 INT(4) NOT NULL,
+	PRIMARY KEY(idgroupe, idmessage)
+);
 ALTER TABLE `AssociationMessageUtilisateur`
   ADD FOREIGN KEY (idmessage) REFERENCES `Message` (idmessage);
 
 ALTER TABLE `AssociationMessageUtilisateur`
   ADD FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant);
  
-ALTER TABLE `Message`
-  ADD FOREIGN KEY (idticket) REFERENCES `Ticket` (idticket);
+ALTER TABLE `AssociationGroupeUtilisateur`
+  ADD FOREIGN KEY (idgroupe) REFERENCES `GroupeUtilisateurs` (idgroupe);
+
+ALTER TABLE `AssociationGroupeUtilisateur`
+  ADD FOREIGN KEY (idmessage) REFERENCES `Message` (idmessage);

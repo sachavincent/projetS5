@@ -13,9 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-<<<<<<< HEAD:src/view/Connexion.java
+import controller.ConnexionController;
+
 // Interface permettant de se connecter à l'application et au serveur
-public class Connexion extends JFrame implements Observer {
+public class VueConnexion extends JFrame implements Observer {
 	private JTextField id = new JTextField(30);;
 	private JPasswordField mdp = new JPasswordField(30);;
 	private JLabel identifiant = new JLabel("Identifiant");;
@@ -23,44 +24,21 @@ public class Connexion extends JFrame implements Observer {
 	private JButton connexion = new JButton("Connexion");;
 	private JPanel[] panel = new JPanel[7];
 	
-	public Connexion() {
+	public VueConnexion() {
 		//init
 		for(int i = 0; i< 7; i++)
 			panel[i] = new JPanel();
 		
 		//layout pour les panels
 		panel[0].setLayout(new GridLayout(2,1));
-=======
-import controller.ConnexionController;
-
-public class VueConnexion extends JPanel implements Observer {
-
-	private JTextField id = new JTextField(30);
-	private JPasswordField mdp = new JPasswordField(30);
-	private JLabel identifiant = new JLabel("Identifiant");
-	private JLabel motDePasse = new JLabel("Mot de passe");
-	private JButton connexion = new JButton("Connexion");
-	private JPanel[] panel = new JPanel[7];
-
-	public VueConnexion() {
-		// init
-		for (int i = 0; i < 7; i++)
-			panel[i] = new JPanel();
-
-		// layout
-		panel[0].setLayout(new GridLayout(2, 1));
->>>>>>> 57fd15843716da15b71cde4762a3852a80b500cb:src/view/VueConnexion.java
 		panel[1].setLayout(new FlowLayout());
 		panel[2].setLayout(new FlowLayout());
 		panel[3].setLayout(new FlowLayout());
 		panel[4].setLayout(new FlowLayout());
 		panel[5].setLayout(new BorderLayout());
 		panel[6].setLayout(new BorderLayout());
-<<<<<<< HEAD:src/view/Connexion.java
 		//ajout au panel
-=======
 		// ajout
->>>>>>> 57fd15843716da15b71cde4762a3852a80b500cb:src/view/VueConnexion.java
 		panel[1].add(identifiant);
 		panel[1].add(id);
 		panel[2].add(motDePasse);

@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 
 import database.DBConnection;
+import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.GroupeUtilisateurs;
 import model.Message;
@@ -122,110 +123,110 @@ public class Client {
 		return new AssociationMessageUtilisateur(getMessage(message), getUtilisateur(utilisateur), etat);
 	}
 
-	private void format(String s) {
-		String[] content = s.split("\t\0\0\t");
-		int nombre = 0;
-
-		int i = 0;
-
-		do {
-			String line = content[i];
-			if (line.isEmpty()) {
-				i++;
-				continue;
-			}
-			String[] split = line.split(":");
-			nombre = Integer.parseInt(split[1]);
-			switch (split[0]) {
-			case "Utilisateurs":
-				while (nombre > 0) {
-					String u = content[++i].substring(1);
-					Utilisateur utilisateur = getUtilisateur(u);
-					split = content[++i].substring(2).split(":");
-					int nbMessages = Integer.parseInt(split[1]);
-					while (nbMessages > 0) {
-						String m = content[++i].substring(3);
-						Message message = getMessage(m);
-						utilisateur.getMessages().add(message);
-						nbMessages--;
-					}
-
-					split = content[++i].substring(2).split(":");
-					int nbTickets = Integer.parseInt(split[1]);
-					while (nbTickets > 0) {
-						String t = content[++i].substring(3);
-						Ticket ticket = getTicket(t);
-						utilisateur.getTickets().add(ticket);
-						nbTickets--;
-					}
-
-					DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
-					nombre--;
-					i++;
-				}
-				break;
-			case "Groupes":
-				while (nombre > 0) {
-					String g = content[++i].substring(1);
-					GroupeUtilisateurs groupe = getGroupe(g);
-					split = content[++i].substring(2).split(":");
-					int nbUtilisateurs = Integer.parseInt(split[1]);
-					while (nbUtilisateurs > 0) {
-						String u = content[++i].substring(3);
-						Utilisateur utilisateur = getUtilisateur(u);
-						groupe.getUtilisateurs().add(utilisateur);
-						nbUtilisateurs--;
-					}
-
-					DBConnection.getInstance().getListeGroupes().add(groupe);
-					nombre--;
-					i++;
-				}
-				break;
-			case "Tickets":
-				while (nombre > 0) {
-					String t = content[++i].substring(1);
-					Ticket ticket = getTicket(t);
-					split = content[++i].substring(2).split(":");
-					int nbMessages = Integer.parseInt(split[1]);
-					while (nbMessages > 0) {
-						String m = content[++i].substring(3);
-						Message message = getMessage(m);
-						ticket.getMessages().add(message);
-						nbMessages--;
-					}
-
-					DBConnection.getInstance().getListeTickets().add(ticket);
-					nombre--;
-					i++;
-				}
-				break;
-			case "Messages":
-				while (nombre > 0) {
-					String m = content[++i].substring(1);
-					Message message = getMessage(m);
-
-					DBConnection.getInstance().getListeMessages().add(message);
-					nombre--;
-					i++;
-				}
-				break;
-			case "AMU":
-				while (nombre > 0) {
-					String amu = content[++i].substring(1);
-					split = amu.split(DELIMITER + DELIMITER);
-					AssociationMessageUtilisateur asso = getAMU(split[0], split[1], split[2]);
-
-					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().add(asso);
-					nombre--;
-					i++;
-				}
-				break;
-			}
-
-			i++;
-		} while (i < content.length);
-	}
+//	private void format(String s) {
+//		String[] content = s.split("\t\0\0\t");
+//		int nombre = 0;
+//
+//		int i = 0;
+//
+//		do {
+//			String line = content[i];
+//			if (line.isEmpty()) {
+//				i++;
+//				continue;
+//			}
+//			String[] split = line.split(":");
+//			nombre = Integer.parseInt(split[1]);
+//			switch (split[0]) {
+//			case "Utilisateurs":
+//				while (nombre > 0) {
+//					String u = content[++i].substring(1);
+//					Utilisateur utilisateur = getUtilisateur(u);
+//					split = content[++i].substring(2).split(":");
+//					int nbMessages = Integer.parseInt(split[1]);
+//					while (nbMessages > 0) {
+//						String m = content[++i].substring(3);
+//						Message message = getMessage(m);
+//						utilisateur.getMessages().add(message);
+//						nbMessages--;
+//					}
+//
+//					split = content[++i].substring(2).split(":");
+//					int nbTickets = Integer.parseInt(split[1]);
+//					while (nbTickets > 0) {
+//						String t = content[++i].substring(3);
+//						Ticket ticket = getTicket(t);
+//						utilisateur.getTickets().add(ticket);
+//						nbTickets--;
+//					}
+//
+//					DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
+//					nombre--;
+//					i++;
+//				}
+//				break;
+//			case "Groupes":
+//				while (nombre > 0) {
+//					String g = content[++i].substring(1);
+//					GroupeUtilisateurs groupe = getGroupe(g);
+//					split = content[++i].substring(2).split(":");
+//					int nbUtilisateurs = Integer.parseInt(split[1]);
+//					while (nbUtilisateurs > 0) {
+//						String u = content[++i].substring(3);
+//						Utilisateur utilisateur = getUtilisateur(u);
+//						groupe.getUtilisateurs().add(utilisateur);
+//						nbUtilisateurs--;
+//					}
+//
+//					DBConnection.getInstance().getListeGroupes().add(groupe);
+//					nombre--;
+//					i++;
+//				}
+//				break;
+//			case "Tickets":
+//				while (nombre > 0) {
+//					String t = content[++i].substring(1);
+//					Ticket ticket = getTicket(t);
+//					split = content[++i].substring(2).split(":");
+//					int nbMessages = Integer.parseInt(split[1]);
+//					while (nbMessages > 0) {
+//						String m = content[++i].substring(3);
+//						Message message = getMessage(m);
+//						ticket.getMessages().add(message);
+//						nbMessages--;
+//					}
+//
+//					DBConnection.getInstance().getListeTickets().add(ticket);
+//					nombre--;
+//					i++;
+//				}
+//				break;
+//			case "Messages":
+//				while (nombre > 0) {
+//					String m = content[++i].substring(1);
+//					Message message = getMessage(m);
+//
+//					DBConnection.getInstance().getListeMessages().add(message);
+//					nombre--;
+//					i++;
+//				}
+//				break;
+//			case "AMU":
+//				while (nombre > 0) {
+//					String amu = content[++i].substring(1);
+//					split = amu.split(DELIMITER + DELIMITER);
+//					AssociationGroupeUtilisateur asso = getAMU(split[0], split[1], split[2]);
+//
+//					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().add(asso);
+//					nombre--;
+//					i++;
+//				}
+//				break;
+//			}
+//
+//			i++;
+//		} while (i < content.length);
+//	}
 
 	/**
 	 * Récupère le client où en crée un nouveau à l'aide d'un socket

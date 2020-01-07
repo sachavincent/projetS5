@@ -8,9 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Stream;
 
+import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
 import model.GroupeUtilisateurs;
@@ -42,6 +41,9 @@ public class DBConnection {
 	private List<Ticket> listeTickets = new ArrayList<>();
 
 	// Liste des associations entre les utilisateurs et les messages
+	private List<AssociationGroupeUtilisateur> listeAGU = new ArrayList<>();
+
+	// Liste des associations entre les utilisateurs et les groupes
 	private List<AssociationMessageUtilisateur> listeAMU = new ArrayList<>();
 
 	/**
@@ -61,7 +63,6 @@ public class DBConnection {
 	 */
 	private void populate() {
 		// TODO
-
 		PreparedStatement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
@@ -136,7 +137,8 @@ public class DBConnection {
 				int idGroupe = rs.getInt(7);
 				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
 						.orElseThrow(IllegalStateException::new);
-				groupe.getUtilisateurs().add(utilisateur);
+
+				listeAGU.add(new AssociationGroupeUtilisateur(groupe, utilisateur));
 				listeUtilisateurs.add(utilisateur);
 			}
 
@@ -237,13 +239,11 @@ public class DBConnection {
 					u.setConnecte(true);
 
 				// Mise à jour des listes
-				for (GroupeUtilisateurs groupe : listeGroupes) {
-					for (Utilisateur uti : groupe.getUtilisateurs()) {
-						if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
-							uti.setConnecte(true);
-					}
+				for (AssociationGroupeUtilisateur agu : listeAGU) {
+					Utilisateur uti = agu.getUtilisateur();
+					if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
+						uti.setConnecte(true);
 				}
-
 			} catch (SQLException e) {
 				e.printStackTrace();
 
@@ -292,6 +292,7 @@ public class DBConnection {
 		}
 
 		return reussite;
+
 	}
 
 	/**
@@ -316,11 +317,10 @@ public class DBConnection {
 				u.setConnecte(false);
 
 			// Mise à jour des listes
-			for (GroupeUtilisateurs groupe : listeGroupes) {
-				for (Utilisateur uti : groupe.getUtilisateurs()) {
-					if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
-						uti.setConnecte(false);
-				}
+			for (AssociationGroupeUtilisateur agu : listeAGU) {
+				Utilisateur uti = agu.getUtilisateur();
+				if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
+					uti.setConnecte(false);
 			}
 
 		} catch (SQLException e) {
@@ -333,6 +333,45 @@ public class DBConnection {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Permet de créer un groupe
+	 * 
+	 * @param nom               le nom du groupe
+	 * @param listeUtilisateurs la liste des utilisateurs du groupe
+	 * @return true si l'insertion a fonctionné
+	 */
+	public boolean creerGroupe(String nom, List<Utilisateur> listeUtilisateurs) {
+		PreparedStatement st = null;
+		try {
+			// INSERTION dans la base de données
+			st = this.connection.prepareStatement("INSERT INTO GroupeUtilisateurs (nom) VALUES (?)");
+			st.setString(1, nom);
+
+			st.execute();
+
+			ResultSet rs = st.getGeneratedKeys();
+			rs.next();
+
+			int id = rs.getInt(1);
+
+			GroupeUtilisateurs groupeUtilisateurs = new GroupeUtilisateurs(id, nom);
+			listeGroupes.add(groupeUtilisateurs);
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -403,6 +442,13 @@ public class DBConnection {
 	 */
 	public List<Message> getListeMessages() {
 		return listeMessages;
+	}
+
+	/**
+	 * @return la liste des associations entre utilisateurs et groupes
+	 */
+	public List<AssociationGroupeUtilisateur> getListeAssociationsGroupeUtilisateur() {
+		return listeAGU;
 	}
 
 	/**

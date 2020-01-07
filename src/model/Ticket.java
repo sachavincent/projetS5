@@ -35,18 +35,6 @@ public class Ticket extends Observable {
 	}
 
 	/**
-	 * Permet d'envoyer un message dans le ticket
-	 * 
-	 * @param message
-	 *            le message à envoyer
-	 * @return true si le message a bien été envoyé
-	 */
-	public boolean envoyerMessage(@NotNull Message message) {
-		return false;
-		// TODO: Voir diagramme de séquence
-	}
-
-	/**
 	 * @return l'id du ticket
 	 */
 	public int getIdTicket() {
