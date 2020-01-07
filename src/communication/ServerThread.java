@@ -59,64 +59,64 @@ public class ServerThread extends Thread {
 			connexion = true;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
-			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeUtilisateurs().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tMessages:");
-				stringBuilder.append(o.getMessages().size() + "\n\0");
+				stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
 				o.getMessages().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
 
 				stringBuilder.append("\t\tTickets:");
-				stringBuilder.append(o.getTickets().size() + "\n\0");
+				stringBuilder.append(o.getTickets().size() + "\t\0\0\t");
 				o.getTickets().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Groupes:");
-			stringBuilder.append(DBConnection.getInstance().getListeGroupes().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeGroupes().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeGroupes().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tUtilisateurs:");
-				stringBuilder.append(o.getUtilisateurs().size() + "\n\0");
+				stringBuilder.append(o.getUtilisateurs().size() + "\t\0\0\t");
 				o.getUtilisateurs().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Tickets:");
-			stringBuilder.append(DBConnection.getInstance().getListeTickets().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeTickets().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeTickets().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tMessages:");
-				stringBuilder.append(o.getMessages().size() + "\n\0");
+				stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
 				o.getMessages().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Messages:");
-			stringBuilder.append(DBConnection.getInstance().getListeMessages().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeMessages().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeMessages().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("AMU:");
-			stringBuilder.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeAssociationsMessageUtilisateur()
 					.forEach(o -> appendLn(stringBuilder, o.toString()));
 
@@ -139,7 +139,7 @@ public class ServerThread extends Thread {
 	private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
 		stringBuilder.append("\t");
 		stringBuilder.append(m);
-		stringBuilder.append("\n\0");
+		stringBuilder.append("\t\0\0\t");
 
 		return stringBuilder;
 	}

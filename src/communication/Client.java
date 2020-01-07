@@ -19,6 +19,8 @@ import model.Utilisateur;
 
 public class Client {
 
+	private static Client client;
+
 	private Utilisateur utilisateur;
 
 	private PrintWriter pw;
@@ -27,9 +29,18 @@ public class Client {
 	public Client(PrintWriter pw, BufferedReader br) {
 		this.pw = pw;
 		this.br = br;
+
+		client = this;
 	}
 
-	public void connect(String identifiant, String password) {
+	/**
+	 * Connecter un utilisateur
+	 * 
+	 * @param identifiant
+	 * @param password
+	 * @return
+	 */
+	public boolean connect(String identifiant, String password) {
 		pw.println("connexion");
 		pw.println(identifiant + DELIMITER + password);
 
@@ -42,14 +53,14 @@ public class Client {
 					String message = br.readLine();
 
 					stringBuilder.append(message).append("\n");
-				} else if (!stringBuilder.toString().isEmpty()) {
-					format(stringBuilder.toString());
+				} else if (!stringBuilder.toString().isEmpty())
 					executor.shutdown();
-				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}, 0, 333, TimeUnit.MILLISECONDS);
+
+		return Boolean.parseBoolean(stringBuilder.toString());
 	}
 
 	private Utilisateur getUtilisateur(String line) {
@@ -101,7 +112,7 @@ public class Client {
 	}
 
 	private void format(String s) {
-		String[] content = s.split("\n\0");
+		String[] content = s.split("\t\0\0\t");
 		int nombre = 0;
 
 		int i = 0;
@@ -203,5 +214,9 @@ public class Client {
 
 			i++;
 		} while (i < content.length);
+	}
+	
+	public static Client getClient() {
+		return client;
 	}
 }

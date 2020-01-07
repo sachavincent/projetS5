@@ -7,12 +7,9 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
-//import database.DBConnection;
 
 public class TCPCommunication {
-
 
 	private final static int PORT = 1978;
 	private final static String SERVER_IP = "192.168.1.46";
@@ -23,22 +20,21 @@ public class TCPCommunication {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 
-	public static void main(String[] args) {
-		openServerSocket();
-	}
-
 	public static void sendMessage(String m) {
 		if (pw != null)
 			pw.println(m);
 	}
 
 	public static Client openClientSocket() {
+		if (socket != null)
+			return null;
+
 		try {
 			ip = InetAddress.getByName(SERVER_IP);
 			socket = new Socket(ip, PORT);
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
+
 			return new Client(pw, br);
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'ouverture du socket client");

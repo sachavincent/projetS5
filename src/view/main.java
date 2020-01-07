@@ -7,7 +7,7 @@ public class main {
 //		new AjoutGroupe();
 		//new ModificationUtilisateur();
 		//new ModificationGroupe();
-		new Connexion();
+		new VueConnexion();
 	}
 
 }

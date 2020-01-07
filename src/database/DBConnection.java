@@ -17,8 +17,12 @@ import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
 import model.Utilisateur;
+import model.AssociationMessageUtilisateur.EtatMessage;
 
 public class DBConnection {
+
+	// Type de connexion
+	public static Type type;
 
 	// Instance unique de cette classe
 	private static DBConnection instance;
@@ -45,10 +49,12 @@ public class DBConnection {
 	 * Constructeur privé
 	 */
 	private DBConnection() {
-		this.connection = createNewConnection();
+		if (type == Type.SERVEUR) {
+			this.connection = createNewConnection();
 
-		// populate
-		populate();
+			// populate
+			populate();
+		}
 	}
 
 	/**
@@ -57,9 +63,9 @@ public class DBConnection {
 	private void populate() {
 		// TODO
 
-		PreparedStatement st;
+		PreparedStatement st = null;
 		PreparedStatement st2 = null;
-		ResultSet rs;
+		ResultSet rs = null;
 		ResultSet rs2 = null;
 		try {
 			// Sélection des groupes d'utilisateurs
@@ -69,6 +75,9 @@ public class DBConnection {
 
 			while (rs.next())
 				listeGroupes.add(new GroupeUtilisateurs(rs.getInt(1), rs.getString(2)));
+
+			st.close();
+			rs.close();
 
 			// Sélection des tickets
 			st = this.connection.prepareStatement("SELECT * FROM Ticket");
@@ -81,6 +90,9 @@ public class DBConnection {
 						.orElseThrow(IllegalStateException::new); // TODO Change?
 				listeTickets.add(new Ticket(rs.getInt(1), rs.getString(2), rs.getDate(3), groupe));
 			}
+
+			st.close();
+			rs.close();
 
 			// Sélection des utilisateurs
 			st = this.connection.prepareStatement("SELECT * FROM Utilisateur");
@@ -102,6 +114,9 @@ public class DBConnection {
 				// Ajouts des messages
 				while (rs2.next())
 					utilisateur.getMessages().add(new Message(rs2.getInt(1), rs2.getString(2), rs2.getDate(3)));
+
+				st2.close();
+				rs2.close();
 
 				// Sélection des tickets dont l'utilisateur donné est le créateur
 				st2 = this.connection.prepareStatement(
@@ -126,6 +141,9 @@ public class DBConnection {
 				listeUtilisateurs.add(utilisateur);
 			}
 
+			st.close();
+			rs.close();
+
 			// Sélection des messages
 			st = this.connection.prepareStatement("SELECT * FROM Message");
 
@@ -139,6 +157,9 @@ public class DBConnection {
 				ticket.getMessages().add(message);
 				listeMessages.add(message);
 			}
+
+			st.close();
+			rs.close();
 
 			// Sélection des associations
 			st = this.connection.prepareStatement("SELECT * FROM AssociationMessageUtilisateur");
@@ -161,14 +182,21 @@ public class DBConnection {
 				listeAMU.add(amu);
 			}
 
-			rs.close();
-			if (rs2 != null)
-				rs2.close();
-			st.close();
-			if (st2 != null)
-				st2.close();
 		} catch (SQLException | IllegalStateException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (rs2 != null)
+					rs2.close();
+				if (st != null)
+					st.close();
+				if (st2 != null)
+					st2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -180,10 +208,6 @@ public class DBConnection {
 	 * @return reussite de la connexion
 	 */
 	public boolean connecter(String identifiantU, String password) {
-		// Dans le listener
-//		Client client = TCPCommunication.openClientSocket();
-//		client.connect(identifiantU, password);
-
 		Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 				.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiantU)).findFirst().orElse(null);
 
@@ -198,18 +222,58 @@ public class DBConnection {
 
 			utilisateur.setConnecte(true);
 
-			PreparedStatement st;
-			ResultSet rs;
+			PreparedStatement st = null;
+			ResultSet rs = null;
 			try {
-				// Sélection des groupes d'utilisateurs
-				st = this.connection.prepareStatement("UPDATE * FROM GroupeUtilisateurs");
+				// UPDATE dans la base de données
+				st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ?");
+				st.setInt(1, 1);
+				rs = st.executeQuery();
+
+				rs.next();
+			} catch (SQLException e) {
+				e.printStackTrace();
+
+				return false;
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (st != null)
+						st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+
+					return false;
+				}
+			}
+
+			// Utilisateur connecté dans la base de données
+			try {
+				// UPDATE Association dans la base de données
+				st = this.connection
+						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ?");
+				st.setString(1, EtatMessage.NON_LU.getName());
+				st.setString(2, EtatMessage.EN_ATTENTE.getName());
 
 				rs = st.executeQuery();
 
-				while (rs.next())
-					listeGroupes.add(new GroupeUtilisateurs(rs.getInt(1), rs.getString(2)));
+				rs.next();
 			} catch (SQLException e) {
 				e.printStackTrace();
+
+				return false;
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (st != null)
+						st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+
+					return false;
+				}
 			}
 		}
 
@@ -293,4 +357,7 @@ public class DBConnection {
 		return listeAMU;
 	}
 
+	public enum Type {
+		SERVEUR, CLIENT
+	}
 }

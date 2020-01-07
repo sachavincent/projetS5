@@ -7,7 +7,10 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import communication.TCPCommunication;
+import database.DBConnection;
+import database.DBConnection.Type;
 import view.FenetreServeur;
+import view.VueConnexion;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -16,7 +19,8 @@ import view.FenetreServeur;
 
 public class Main {
 
-    public final static String DELIMITER = "\0";
+	public final static String DELIMITER = "\0";
+
 	/**
 	 * Méthode principale de l'application
 	 */
@@ -35,16 +39,15 @@ public class Main {
 			switch (choix) {
 			case 0: // Serveur
 				// TODO
+				DBConnection.type = Type.SERVEUR;
 				TCPCommunication.openServerSocket();
 
 				break;
 			case 1: // Client
 				// TODO
-				
-						TCPCommunication.openClientSocket();
-						TCPCommunication.sendMessage("Hello world!");
-				
-
+				DBConnection.type = Type.CLIENT;
+//				TCPCommunication.openClientSocket();
+//				TCPCommunication.sendMessage("Hello world!");
 				break;
 			}
 		}
@@ -62,7 +65,7 @@ public class Main {
 //		frame.setPreferredSize(new Dimension(500,500));
 //		frame.setLocationRelativeTo(null);
 
-		frame.setContentPane(new FenetreServeur());
+		frame.setContentPane(new VueConnexion());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);
