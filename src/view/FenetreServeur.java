@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 // Interface Serveur avec toutes les options auquel il a accés 
@@ -85,7 +86,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 			new SuppresionUtilisateur();
 		}
 		if (event.getSource() == buttons[3]) {
-			new AjoutGroupe();
+			String nom = JOptionPane.showInputDialog("Nom du groupe");
 		}
 		if (event.getSource() == buttons[4]) {
 			new ModificationGroupe();

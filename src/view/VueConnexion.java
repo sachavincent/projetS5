@@ -16,12 +16,12 @@ import javax.swing.JTextField;
 import controller.ConnexionController;
 
 // Interface permettant de se connecter à l'application et au serveur
-public class VueConnexion extends JFrame implements Observer {
-	private JTextField id = new JTextField(30);;
-	private JPasswordField mdp = new JPasswordField(30);;
-	private JLabel identifiant = new JLabel("Identifiant");;
-	private JLabel motDePasse = new JLabel("Mot de passe");;
-	private JButton connexion = new JButton("Connexion");;
+public class VueConnexion extends JPanel implements Observer {
+	private JTextField id = new JTextField(30);
+	private JPasswordField mdp = new JPasswordField(30);
+	private JLabel identifiant = new JLabel("Identifiant");
+	private JLabel motDePasse = new JLabel("Mot de passe");
+	private JButton connexion = new JButton("Connexion");
 	private JPanel[] panel = new JPanel[7];
 	
 	public VueConnexion() {
