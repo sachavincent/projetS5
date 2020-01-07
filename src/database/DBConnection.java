@@ -1,5 +1,6 @@
 package database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import communication.Client;
+import communication.TCPCommunication;
 import model.AssociationMessageUtilisateur;
 import model.GroupeUtilisateurs;
 import model.Message;
@@ -146,13 +149,15 @@ public class DBConnection {
 				int idMessage = rs.getInt(1);
 				Message message = listeMessages.stream().filter(m -> m.getIdMessage() == idMessage).findFirst()
 						.orElseThrow(IllegalStateException::new);
-				
+
 				String identUtilisateur = rs.getString(2);
-				Utilisateur utilisateur = listeUtilisateurs.stream().filter(u -> u.getIdentifiant().equals(identUtilisateur)).findFirst()
+				Utilisateur utilisateur = listeUtilisateurs.stream()
+						.filter(u -> u.getIdentifiant().equals(identUtilisateur)).findFirst()
 						.orElseThrow(IllegalStateException::new);
-				
-				AssociationMessageUtilisateur amu = new AssociationMessageUtilisateur(message, utilisateur, rs.getString(3));
-				
+
+				AssociationMessageUtilisateur amu = new AssociationMessageUtilisateur(message, utilisateur,
+						rs.getString(3));
+
 				listeAMU.add(amu);
 			}
 
@@ -165,6 +170,50 @@ public class DBConnection {
 		} catch (SQLException | IllegalStateException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Permet de connecter l'utilisateur
+	 * 
+	 * @param identifiantU idenfiant de l'utilisateur
+	 * @param password     mot de passe de l'utilisateur
+	 * @return reussite de la connexion
+	 */
+	public boolean connecter(String identifiantU, String password) {
+		// Dans le listener
+//		Client client = TCPCommunication.openClientSocket();
+//		client.connect(identifiantU, password);
+
+		Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
+				.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiantU)).findFirst().orElse(null);
+
+		if (utilisateur == null) // Identifiant incorrect
+			return false;
+
+		// On vérifie que les mots de passe correspondent
+		boolean reussite = utilisateur.memeMotDePasse(password);
+
+		if (reussite) {
+			// Connexion réussie
+
+			utilisateur.setConnecte(true);
+
+			PreparedStatement st;
+			ResultSet rs;
+			try {
+				// Sélection des groupes d'utilisateurs
+				st = this.connection.prepareStatement("UPDATE * FROM GroupeUtilisateurs");
+
+				rs = st.executeQuery();
+
+				while (rs.next())
+					listeGroupes.add(new GroupeUtilisateurs(rs.getInt(1), rs.getString(2)));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return reussite;
 	}
 
 	/**

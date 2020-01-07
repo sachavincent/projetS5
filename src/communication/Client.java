@@ -17,8 +17,9 @@ import model.Message;
 import model.Ticket;
 import model.Utilisateur;
 
-
 public class Client {
+
+	private Utilisateur utilisateur;
 
 	private PrintWriter pw;
 	private BufferedReader br;
@@ -28,8 +29,9 @@ public class Client {
 		this.br = br;
 	}
 
-	public void connect() {
+	public void connect(String identifiant, String password) {
 		pw.println("connexion");
+		pw.println(identifiant + DELIMITER + password);
 
 		StringBuilder stringBuilder = new StringBuilder();
 

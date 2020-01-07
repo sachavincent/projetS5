@@ -23,10 +23,6 @@ public class TCPCommunication {
 	private static BufferedReader br;
 
 	public static void main(String[] args) {
-//		openClientSocket();
-		Client client = new Client(pw, br);
-		client.connect();
-		
 		openServerSocket();
 	}
 
@@ -35,18 +31,21 @@ public class TCPCommunication {
 			pw.println(m);
 	}
 
-	public static void openClientSocket() {
+	public static Client openClientSocket() {
 		try {
 			ip = InetAddress.getByName(SERVER_IP);
 			socket = new Socket(ip, PORT);
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			return new Client(pw, br);
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'ouverture du socket client");
 			e.printStackTrace();
 
 			closeClientSocket();
 		}
+		return null;
 	}
 
 	public static void closeClientSocket() {

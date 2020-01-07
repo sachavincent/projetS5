@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import static main.Main.*;
 import database.DBConnection;
 
 public class ServerThread extends Thread {
@@ -16,6 +16,8 @@ public class ServerThread extends Thread {
 	private Socket socket;
 	private PrintWriter pw;
 	private BufferedReader br;
+
+	private boolean connexion = true;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -53,7 +55,9 @@ public class ServerThread extends Thread {
 //		pw.println("Message received: " + instruction);
 
 		switch (instruction) {
-		case "connexion": // Connexion de l'utilisateur, récupération des données du serveur
+		case "connexion":
+			connexion = true;
+		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
 			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\n\0");
 			DBConnection.getInstance().getListeUtilisateurs().forEach(o -> {
@@ -107,7 +111,7 @@ public class ServerThread extends Thread {
 			stringBuilder.append(DBConnection.getInstance().getListeMessages().size() + "\n\0");
 			DBConnection.getInstance().getListeMessages().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
-				
+
 				stringBuilder.append("\n\0");
 			});
 
@@ -117,13 +121,19 @@ public class ServerThread extends Thread {
 					.forEach(o -> appendLn(stringBuilder, o.toString()));
 
 			System.out.println(stringBuilder.toString());
+			pw.println(stringBuilder.toString());
 			break;
 
 		default:
+			if (connexion) {
+				String[] logins = instruction.split(DELIMITER);
+				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1]));
+				
+				connexion = false;
+			}
+			
 			break;
 		}
-//		pw.println(DBConnection.getInstance().getListeUtilisateurs().get(0));
-		pw.println(stringBuilder.toString());
 	}
 
 	private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
