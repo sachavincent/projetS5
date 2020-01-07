@@ -40,8 +40,10 @@ public class Main {
 				break;
 			case 1: // Client
 				// TODO
-				TCPCommunication.openClientSocket();
-				TCPCommunication.sendMessage("Hello world!");
+				
+						TCPCommunication.openClientSocket();
+						TCPCommunication.sendMessage("Hello world!");
+				
 
 				break;
 			}
