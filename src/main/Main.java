@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import communication.TCPCommunication;
 import view.FenetreServeur;
 
 /**
@@ -15,6 +16,7 @@ import view.FenetreServeur;
 
 public class Main {
 
+    public final static String DELIMITER = "\0";
 	/**
 	 * Méthode principale de l'application
 	 */
@@ -33,20 +35,14 @@ public class Main {
 			switch (choix) {
 			case 0: // Serveur
 				// TODO
-				new Runnable() {
-					public void run() {
-						TCPCommunication.openServerSocket();
-					}
-				};
+				TCPCommunication.openServerSocket();
+
 				break;
 			case 1: // Client
 				// TODO
-				new Runnable() {
-					public void run() {
-						TCPCommunication.openClientSocket();
-						TCPCommunication.sendMessage("Hello world!");
-					}
-				};
+				TCPCommunication.openClientSocket();
+				TCPCommunication.sendMessage("Hello world!");
+
 				break;
 			}
 		}

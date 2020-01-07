@@ -1,5 +1,6 @@
 package model;
 
+import static main.Main.*;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
@@ -17,7 +18,6 @@ public class GroupeUtilisateurs extends Observable {
 	// Liste des utilisateurs du groupe
 	private Set<Utilisateur> listeUtilisateurs = new HashSet<>();
 
-
 	public GroupeUtilisateurs(int idGroupe, String nom) {
 		this.idGroupe = idGroupe;
 		this.nom = nom;
@@ -26,8 +26,7 @@ public class GroupeUtilisateurs extends Observable {
 	/**
 	 * Permet d'ajouter un utilisateur à un groupe
 	 * 
-	 * @param utilisateur
-	 *            l'utilisateur à ajouter
+	 * @param utilisateur l'utilisateur à ajouter
 	 * @return true si l'utilisateur a bien été ajouté
 	 */
 	public boolean ajouterUtilisateur(@NotNull Utilisateur utilisateur) {
@@ -38,8 +37,7 @@ public class GroupeUtilisateurs extends Observable {
 	/**
 	 * Permet de supprimer un utilisateur d'n groupe
 	 * 
-	 * @param utilisateur
-	 *            l'utilisateur à supprimer
+	 * @param utilisateur l'utilisateur à supprimer
 	 * @return true si l'utilisateur a bien été supprimé
 	 */
 	public boolean supprimerUtilisateur(@NotNull Utilisateur utilisateur) {
@@ -69,10 +67,20 @@ public class GroupeUtilisateurs extends Observable {
 	}
 
 	/**
-	 * @param nom
-	 *            le nom du groupe
+	 * @param nom le nom du groupe
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(idGroupe);
+		builder.append(DELIMITER);
+		builder.append(nom);
+
+		return builder.toString();
+	}
+
 }

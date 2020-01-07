@@ -1,10 +1,13 @@
 package model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
 
 import com.sun.istack.internal.NotNull;
+
+import static main.Main.*;
 
 public class Ticket extends Observable {
 
@@ -21,7 +24,7 @@ public class Ticket extends Observable {
 	private GroupeUtilisateurs groupeDestination;
 
 	// Liste des messages de ce ticket
-	private Set<Message> listeMessages;
+	private Set<Message> listeMessages = new HashSet<>();
 
 	
 	public Ticket(int idTicket, String titre, Date dateCreation, GroupeUtilisateurs groupeDestination) {
@@ -125,6 +128,19 @@ public class Ticket extends Observable {
 		} else if (!titre.equals(other.titre))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(idTicket);
+		builder.append(DELIMITER);
+		builder.append(titre);
+		builder.append(DELIMITER);
+		builder.append(dateCreation);
+		builder.append(DELIMITER);
+		builder.append(groupeDestination);
+		return builder.toString();
 	}
 
 }

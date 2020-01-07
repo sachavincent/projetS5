@@ -1,5 +1,6 @@
 package model;
 
+import static main.Main.*;
 import java.util.Date;
 import java.util.Observable;
 
@@ -14,7 +15,6 @@ public class Message extends Observable {
 	// Date d'envoi du message;
 	private Date date;
 
-	
 	public Message(int idMessage, String contenu, Date date) {
 		this.idMessage = idMessage;
 		this.contenu = contenu;
@@ -29,8 +29,7 @@ public class Message extends Observable {
 	}
 
 	/**
-	 * @param contenu
-	 *            le contenu du message
+	 * @param contenu le contenu du message
 	 */
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
@@ -64,8 +63,7 @@ public class Message extends Observable {
 	}
 
 	/**
-	 * @param obj
-	 *            objet à comparer
+	 * @param obj objet à comparer
 	 * 
 	 * @return true si les deux objets sont similaires
 	 */
@@ -91,6 +89,17 @@ public class Message extends Observable {
 		if (idMessage != other.idMessage)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(idMessage);
+		builder.append(DELIMITER);
+		builder.append(contenu);
+		builder.append(DELIMITER);
+		builder.append(date);
+		return builder.toString();
 	}
 
 }
