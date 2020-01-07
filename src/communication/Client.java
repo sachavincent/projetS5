@@ -46,20 +46,16 @@ public class Client {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
-		ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
-		executor.scheduleAtFixedRate(() -> {
-			try {
-				if (br.ready()) {
-					String message = br.readLine();
-
-					stringBuilder.append(message).append("\n");
-				} else if (!stringBuilder.toString().isEmpty())
-					executor.shutdown();
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			while (!br.ready()) {
 			}
-		}, 0, 333, TimeUnit.MILLISECONDS);
+			String message = br.readLine();
 
+			stringBuilder.append(message).append("\n");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return Boolean.parseBoolean(stringBuilder.toString());
 	}
 
@@ -215,7 +211,7 @@ public class Client {
 			i++;
 		} while (i < content.length);
 	}
-	
+
 	public static Client getClient() {
 		return client;
 	}
