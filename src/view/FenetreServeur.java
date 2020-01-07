@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -89,7 +87,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 			String nom = JOptionPane.showInputDialog("Nom du groupe");
 		}
 		if (event.getSource() == buttons[4]) {
-			new ModificationGroupe();
+			new VueModificationGroupe();
 		}
 		if (event.getSource() == buttons[5]) {
 			new SuppresionGroupe();

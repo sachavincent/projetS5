@@ -134,12 +134,6 @@ public class DBConnection {
 							.orElseThrow(IllegalStateException::new);
 					utilisateur.getTickets().add(ticket);
 				}
-
-				int idGroupe = rs.getInt(7);
-				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
-						.orElseThrow(IllegalStateException::new);
-
-				listeAGU.add(new AssociationGroupeUtilisateur(groupe, utilisateur));
 				listeUtilisateurs.add(utilisateur);
 			}
 
@@ -184,6 +178,27 @@ public class DBConnection {
 				listeAMU.add(amu);
 			}
 
+			st.close();
+			rs.close();
+
+			// Sélection des associations
+			st = this.connection.prepareStatement("SELECT * FROM AssociationGroupeUtilisateur");
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				int idGroupe = rs.getInt(1);
+				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
+						.orElseThrow(IllegalStateException::new);
+
+				String identUtilisateur = rs.getString(2);
+				Utilisateur utilisateur = listeUtilisateurs.stream()
+						.filter(u -> u.getIdentifiant().equals(identUtilisateur)).findFirst()
+						.orElseThrow(IllegalStateException::new);
+
+				AssociationGroupeUtilisateur agu = new AssociationGroupeUtilisateur(groupe, utilisateur);
+				listeAGU.add(agu);
+			}
 		} catch (SQLException | IllegalStateException e) {
 			e.printStackTrace();
 		} finally {
@@ -347,7 +362,7 @@ public class DBConnection {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			// Ajout à la base de données
+			// Ajout à la base de donnéesa
 			st = this.connection.prepareStatement("INSERT INTO GroupeUtilisateurs (nom) VALUES (?)");
 			st.setString(1, nom);
 
@@ -442,7 +457,6 @@ public class DBConnection {
 					.collect(Collectors.toList());
 			for (Ticket ticket : lTickets)
 				supprimerTicket(ticket);
-
 
 			// Suppression des associations avec ce groupe
 			for (AssociationGroupeUtilisateur agu : listeAGU) {
@@ -553,6 +567,45 @@ public class DBConnection {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Permet de mettre à jour un GroupeUtilisateurs
+	 * 
+	 * @param groupe le groupe à mettre à jour
+	 */
+	public void updateGroupe(GroupeUtilisateurs groupe) {
+		PreparedStatement st = null;
+		try {
+			// UPDATE dans la base de données
+			st = this.connection.prepareStatement("UPDATE GroupeUtilisateurs SET nom = ? WHERE idgroupe = ?");
+			st.setString(1, groupe.getNom());
+			st.setInt(2, groupe.getIdGroupe());
+
+			st.execute();
+
+			GroupeUtilisateurs gr = listeGroupes.stream().filter(g -> g.equals(groupe)).findFirst().orElse(null);
+			if (gr != null)
+				gr.setNom(groupe.getNom());
+
+			listeTickets.stream().map(t -> t.getGroupeDestination()).filter(g -> g.equals(groupe))
+					.forEach(g -> g.setNom(groupe.getNom()));
+
+			listeAGU.stream().map(agu -> agu.getGroupe()).filter(g -> g.equals(groupe))
+					.forEach(g -> g.setNom(groupe.getNom()));
+
+			System.out.println(listeTickets);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
