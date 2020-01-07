@@ -225,8 +225,9 @@ public class DBConnection {
 			PreparedStatement st = null;
 			try {
 				// UPDATE dans la base de données
-				st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ?");
+				st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ? WHERE identifiant = ?");
 				st.setInt(1, 1);
+				st.setString(2, identifiantU);
 
 				if (!st.execute()) // UPDATE interrompu
 					return false;
@@ -249,9 +250,10 @@ public class DBConnection {
 			try {
 				// UPDATE Association dans la base de données
 				st = this.connection
-						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ?");
+						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND WHERE iduser = ?");
 				st.setString(1, EtatMessage.NON_LU.getName());
 				st.setString(2, EtatMessage.EN_ATTENTE.getName());
+				st.setString(3, identifiantU);
 
 				st.execute();
 			} catch (SQLException e) {
@@ -282,8 +284,9 @@ public class DBConnection {
 		PreparedStatement st = null;
 		try {
 			// UPDATE dans la base de données
-			st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ?");
+			st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ? WHERE identifiant = ?");
 			st.setInt(1, 0);
+			st.setString(2, identifiantU);
 
 			st.execute();
 		} catch (SQLException e) {
