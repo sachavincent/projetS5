@@ -229,8 +229,7 @@ public class DBConnection {
 				st.setInt(1, 1);
 				st.setString(2, identifiantU);
 
-				if (!st.execute()) // UPDATE interrompu
-					return false;
+				st.execute();
 			} catch (SQLException e) {
 				e.printStackTrace();
 
