@@ -57,6 +57,8 @@ public class ServerThread extends Thread {
 		switch (instruction) {
 		case "connexion":
 			connexion = true;
+			
+			break;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
 			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\t\0\0\t");
@@ -116,7 +118,8 @@ public class ServerThread extends Thread {
 			});
 
 			stringBuilder.append("AMU:");
-			stringBuilder.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\t\0\0\t");
+			stringBuilder
+					.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeAssociationsMessageUtilisateur()
 					.forEach(o -> appendLn(stringBuilder, o.toString()));
 
@@ -126,12 +129,13 @@ public class ServerThread extends Thread {
 
 		default:
 			if (connexion) {
+				System.out.println(instruction);
 				String[] logins = instruction.split(DELIMITER);
 				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1]));
-				
+
 				connexion = false;
 			}
-			
+
 			break;
 		}
 	}

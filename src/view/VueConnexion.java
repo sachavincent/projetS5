@@ -52,7 +52,7 @@ public class VueConnexion extends JPanel implements Observer {
 
 		panel[6].add(panel[5], BorderLayout.NORTH);
 
-		connexion.addActionListener(new ConnexionController(identifiant, mdp));
+		connexion.addActionListener(new ConnexionController(id, mdp));
 
 		add(panel[6]);
 	}
