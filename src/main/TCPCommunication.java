@@ -10,8 +10,9 @@ import java.net.Socket;
 
 public class TCPCommunication {
 
-	private final static int PORT = 5556;
-	private final static String SERVER_IP = "192.168.1.46";
+	private final static int PORT = 5557;
+	private final static String SERVER_IP = "90.55.189.128" + 
+			"";
 
 	private static InetAddress ip;
 	private static Socket socket;

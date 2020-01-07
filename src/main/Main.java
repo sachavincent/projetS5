@@ -41,12 +41,10 @@ public class Main {
 				break;
 			case 1: // Client
 				// TODO
-				new Runnable() {
-					public void run() {
+				
 						TCPCommunication.openClientSocket();
 						TCPCommunication.sendMessage("Hello world!");
-					}
-				};
+				
 				break;
 			}
 		}
