@@ -1,5 +1,6 @@
 package model;
 
+import static main.Main.*;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
@@ -35,7 +36,7 @@ public class Utilisateur extends Observable {
 		this.password = password;
 		this.nom = nom;
 		this.prenom = prenom;
-		
+
 		switch (type) {
 		case "ETUDIANT":
 			this.type = TypeUtilisateur.ETUDIANT;
@@ -121,24 +122,21 @@ public class Utilisateur extends Observable {
 	}
 
 	/**
-	 * @param nom
-	 *            le(s) nom(s) de l'utilisateur
+	 * @param nom le(s) nom(s) de l'utilisateur
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
-	 * @param prenom
-	 *            le prénom de l'utilisateur
+	 * @param prenom le prénom de l'utilisateur
 	 */
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
 	/**
-	 * @param connecte
-	 *            si l'utilisateur est connecté
+	 * @param connecte si l'utilisateur est connecté
 	 */
 	public void setConnecte(boolean connecte) {
 		this.connecte = connecte;
@@ -164,8 +162,7 @@ public class Utilisateur extends Observable {
 	}
 
 	/**
-	 * @param obj
-	 *            objet à comparer
+	 * @param obj objet à comparer
 	 * 
 	 * @return true si les deux objets sont similaires
 	 */
@@ -213,6 +210,23 @@ public class Utilisateur extends Observable {
 		if (type != other.type)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(identifiant);
+		builder.append(DELIMITER);
+		builder.append(password);
+		builder.append(DELIMITER);
+		builder.append(nom);
+		builder.append(DELIMITER);
+		builder.append(prenom);
+		builder.append(DELIMITER);
+		builder.append(type);
+		builder.append(DELIMITER);
+		builder.append(connecte);
+		return builder.toString();
 	}
 
 }
