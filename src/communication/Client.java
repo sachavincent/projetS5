@@ -19,7 +19,7 @@ public class Client {
 	private static Client client;
 	private static boolean connected;
 
-	private Utilisateur utilisateur;
+	private static Utilisateur utilisateur;
 
 	private PrintWriter pw;
 	private BufferedReader br;
@@ -62,6 +62,9 @@ public class Client {
 		pw.println(utilisateur.getIdentifiant());
 	}
 
+	public static Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
 	private Utilisateur getUtilisateur(String line) {
 		String[] parametres = line.split(DELIMITER);
 		String identifiant = parametres[0];
@@ -224,13 +227,6 @@ public class Client {
 		return client == null ? client = TCPCommunication.openClientSocket() : client;
 	}
 
-	/**
-	 * Retourne true si le client est connecté
-	 * 
-	 * @return connected
-	 */
-	public static boolean isConnected() {
-		return connected;
-	}
-
+	
+	
 }

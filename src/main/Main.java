@@ -69,8 +69,11 @@ public class Main {
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (DBConnection.type == Type.CLIENT && Client.isConnected())
+				if (DBConnection.type == Type.CLIENT && Client.getUtilisateur().isConnecte()) {
+					Client.getUtilisateur().setConnecte(false);
+					
 					Client.getClient().disconnect();
+				}
 			}
 		});
 		frame.setContentPane(new VueConnexion());
