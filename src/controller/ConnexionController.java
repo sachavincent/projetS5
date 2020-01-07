@@ -28,7 +28,7 @@ public class ConnexionController implements ActionListener {
 
 		// TODO Encryption
 
-		Client client = TCPCommunication.openClientSocket();
+		Client client = Client.getClient();
 		if (client != null)
 			System.out.println("Res: " + client.connect(identifiant, password));
 	}

@@ -213,6 +213,6 @@ public class Client {
 	}
 
 	public static Client getClient() {
-		return client;
+		return client == null ? client = TCPCommunication.openClientSocket() : client;
 	}
 }
