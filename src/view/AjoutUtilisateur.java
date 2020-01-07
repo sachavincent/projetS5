@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+//Interface permettant de créer un nouvel utilisateur.
 public class AjoutUtilisateur {
 	private JFrame frame;
 	private JPanel panel;

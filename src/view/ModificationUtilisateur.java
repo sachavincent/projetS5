@@ -10,15 +10,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+//Affiche une interface permettant de modifier un paramètre d'un utilisateur via 2 menu déroulant.
 public class ModificationUtilisateur {
 	//TODO fenetre de confirmation
 	private JButton ok = new JButton("OK");
-	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"};
+	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"}; //TODO modif pour avoir la bonne liste
 	private JComboBox<String> listeUtilisateur;
 	private String[] Attribut = {"identifiant","password","nom","prenom","type"};
 	private JComboBox<String> AttributModif;
 	private JPanel[] panel = new JPanel[5];
-
+	private Dimension d = new Dimension(300, 50);
 	
 	
 	public ModificationUtilisateur() {
@@ -30,9 +31,9 @@ public class ModificationUtilisateur {
 			panel[i] = new JPanel();
 		
 		//taille
-		ok.setPreferredSize(new Dimension(300, 50));
-		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
-		AttributModif.setPreferredSize(new Dimension(300, 50));
+		ok.setPreferredSize(d);
+		listeUtilisateur.setPreferredSize(d);
+		AttributModif.setPreferredSize(d);
 		
 		//layout
 		panel[0].setLayout(new GridLayout(3,1));
@@ -54,7 +55,7 @@ public class ModificationUtilisateur {
 		
 		
 		//affichage
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("ModificationUtilsateurGrp");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 600);
 		frame.setLocationRelativeTo(null);

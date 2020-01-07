@@ -7,8 +7,11 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+//Interface servant à la supprésion d'un groupe
+// elle affiche la liste de tout les groupes puis aprés la sélection du groupe à supprimé affiche une fenètre de confirmation.
 public class SuppressionUtilisateurGroupe {
-	//TODO fenetre de confirmation
+	//TODO fenetre de confirmation + modif liste
+	
 	private JButton ok = new JButton("OK");
 	private String[] listeGrp = {"groupe 1","groupe 2","groupe 3","groupe 4","groupe 5"};
 	private JComboBox<String> ListeGroupe;

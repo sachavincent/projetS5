@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+// Interface permettant de se connecter à l'application et au serveur
 public class Connexion extends JFrame implements Observer {
 	private JTextField id = new JTextField(30);;
 	private JPasswordField mdp = new JPasswordField(30);;
@@ -21,12 +22,11 @@ public class Connexion extends JFrame implements Observer {
 	private JPanel[] panel = new JPanel[7];
 	
 	public Connexion() {
-		
 		//init
 		for(int i = 0; i< 7; i++)
 			panel[i] = new JPanel();
 		
-		//layout
+		//layout pour les panels
 		panel[0].setLayout(new GridLayout(2,1));
 		panel[1].setLayout(new FlowLayout());
 		panel[2].setLayout(new FlowLayout());
@@ -34,7 +34,7 @@ public class Connexion extends JFrame implements Observer {
 		panel[4].setLayout(new FlowLayout());
 		panel[5].setLayout(new BorderLayout());
 		panel[6].setLayout(new BorderLayout());
-		//ajout
+		//ajout au panel
 		panel[1].add(identifiant);
 		panel[1].add(id);
 		panel[2].add(motDePasse);

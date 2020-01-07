@@ -7,9 +7,10 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+//Interface permettant de supprimé un utilisateur via un menu déroulant
 public class SuppresionUtilisateur {
 	private JButton ok = new JButton("OK");
-	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"};
+	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"}; //TODO à modif pour avoir la vrai liste
 	private JComboBox<String> listeUtilisateur;
 	private JPanel[] panel = new JPanel[4];
 	

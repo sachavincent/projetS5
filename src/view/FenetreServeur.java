@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+// Interface Serveur avec toutes les options auquel il a accés 
+
 public class FenetreServeur extends JPanel implements ActionListener {
 
 	private String[] nomsButtons = new String[] { "Ajouter un utilisateur", "Modifier un utilisateur",
@@ -27,7 +29,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 
 	public FenetreServeur() {
 		JPanel panel = new JPanel();
-		// Layout
+		// paramétrage du layout
 		GridLayout g = new GridLayout(3, 2);
 		g.setVgap(50);
 		g.setHgap(50);
@@ -72,12 +74,30 @@ public class FenetreServeur extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-//		if (event.getSource() == bouton1) {
-//			frame.setVisible(false);
-//			new AjoutUtilisateur();
-//		}
-//		if (event.getSource() == bouton3) {
-//			new SuppresionUtilisateur();
-//		}
+		if (event.getSource() == buttons[0]) {
+			setVisible(false);
+			new AjoutUtilisateur();
+		}
+		if (event.getSource() == buttons[1]) {
+			new ModificationUtilisateur();
+		}
+		if (event.getSource() == buttons[2]) {
+			new SuppresionUtilisateur();
+		}
+		if (event.getSource() == buttons[3]) {
+			new AjoutGroupe();
+		}
+		if (event.getSource() == buttons[4]) {
+			new ModificationGroupe();
+		}
+		if (event.getSource() == buttons[5]) {
+			new SuppresionGroupe();
+		}
+		if (event.getSource() == buttons[6]) {
+			new AjoutUtilisateurGroupe();
+		}
+		if (event.getSource() == buttons[7]) {
+			new SuppressionUtilisateurGroupe();
+		}
 	}
 }
