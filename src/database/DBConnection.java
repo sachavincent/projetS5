@@ -253,8 +253,7 @@ public class DBConnection {
 				st.setString(1, EtatMessage.NON_LU.getName());
 				st.setString(2, EtatMessage.EN_ATTENTE.getName());
 
-				if (!st.execute()) // UPDATE interrompu
-					return false;
+				st.execute();
 			} catch (SQLException e) {
 				e.printStackTrace();
 
@@ -272,6 +271,31 @@ public class DBConnection {
 		}
 
 		return reussite;
+	}
+
+	/**
+	 * Permet de déconnecter un utilisateur dans la base de données
+	 * 
+	 * @param identifiantU l'identifiant de l'utilisateur
+	 */
+	public void deconnecter(String identifiantU) {
+		PreparedStatement st = null;
+		try {
+			// UPDATE dans la base de données
+			st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ?");
+			st.setInt(1, 0);
+
+			st.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

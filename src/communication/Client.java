@@ -17,6 +17,7 @@ import model.Utilisateur;
 public class Client {
 
 	private static Client client;
+	private static boolean connected;
 
 	private Utilisateur utilisateur;
 
@@ -48,8 +49,17 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
+	}
+	
+
+	/**
+	 * Déconnecter l'utilisateur
+	 */
+	public void disconnect() {
+		pw.println("deconnexion");
+		pw.println(utilisateur.getIdentifiant());
 	}
 
 	private Utilisateur getUtilisateur(String line) {
@@ -205,7 +215,22 @@ public class Client {
 		} while (i < content.length);
 	}
 
+	/**
+	 * Récupère le client où en crée un nouveau à l'aide d'un socket
+	 * 
+	 * @return le client
+	 */
 	public static Client getClient() {
 		return client == null ? client = TCPCommunication.openClientSocket() : client;
 	}
+
+	/**
+	 * Retourne true si le client est connecté
+	 * 
+	 * @return connected
+	 */
+	public static boolean isConnected() {
+		return connected;
+	}
+
 }

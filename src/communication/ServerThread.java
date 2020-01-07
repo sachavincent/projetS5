@@ -17,7 +17,8 @@ public class ServerThread extends Thread {
 	private PrintWriter pw;
 	private BufferedReader br;
 
-	private boolean connexion = true;
+	private boolean connexion;
+	private boolean deconnexion;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -58,6 +59,9 @@ public class ServerThread extends Thread {
 		case "connexion":
 			connexion = true;
 
+			break;
+		case "deconnexion":
+			deconnexion = true;
 			break;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
@@ -130,9 +134,12 @@ public class ServerThread extends Thread {
 		default:
 			if (connexion) {
 				String[] logins = instruction.split(DELIMITER);
-				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1]));
+				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1])); // Identifiants de l'utilisateurs à connecter donnés
 
 				connexion = false;
+			} else if(deconnexion) {
+				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
+				deconnexion = false;
 			}
 
 			break;

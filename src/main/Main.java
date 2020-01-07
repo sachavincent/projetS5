@@ -2,14 +2,16 @@ package main;
 
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import communication.Client;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import view.FenetreServeur;
 import view.VueConnexion;
 
 /**
@@ -65,6 +67,12 @@ public class Main {
 //		frame.setPreferredSize(new Dimension(500,500));
 //		frame.setLocationRelativeTo(null);
 
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (DBConnection.type == Type.CLIENT && Client.isConnected())
+					Client.getClient().disconnect();
+			}
+		});
 		frame.setContentPane(new VueConnexion());
 		// centrage + affichage
 		frame.pack();
