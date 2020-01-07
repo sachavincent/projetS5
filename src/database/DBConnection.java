@@ -249,7 +249,7 @@ public class DBConnection {
 			try {
 				// UPDATE Association dans la base de données
 				st = this.connection
-						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND WHERE iduser = ?");
+						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND iduser = ?");
 				st.setString(1, EtatMessage.NON_LU.getName());
 				st.setString(2, EtatMessage.EN_ATTENTE.getName());
 				st.setString(3, identifiantU);
