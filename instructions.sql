@@ -19,14 +19,6 @@ CREATE TABLE Utilisateur (
 	connecte	 INT(1) DEFAULT 0
 );
 
-CREATE TABLE Message (
-	idmessage	 INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	contenu 	 VARCHAR(10000) NOT NULL,
-	created_at   DATETIME,
-	iduser		 VARCHAR(100) NOT NULL,
-	idticket	 INT(4) NOT NULL,
-	FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant)
-);
 
 CREATE TABLE Ticket (
 	idticket	 INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -34,10 +26,18 @@ CREATE TABLE Ticket (
 	created_at   DATETIME,
 	iduser		 VARCHAR(100) NOT NULL,
 	idgroupe	 INT(4) NOT NULL,
-	idmessage	 INT(4) NOT NULL,
 	FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant),
-	FOREIGN KEY (idgroupe) REFERENCES `GroupeUtilisateurs` (idgroupe),
-	FOREIGN KEY (idmessage) REFERENCES `Message` (idmessage)
+	FOREIGN KEY (idgroupe) REFERENCES `GroupeUtilisateurs` (idgroupe)
+);
+
+CREATE TABLE Message (
+	idmessage	 INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	contenu 	 VARCHAR(10000) NOT NULL,
+	created_at   DATETIME,
+	iduser		 VARCHAR(100) NOT NULL,
+	idticket	 INT(4) NOT NULL,
+	FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant),
+	FOREIGN KEY (idticket) REFERENCES `Ticket` (idticket)
 );
 
 CREATE TABLE AssociationMessageUtilisateur (
@@ -49,8 +49,8 @@ CREATE TABLE AssociationMessageUtilisateur (
 
 CREATE TABLE AssociationGroupeUtilisateur (
 	idgroupe 	 INT(4) NOT NULL,
-	idmessage	 INT(4) NOT NULL,
-	PRIMARY KEY(idgroupe, idmessage)
+	iduser	     VARCHAR(100) NOT NULL,
+	PRIMARY KEY(idgroupe, iduser)
 );
 ALTER TABLE `AssociationMessageUtilisateur`
   ADD FOREIGN KEY (idmessage) REFERENCES `Message` (idmessage);
@@ -62,4 +62,4 @@ ALTER TABLE `AssociationGroupeUtilisateur`
   ADD FOREIGN KEY (idgroupe) REFERENCES `GroupeUtilisateurs` (idgroupe);
 
 ALTER TABLE `AssociationGroupeUtilisateur`
-  ADD FOREIGN KEY (idmessage) REFERENCES `Message` (idmessage);
+  ADD FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant);

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
@@ -344,20 +345,200 @@ public class DBConnection {
 	 */
 	public boolean creerGroupe(String nom, List<Utilisateur> listeUtilisateurs) {
 		PreparedStatement st = null;
+		ResultSet rs = null;
 		try {
-			// INSERTION dans la base de données
+			// Ajout à la base de données
 			st = this.connection.prepareStatement("INSERT INTO GroupeUtilisateurs (nom) VALUES (?)");
 			st.setString(1, nom);
 
 			st.execute();
 
-			ResultSet rs = st.getGeneratedKeys();
+			rs = st.getGeneratedKeys();
 			rs.next();
 
-			int id = rs.getInt(1);
+			int idgroupe = rs.getInt(1);
 
-			GroupeUtilisateurs groupeUtilisateurs = new GroupeUtilisateurs(id, nom);
+			GroupeUtilisateurs groupeUtilisateurs = new GroupeUtilisateurs(idgroupe, nom);
+			// Ajout à la liste
 			listeGroupes.add(groupeUtilisateurs);
+
+			st.close();
+			rs.close();
+
+			// Retourne true si toutes les insertions ont été effectuées avec succès
+			boolean res = true;
+			for (Utilisateur utilisateur : listeUtilisateurs) {
+				if (!ajouterUtilisateurAGroupe(utilisateur, groupeUtilisateurs) && res)
+					res = false;
+			}
+
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet d'ajouter un utilisateur à un groupe
+	 * 
+	 * @param utilisateur l'utilisateur
+	 * @param groupe      le groupe
+	 * @return true si l'insertion s'est bien déroulée
+	 */
+	public boolean ajouterUtilisateurAGroupe(Utilisateur utilisateur, GroupeUtilisateurs groupe) {
+		PreparedStatement st = null;
+		try {
+			// Ajout à la base de données
+			st = this.connection
+					.prepareStatement("INSERT INTO AssociationGroupeUtilisateur (idgroupe, iduser) VALUES (?, ?)");
+
+			st.setInt(1, groupe.getIdGroupe());
+			st.setString(2, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			// Ajout à la liste
+			listeAGU.add(new AssociationGroupeUtilisateur(groupe, utilisateur));
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet de supprimer un groupe
+	 * 
+	 * @param groupe le groupe à supprimer
+	 * @return true si la suppression a eue lieu
+	 */
+	public boolean supprimerGroupe(GroupeUtilisateurs groupe) {
+		PreparedStatement st = null;
+		try {
+			// Suppression des tickets concernés par ce groupe
+			List<Ticket> lTickets = listeTickets.stream().filter(t -> t.getGroupeDestination().equals(groupe))
+					.collect(Collectors.toList());
+			for (Ticket ticket : lTickets)
+				supprimerTicket(ticket);
+
+
+			// Suppression des associations avec ce groupe
+			for (AssociationGroupeUtilisateur agu : listeAGU) {
+				if (agu.getGroupe().equals(groupe))
+					supprimerUtilisateurDeGroupe(groupe, agu.getUtilisateur());
+			}
+
+			// Suppression dans la base de données
+			st = this.connection.prepareStatement("DELETE FROM GroupeUtilisateurs WHERE idgroupe = ?");
+			st.setInt(1, groupe.getIdGroupe());
+
+			st.execute();
+
+			// Suppression dans la liste
+			listeGroupes.removeIf(g -> g.equals(groupe));
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet de supprimer un utilisateur d'un groupe
+	 * 
+	 * @param utilisateur l'utilisateur
+	 * @param groupe      le groupe
+	 * @return true si la suppression s'est bien déroulée
+	 */
+	public boolean supprimerUtilisateurDeGroupe(GroupeUtilisateurs groupe, Utilisateur utilisateur) {
+		PreparedStatement st = null;
+		try {
+			// Suppressions dans la base de données
+			st = this.connection
+					.prepareStatement("DELETE FROM AssociationGroupeUtilisateur WHERE idgroupe = ? AND iduser = ?");
+			st.setInt(1, groupe.getIdGroupe());
+			st.setString(2, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			// Suppressions dans la liste
+			listeAGU.removeIf(agu -> agu.getGroupe().equals(groupe) && agu.getUtilisateur().equals(utilisateur));
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet de supprimer un ticket
+	 * 
+	 * @param ticket le ticket à supprimer
+	 * @return si la suppression a bien été effectuée
+	 */
+	public boolean supprimerTicket(Ticket ticket) {
+		PreparedStatement st = null;
+		try {
+			// Suppression des messages liés au ticket
+			st = this.connection.prepareStatement("DELETE FROM Message WHERE idticket = ?");
+			st.setInt(1, ticket.getIdTicket());
+
+			st.execute();
+
+			st.close();
+
+			// Suppression dans la base de données
+			st = this.connection.prepareStatement("DELETE FROM Ticket WHERE idticket = ?");
+			st.setInt(1, ticket.getIdTicket());
+
+			st.execute();
+
+			st.close();
+
+			// Suppression dans la liste
+			listeTickets.removeIf(t -> t.equals(ticket));
 
 			return true;
 		} catch (SQLException e) {

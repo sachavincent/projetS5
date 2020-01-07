@@ -153,14 +153,7 @@ public class Utilisateur extends Observable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (connecte ? 1231 : 1237);
 		result = prime * result + ((identifiant == null) ? 0 : identifiant.hashCode());
-		result = prime * result + ((listeMessages == null) ? 0 : listeMessages.hashCode());
-		result = prime * result + ((listeTickets == null) ? 0 : listeTickets.hashCode());
-		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 
 		return result;
 	}
@@ -179,41 +172,8 @@ public class Utilisateur extends Observable {
 		if (getClass() != obj.getClass())
 			return false;
 		Utilisateur other = (Utilisateur) obj;
-		if (connecte != other.connecte)
-			return false;
-		if (identifiant == null) {
-			if (other.identifiant != null)
-				return false;
-		} else if (!identifiant.equals(other.identifiant))
-			return false;
-		if (listeMessages == null) {
-			if (other.listeMessages != null)
-				return false;
-		} else if (!listeMessages.equals(other.listeMessages))
-			return false;
-		if (listeTickets == null) {
-			if (other.listeTickets != null)
-				return false;
-		} else if (!listeTickets.equals(other.listeTickets))
-			return false;
-		if (nom == null) {
-			if (other.nom != null)
-				return false;
-		} else if (!nom.equals(other.nom))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (prenom == null) {
-			if (other.prenom != null)
-				return false;
-		} else if (!prenom.equals(other.prenom))
-			return false;
-		if (type != other.type)
-			return false;
-		return true;
+		
+		return identifiant.equalsIgnoreCase(other.getIdentifiant());
 	}
 
 	@Override

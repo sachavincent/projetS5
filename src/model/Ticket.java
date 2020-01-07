@@ -26,7 +26,6 @@ public class Ticket extends Observable {
 	// Liste des messages de ce ticket
 	private Set<Message> listeMessages = new HashSet<>();
 
-	
 	public Ticket(int idTicket, String titre, Date dateCreation, GroupeUtilisateurs groupeDestination) {
 		this.idTicket = idTicket;
 		this.titre = titre;
@@ -76,16 +75,12 @@ public class Ticket extends Observable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((dateCreation == null) ? 0 : dateCreation.hashCode());
 		result = prime * result + idTicket;
-		result = prime * result + ((listeMessages == null) ? 0 : listeMessages.hashCode());
-		result = prime * result + ((titre == null) ? 0 : titre.hashCode());
 		return result;
 	}
 
 	/**
-	 * @param obj
-	 *            objet à comparer
+	 * @param obj objet à comparer
 	 * 
 	 * @return true si les deux objets sont similaires
 	 */
@@ -98,24 +93,7 @@ public class Ticket extends Observable {
 		if (getClass() != obj.getClass())
 			return false;
 		Ticket other = (Ticket) obj;
-		if (dateCreation == null) {
-			if (other.dateCreation != null)
-				return false;
-		} else if (!dateCreation.equals(other.dateCreation))
-			return false;
-		if (idTicket != other.idTicket)
-			return false;
-		if (listeMessages == null) {
-			if (other.listeMessages != null)
-				return false;
-		} else if (!listeMessages.equals(other.listeMessages))
-			return false;
-		if (titre == null) {
-			if (other.titre != null)
-				return false;
-		} else if (!titre.equals(other.titre))
-			return false;
-		return true;
+		return other.getIdTicket() == idTicket;
 	}
 
 	@Override

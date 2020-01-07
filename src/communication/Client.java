@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 
-import database.DBConnection;
-import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.GroupeUtilisateurs;
 import model.Message;

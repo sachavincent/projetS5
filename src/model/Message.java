@@ -56,8 +56,6 @@ public class Message extends Observable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((contenu == null) ? 0 : contenu.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + idMessage;
 		return result;
 	}
@@ -76,19 +74,8 @@ public class Message extends Observable {
 		if (getClass() != obj.getClass())
 			return false;
 		Message other = (Message) obj;
-		if (contenu == null) {
-			if (other.contenu != null)
-				return false;
-		} else if (!contenu.equals(other.contenu))
-			return false;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
-		if (idMessage != other.idMessage)
-			return false;
-		return true;
+		
+		return idMessage == other.idMessage;
 	}
 
 	@Override
