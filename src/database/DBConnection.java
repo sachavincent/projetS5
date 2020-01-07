@@ -223,22 +223,19 @@ public class DBConnection {
 			utilisateur.setConnecte(true);
 
 			PreparedStatement st = null;
-			ResultSet rs = null;
 			try {
 				// UPDATE dans la base de données
 				st = this.connection.prepareStatement("UPDATE Utilisateur SET connecte = ?");
 				st.setInt(1, 1);
-				rs = st.executeQuery();
 
-				rs.next();
+				if (!st.execute()) // UPDATE interrompu
+					return false;
 			} catch (SQLException e) {
 				e.printStackTrace();
 
 				return false;
 			} finally {
 				try {
-					if (rs != null)
-						rs.close();
 					if (st != null)
 						st.close();
 				} catch (SQLException e) {
@@ -256,17 +253,14 @@ public class DBConnection {
 				st.setString(1, EtatMessage.NON_LU.getName());
 				st.setString(2, EtatMessage.EN_ATTENTE.getName());
 
-				rs = st.executeQuery();
-
-				rs.next();
+				if (!st.execute()) // UPDATE interrompu
+					return false;
 			} catch (SQLException e) {
 				e.printStackTrace();
 
 				return false;
 			} finally {
 				try {
-					if (rs != null)
-						rs.close();
 					if (st != null)
 						st.close();
 				} catch (SQLException e) {

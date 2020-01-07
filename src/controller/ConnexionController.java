@@ -7,7 +7,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import communication.Client;
-import communication.TCPCommunication;
 
 public class ConnexionController implements ActionListener {
 
@@ -26,6 +25,7 @@ public class ConnexionController implements ActionListener {
 		if (identifiant.isEmpty() || password.isEmpty())
 			return;
 
+		System.out.println("Click");
 		// TODO Encryption
 
 		Client client = Client.getClient();

@@ -6,9 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import database.DBConnection;
 import model.AssociationMessageUtilisateur;
@@ -29,8 +26,6 @@ public class Client {
 	public Client(PrintWriter pw, BufferedReader br) {
 		this.pw = pw;
 		this.br = br;
-
-		client = this;
 	}
 
 	/**
@@ -44,19 +39,17 @@ public class Client {
 		pw.println("connexion");
 		pw.println(identifiant + DELIMITER + password);
 
-		StringBuilder stringBuilder = new StringBuilder();
-
 		try {
 			while (!br.ready()) {
 			}
 			String message = br.readLine();
 
-			stringBuilder.append(message).append("\n");
-
+			return Boolean.parseBoolean(message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Boolean.parseBoolean(stringBuilder.toString());
+		
+		return false;
 	}
 
 	private Utilisateur getUtilisateur(String line) {

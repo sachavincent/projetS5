@@ -51,13 +51,13 @@ public class ServerThread extends Thread {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
-		System.out.println(instruction);
+		System.out.println("Instruction reçue: " + instruction);
 //		pw.println("Message received: " + instruction);
 
 		switch (instruction) {
 		case "connexion":
 			connexion = true;
-			
+
 			break;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
@@ -129,7 +129,6 @@ public class ServerThread extends Thread {
 
 		default:
 			if (connexion) {
-				System.out.println(instruction);
 				String[] logins = instruction.split(DELIMITER);
 				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1]));
 
