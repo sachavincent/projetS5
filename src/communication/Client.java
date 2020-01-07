@@ -49,6 +49,7 @@ public class Client {
 			while (!br.ready()) {
 			}
 			Client.setUtilisateur(getUtilisateur(br.readLine()));
+			Client.getUtilisateur().setConnecte(true);
 			return Boolean.parseBoolean(message);
 		} catch (IOException e) {
 			e.printStackTrace();

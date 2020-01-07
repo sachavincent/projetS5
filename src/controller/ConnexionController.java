@@ -32,8 +32,8 @@ public class ConnexionController implements ActionListener {
 		if (client != null) {
 			boolean res = client.connect(identifiant, password);
 			System.out.println("Res: " + res);
-			if(res)
-				Client.getUtilisateur().setConnecte(true);
+//			if(res)
+//				Client.getUtilisateur().setConnecte(true);
 		}
 	}
 
