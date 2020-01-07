@@ -66,17 +66,21 @@ public class Utilisateur extends Observable {
 	}
 
 	/**
+	 * Permet de vérifier si le mot de passe donné est le même que celui de
+	 * l'utilisateur
+	 * 
+	 * @param password mot de passe à vérifier
+	 * @return true si les deux mots de passe sont similaires
+	 */
+	public boolean memeMotDePasse(String password) {
+		return this.password.equalsIgnoreCase(password);
+	}
+
+	/**
 	 * @return l'identifiant de l'utilisateur
 	 */
 	public String getIdentifiant() {
 		return identifiant;
-	}
-
-	/**
-	 * @return le mot de passe de l'utilisateur
-	 */
-	public String getPassword() {
-		return password;
 	}
 
 	/**

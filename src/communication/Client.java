@@ -6,9 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import database.DBConnection;
 import model.AssociationMessageUtilisateur;
@@ -17,8 +14,11 @@ import model.Message;
 import model.Ticket;
 import model.Utilisateur;
 
-
 public class Client {
+
+	private static Client client;
+
+	private static Utilisateur utilisateur;
 
 	private PrintWriter pw;
 	private BufferedReader br;
@@ -28,26 +28,50 @@ public class Client {
 		this.br = br;
 	}
 
-	public void connect() {
+	/**
+	 * Connecter un utilisateur
+	 * 
+	 * @param identifiant
+	 * @param password
+	 * @return
+	 */
+	public boolean connect(String identifiant, String password) {
 		pw.println("connexion");
+		pw.println(identifiant + DELIMITER + password);
 
-		StringBuilder stringBuilder = new StringBuilder();
-
-		ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
-		executor.scheduleAtFixedRate(() -> {
-			try {
-				if (br.ready()) {
-					String message = br.readLine();
-
-					stringBuilder.append(message).append("\n");
-				} else if (!stringBuilder.toString().isEmpty()) {
-					format(stringBuilder.toString());
-					executor.shutdown();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			// Attente du booléen de confirmation
+			while (!br.ready()) {
 			}
-		}, 0, 333, TimeUnit.MILLISECONDS);
+			String message = br.readLine();
+
+			// Attente de l'utilisateur
+			while (!br.ready()) {
+			}
+			Client.setUtilisateur(getUtilisateur(br.readLine()));
+			Client.getUtilisateur().setConnecte(true);
+			return Boolean.parseBoolean(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Déconnecter l'utilisateur
+	 */
+	public void disconnect() {
+		pw.println("deconnexion");
+		pw.println(utilisateur.getIdentifiant());
+	}
+
+	public static void setUtilisateur(Utilisateur utilisateur) {
+		Client.utilisateur = utilisateur;
+	}
+
+	public static Utilisateur getUtilisateur() {
+		return utilisateur;
 	}
 
 	private Utilisateur getUtilisateur(String line) {
@@ -99,7 +123,7 @@ public class Client {
 	}
 
 	private void format(String s) {
-		String[] content = s.split("\n\0");
+		String[] content = s.split("\t\0\0\t");
 		int nombre = 0;
 
 		int i = 0;
@@ -202,4 +226,14 @@ public class Client {
 			i++;
 		} while (i < content.length);
 	}
+
+	/**
+	 * Récupère le client où en crée un nouveau à l'aide d'un socket
+	 * 
+	 * @return le client
+	 */
+	public static Client getClient() {
+		return client == null ? client = TCPCommunication.openClientSocket() : client;
+	}
+
 }

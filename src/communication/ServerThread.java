@@ -8,14 +8,18 @@ import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+import static main.Main.*;
 import database.DBConnection;
+import model.Utilisateur;
 
 public class ServerThread extends Thread {
 
 	private Socket socket;
 	private PrintWriter pw;
 	private BufferedReader br;
+
+	private boolean connexion;
+	private boolean deconnexion;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -49,87 +53,112 @@ public class ServerThread extends Thread {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
-		System.out.println(instruction);
+		System.out.println("Instruction reçue: " + instruction);
 //		pw.println("Message received: " + instruction);
 
 		switch (instruction) {
-		case "connexion": // Connexion de l'utilisateur, récupération des données du serveur
+		case "connexion":
+			connexion = true;
+
+			break;
+		case "deconnexion":
+			deconnexion = true;
+			break;
+		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 			stringBuilder.append("Utilisateurs:");
-			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeUtilisateurs().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tMessages:");
-				stringBuilder.append(o.getMessages().size() + "\n\0");
+				stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
 				o.getMessages().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
 
 				stringBuilder.append("\t\tTickets:");
-				stringBuilder.append(o.getTickets().size() + "\n\0");
+				stringBuilder.append(o.getTickets().size() + "\t\0\0\t");
 				o.getTickets().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Groupes:");
-			stringBuilder.append(DBConnection.getInstance().getListeGroupes().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeGroupes().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeGroupes().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tUtilisateurs:");
-				stringBuilder.append(o.getUtilisateurs().size() + "\n\0");
+				stringBuilder.append(o.getUtilisateurs().size() + "\t\0\0\t");
 				o.getUtilisateurs().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Tickets:");
-			stringBuilder.append(DBConnection.getInstance().getListeTickets().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeTickets().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeTickets().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
 
 				stringBuilder.append("\t\tMessages:");
-				stringBuilder.append(o.getMessages().size() + "\n\0");
+				stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
 				o.getMessages().forEach(m -> {
 					stringBuilder.append("\t\t");
 					appendLn(stringBuilder, m.toString());
 				});
-				stringBuilder.append("\n\0");
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("Messages:");
-			stringBuilder.append(DBConnection.getInstance().getListeMessages().size() + "\n\0");
+			stringBuilder.append(DBConnection.getInstance().getListeMessages().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeMessages().forEach(o -> {
 				appendLn(stringBuilder, o.toString());
-				
-				stringBuilder.append("\n\0");
+
+				stringBuilder.append("\t\0\0\t");
 			});
 
 			stringBuilder.append("AMU:");
-			stringBuilder.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\n\0");
+			stringBuilder
+					.append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size() + "\t\0\0\t");
 			DBConnection.getInstance().getListeAssociationsMessageUtilisateur()
 					.forEach(o -> appendLn(stringBuilder, o.toString()));
 
 			System.out.println(stringBuilder.toString());
+			pw.println(stringBuilder.toString());
 			break;
 
 		default:
+			if (connexion) {
+				String[] logins = instruction.split(DELIMITER);
+				boolean res = DBConnection.getInstance().connecter(logins[0], logins[1]);
+				pw.println(res); // Identifiants de l'utilisateurs à connecter donnés
+
+				if (res) { // Connexion réussie
+					// Envoi des données
+					Utilisateur u = DBConnection.getInstance().getListeUtilisateurs().stream()
+							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(logins[0])).findFirst().orElse(null);
+					pw.println(u.toString()); // Envoi de l'utilisateur
+					//TODO: Envoyer tout ce qui le concerne
+				}
+				connexion = false;
+			} else if (deconnexion) {
+				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
+				deconnexion = false;
+			}
+
 			break;
 		}
-//		pw.println(DBConnection.getInstance().getListeUtilisateurs().get(0));
-		pw.println(stringBuilder.toString());
 	}
 
 	private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
 		stringBuilder.append("\t");
 		stringBuilder.append(m);
-		stringBuilder.append("\n\0");
+		stringBuilder.append("\t\0\0\t");
 
 		return stringBuilder;
 	}

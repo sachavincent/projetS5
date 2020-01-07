@@ -12,6 +12,7 @@ public class main {
 //		new AjoutGroupe();
 		//new ModificationUtilisateur();
 		//new ModificationGroupe();
+
 		//new Connexion();
 		// Frame
 		JFrame frame = new JFrame("NeOCampus");
@@ -27,6 +28,9 @@ public class main {
 		frame.setContentPane(new FenetreServeur());
 		frame.pack();
 		frame.setVisible(true);
+
+		//new VueConnexion();
+
 	}
 
 }
