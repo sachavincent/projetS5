@@ -13,56 +13,49 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Connexion extends JFrame implements Observer {
-	private JTextField id ;
-	private JPasswordField mdp;
-	private JFrame frame;
-	private JPanel panel;
-	private JLabel identifiant;
-	private JLabel motDePasse;
-	private JButton connexion;
+	private JTextField id = new JTextField(30);;
+	private JPasswordField mdp = new JPasswordField(30);;
+	private JLabel identifiant = new JLabel("Identifiant");;
+	private JLabel motDePasse = new JLabel("Mot de passe");;
+	private JButton connexion = new JButton("Connexion");;
+	private JPanel[] panel = new JPanel[7];
 	
 	public Connexion() {
-		//frame
-		frame = new JFrame ("Connexion");
+		
+		//init
+		for(int i = 0; i< 7; i++)
+			panel[i] = new JPanel();
+		
+		//layout
+		panel[0].setLayout(new GridLayout(2,1));
+		panel[1].setLayout(new FlowLayout());
+		panel[2].setLayout(new FlowLayout());
+		panel[3].setLayout(new FlowLayout());
+		panel[4].setLayout(new FlowLayout());
+		panel[5].setLayout(new BorderLayout());
+		panel[6].setLayout(new BorderLayout());
+		//ajout
+		panel[1].add(identifiant);
+		panel[1].add(id);
+		panel[2].add(motDePasse);
+		panel[2].add(mdp);
+		panel[0].add(panel[1]);
+		panel[0].add(panel[2]);
+		panel[3].add(panel[0]);
+		panel[4].add(connexion);
+		
+		panel[5].add(panel[3],BorderLayout.NORTH);
+		panel[5].add(panel[4],BorderLayout.SOUTH);
+		
+		panel[6].add(panel[5],BorderLayout.NORTH);
+
+		
+		//affichage
+		JFrame frame = new JFrame ("Connexion");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 600);
 		frame.setLocationRelativeTo(null);
-		//Panel
-		panel = new JPanel();
-		JPanel p1 = new JPanel();
-		JPanel p2 = new JPanel();
-		//label
-		identifiant = new JLabel("Identifiant");
-		motDePasse = new JLabel("Mot de passe");
-		//layout
-		panel.setLayout(new GridLayout(2,1));
-		JPanel top = new JPanel();
-		top.setLayout(new FlowLayout());
-		JPanel bot = new JPanel();
-		bot.setLayout(new FlowLayout());
-		//texteField
-		id = new JTextField(30);
-		mdp = new JPasswordField(30);
-		//bouton
-		connexion = new JButton("Connexion");
-		//ajout
-		top.add(identifiant);
-		top.add(id);
-		bot.add(motDePasse);
-		bot.add(mdp);
-		panel.add(top);
-		panel.add(bot);
-		p1.add(panel);
-		p2.add(connexion);
-		JPanel p = new JPanel();
-		p.setLayout(new BorderLayout());
-		p.add(p1,BorderLayout.NORTH);
-		p.add(p2,BorderLayout.SOUTH);
-		JPanel pf = new JPanel();
-		pf.setLayout(new BorderLayout());
-		pf.add(p,BorderLayout.NORTH);
-		//centrage + affichage
-		frame.add(pf);
+		frame.add(panel[6]);
 		frame.pack();
 		frame.setVisible(true);
 		
