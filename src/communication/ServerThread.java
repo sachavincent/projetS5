@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import static main.Main.*;
 import database.DBConnection;
+import model.Utilisateur;
 
 public class ServerThread extends Thread {
 
@@ -134,10 +135,18 @@ public class ServerThread extends Thread {
 		default:
 			if (connexion) {
 				String[] logins = instruction.split(DELIMITER);
-				pw.println(DBConnection.getInstance().connecter(logins[0], logins[1])); // Identifiants de l'utilisateurs à connecter donnés
+				boolean res = DBConnection.getInstance().connecter(logins[0], logins[1]);
+				pw.println(res); // Identifiants de l'utilisateurs à connecter donnés
 
+				if (res) { // Connexion réussie
+					// Envoi des données
+					Utilisateur u = DBConnection.getInstance().getListeUtilisateurs().stream()
+							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(logins[0])).findFirst().orElse(null);
+					pw.println(u.toString()); // Envoi de l'utilisateur
+					//TODO: Envoyer tout ce qui le concerne
+				}
 				connexion = false;
-			} else if(deconnexion) {
+			} else if (deconnexion) {
 				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
 				deconnexion = false;
 			}

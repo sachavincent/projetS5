@@ -1,6 +1,5 @@
 package database;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,15 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Stream;
 
-import communication.Client;
-import communication.TCPCommunication;
 import model.AssociationMessageUtilisateur;
+import model.AssociationMessageUtilisateur.EtatMessage;
 import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
 import model.Utilisateur;
-import model.AssociationMessageUtilisateur.EtatMessage;
 
 public class DBConnection {
 
@@ -230,6 +229,21 @@ public class DBConnection {
 				st.setString(2, identifiantU);
 
 				st.execute();
+
+				// Mise à jour des listes
+				Utilisateur u = listeUtilisateurs.stream()
+						.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(identifiantU)).findFirst().orElse(null);
+				if (u != null)
+					u.setConnecte(true);
+
+				// Mise à jour des listes
+				for (GroupeUtilisateurs groupe : listeGroupes) {
+					for (Utilisateur uti : groupe.getUtilisateurs()) {
+						if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
+							uti.setConnecte(true);
+					}
+				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 
@@ -248,13 +262,19 @@ public class DBConnection {
 			// Utilisateur connecté dans la base de données
 			try {
 				// UPDATE Association dans la base de données
-				st = this.connection
-						.prepareStatement("UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND iduser = ?");
+				st = this.connection.prepareStatement(
+						"UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND iduser = ?");
 				st.setString(1, EtatMessage.NON_LU.getName());
 				st.setString(2, EtatMessage.EN_ATTENTE.getName());
 				st.setString(3, identifiantU);
 
 				st.execute();
+
+				// Mise à jour des listes
+				listeAMU.stream()
+						.filter(amu -> amu.getUtilisateur().getIdentifiant().equalsIgnoreCase(identifiantU)
+								&& amu.getEtat() == EtatMessage.EN_ATTENTE)
+						.forEach(amu -> amu.setEtat(EtatMessage.NON_LU));
 			} catch (SQLException e) {
 				e.printStackTrace();
 
@@ -288,6 +308,21 @@ public class DBConnection {
 			st.setString(2, identifiantU);
 
 			st.execute();
+
+			// Mise à jour des listes
+			Utilisateur u = listeUtilisateurs.stream().filter(ut -> ut.getIdentifiant().equalsIgnoreCase(identifiantU))
+					.findFirst().orElse(null);
+			if (u != null)
+				u.setConnecte(false);
+
+			// Mise à jour des listes
+			for (GroupeUtilisateurs groupe : listeGroupes) {
+				for (Utilisateur uti : groupe.getUtilisateurs()) {
+					if (uti.getIdentifiant().equalsIgnoreCase(identifiantU))
+						uti.setConnecte(false);
+				}
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

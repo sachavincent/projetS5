@@ -38,6 +38,34 @@ public class AssociationMessageUtilisateur extends Observable {
 		}
 	}
 
+	/**
+	 * @return le message
+	 */
+	public Message getMessage() {
+		return message;
+	}
+
+	/**
+	 * @return l'utilisateur
+	 */
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	/**
+	 * @return l'état
+	 */
+	public EtatMessage getEtat() {
+		return etat;
+	}
+
+	/**
+	 * @param l'état du message
+	 */
+	public void setEtat(EtatMessage etat) {
+		this.etat = etat;
+	}
+
 	public AssociationMessageUtilisateur(Message message, Utilisateur utilisateur, String etat) {
 		this.message = message;
 		this.utilisateur = utilisateur;

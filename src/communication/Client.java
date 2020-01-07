@@ -17,7 +17,6 @@ import model.Utilisateur;
 public class Client {
 
 	private static Client client;
-	private static boolean connected;
 
 	private static Utilisateur utilisateur;
 
@@ -41,10 +40,15 @@ public class Client {
 		pw.println(identifiant + DELIMITER + password);
 
 		try {
+			// Attente du booléen de confirmation
 			while (!br.ready()) {
 			}
 			String message = br.readLine();
 
+			// Attente de l'utilisateur
+			while (!br.ready()) {
+			}
+			Client.setUtilisateur(getUtilisateur(br.readLine()));
 			return Boolean.parseBoolean(message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,7 +56,6 @@ public class Client {
 
 		return false;
 	}
-	
 
 	/**
 	 * Déconnecter l'utilisateur
@@ -62,9 +65,14 @@ public class Client {
 		pw.println(utilisateur.getIdentifiant());
 	}
 
+	public static void setUtilisateur(Utilisateur utilisateur) {
+		Client.utilisateur = utilisateur;
+	}
+
 	public static Utilisateur getUtilisateur() {
 		return utilisateur;
 	}
+
 	private Utilisateur getUtilisateur(String line) {
 		String[] parametres = line.split(DELIMITER);
 		String identifiant = parametres[0];
@@ -227,6 +235,4 @@ public class Client {
 		return client == null ? client = TCPCommunication.openClientSocket() : client;
 	}
 
-	
-	
 }
