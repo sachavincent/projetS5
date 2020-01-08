@@ -35,8 +35,7 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 		for (int i = 0; i < 5; i++) {
 			panel[i] = new JPanel();
 		}
-		Font f = titrePanel.getFont();
-		titrePanel.setFont(f.deriveFont(f.getStyle() | Font.ITALIC));
+		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
 		
 		ok.setPreferredSize(new Dimension(200, 50));
@@ -63,7 +62,7 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 		panel[3].add(panel[0], BorderLayout.NORTH);
 
 		add(panel[3], BorderLayout.NORTH);
-
+		
 
 	}
 

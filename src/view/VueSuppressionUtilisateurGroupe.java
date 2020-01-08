@@ -23,11 +23,12 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 	private JLabel listeGLabel = new JLabel("Liste des groupes");
 	private JLabel listeULabel = new JLabel("Liste des utilisateurs");
+	private JLabel titrePanel = new JLabel("Suppression d'un Utilisateur d'un groupe");
 
 	private JComboBox<String> groupesComboBox;
 	private JComboBox<String> utilisateursComboBox;
 
-	private JPanel[] panels = new JPanel[5];
+	private JPanel[] panels = new JPanel[6];
 
 	private Dimension dimension = new Dimension(300, 50);
 
@@ -41,7 +42,7 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		utilisateursComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getNom()).toArray(String[]::new));
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 			panels[i] = new JPanel();
 
 		// taille
@@ -63,21 +64,22 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 			panels[1].setLayout(new FlowLayout());
 
 		panels[4].setLayout(new BorderLayout());
-
+		panels[5].setLayout(new FlowLayout());
 		// ajout
+		panels[5].add(titrePanel);
 		panels[1].add(listeULabel);
 		panels[1].add(utilisateursComboBox);
 		panels[2].add(listeGLabel);
 		panels[2].add(groupesComboBox);
 		panels[3].add(okButton);
 		panels[3].add(annulerButton);
+		//panels[0].add(panels[5]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
 		panels[4].add(panels[0], BorderLayout.NORTH);
 
 		add(panels[4], BorderLayout.NORTH);
-		
 	}
 
 	@Override
