@@ -52,7 +52,7 @@ public class Main {
 					public void run() {
 						TCPCommunication.openServerSocket();
 					}
-				});
+				}).start();
 
 				break;
 			case 1: // Client

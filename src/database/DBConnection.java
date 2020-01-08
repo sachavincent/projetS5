@@ -63,7 +63,7 @@ public class DBConnection {
 	 * Permet de créer les objets models à partir de la base de données
 	 */
 	private void populate() {
-		// TODO
+		// TODO Mettre tout le monde en déconnecté
 		System.out.println("Populating database...");
 		PreparedStatement st = null;
 		PreparedStatement st2 = null;
@@ -568,7 +568,6 @@ public class DBConnection {
 				e.printStackTrace();
 			}
 		}
-
 		return false;
 	}
 

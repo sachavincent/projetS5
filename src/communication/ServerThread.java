@@ -212,6 +212,11 @@ public class ServerThread extends Thread {
 
 							pw.println(DELIMITER + DELIMITER);
 						});
+						
+						// Aucun ticket, rien n'a été envoyé
+						if(listeTickets.isEmpty()) {
+							//TODO
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
