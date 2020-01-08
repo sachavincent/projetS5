@@ -96,7 +96,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 			new AjoutUtilisateurGroupe();
 		}
 		if (event.getSource() == buttons[7]) {
-			new SuppressionUtilisateurGroupe();
+			new VueSuppressionUtilisateurGroupe();
 		}
 	}
 }
