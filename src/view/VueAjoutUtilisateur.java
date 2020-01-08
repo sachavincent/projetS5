@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.AjoutUtilisateurController;
+
 //Interface permettant de créer un nouvel utilisateur.
 public class VueAjoutUtilisateur extends JPanel implements Observer {
 	private String[] tu = {"ETUDIANT","ENSEIGANT","SECRETAIRE PEDAGOGIQUE", "SERVICES ADMINISTRATIF","SERVICE TECNIQUES"};
@@ -37,6 +39,9 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		for (int i=0; i<8;i++) {
 			panel[i] = new JPanel();
 		}
+		AjoutUtilisateurController ajoutUtilisateurController = new AjoutUtilisateurController(identifiant, password, nom, prenom);
+		
+		typeUtilisateur.addActionListener(ajoutUtilisateurController);
 		//panel
 		panel[0].setLayout(new GridLayout(3,1));
 		panel[1].setLayout(new FlowLayout());
