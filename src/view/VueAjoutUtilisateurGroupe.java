@@ -22,10 +22,11 @@ public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
 	private JLabel listeU = new JLabel("liste des utilisateurs");
 	private JComboBox<String> ListeGroupe;
 	private JComboBox<String> listeUtilisateur;
-	private JPanel[] panel = new JPanel[5];
+	private JPanel[] panel = new JPanel[6];
 
 	public VueAjoutUtilisateurGroupe() {
 		// init
+		nomPanel.setFont(nomPanel.getFont().deriveFont(15f));
 		ok.setPreferredSize(new Dimension(300, 50));
 		annuler.setPreferredSize(new Dimension(300, 50));
 
@@ -36,7 +37,7 @@ public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
 
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 			panel[i] = new JPanel();
 		// actionListener
 		AjoutUtilisateurGroupeController ajoutUtilisateurGroupeController = new AjoutUtilisateurGroupeController();
@@ -52,17 +53,21 @@ public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
 		panel[4].setLayout(new BorderLayout());
 
 		// ajout
+		panel[5].add(nomPanel);
+		panel[1].add(listeU);
 		panel[1].add(listeUtilisateur);
+		panel[2].add(listeGrp);
 		panel[2].add(ListeGroupe);
 		panel[3].add(ok);
-		// panel[3].add(annuler);
+		panel[3].add(annuler);
+		//panel[0].add(panel[5]);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
-		
 		add(panel[4],BorderLayout.NORTH);
-
+		
+		
 	}
 
 	@Override

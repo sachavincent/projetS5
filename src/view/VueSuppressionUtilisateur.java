@@ -63,6 +63,7 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 
 		add(panel[3], BorderLayout.NORTH);
 		
+		
 
 	}
 

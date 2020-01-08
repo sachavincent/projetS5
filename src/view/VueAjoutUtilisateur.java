@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -75,7 +76,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		panels[5].add(labels[4]);
 		panels[5].add(typeUtilisateurComboBox);
 
-		for (int i = 0; i < 6; i++)
+		for (int i = 1; i < 6; i++)
 			panels[0].add(panels[i]);
 
 		panels[7].add(panels[0]);
@@ -87,6 +88,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		panels[6].add(panels[8], BorderLayout.SOUTH);
 
 		add(panels[6], BorderLayout.NORTH);
+		
 		
 	}
 
