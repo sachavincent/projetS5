@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 // Interface Serveur avec toutes les options auquel il a accés 
 
-public class FenetreServeur extends JPanel implements ActionListener {
+public class VueFenetreServeur extends JPanel implements ActionListener {
 
 	private String[] nomsButtons = new String[] { "Ajouter un utilisateur", "Modifier un utilisateur",
 			"Supprimer un utilisateur", "Ajouter un groupe", "Modifier un groupe", "Supprimer un groupe",
@@ -26,7 +26,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 
 	private Dimension buttonsDimension = new Dimension(300, 50);
 
-	public FenetreServeur() {
+	public VueFenetreServeur() {
 		JPanel panel = new JPanel();
 		// paramétrage du layout
 		GridLayout g = new GridLayout(3, 2);
