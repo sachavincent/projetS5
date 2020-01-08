@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
-
 import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
@@ -957,6 +955,43 @@ public class DBConnection {
 			ticket.getMessages().add(message);
 			utilisateur.getMessages().add(message);
 
+			// Pour tous les utilisateurs faisant partie des groupes
+			listeAGU.stream().filter(agu -> agu.getGroupe().equals(ticket.getGroupeDestination()))
+					.map(agu -> agu.getUtilisateur()).forEach(u -> {
+						PreparedStatement st2 = null;
+						try {
+							// Insertion dans la base de données
+							st2 = this.connection.prepareStatement(
+									"INSERT INTO AssociationMessageUtilisateur (idmessage, iduser, etat) VALUES (?, ?, ?)");
+
+							EtatMessage etatMessage = EtatMessage.EN_ATTENTE;
+
+							if (u.equals(utilisateur))
+								etatMessage = EtatMessage.LU;
+							else if (u.isConnecte())
+								etatMessage = EtatMessage.NON_LU;
+
+							st2.setInt(1, message.getIdMessage());
+							st2.setString(2, u.getIdentifiant());
+							st2.setString(3, etatMessage.toString());
+
+							st2.execute();
+
+							st2.close();
+
+							listeAMU.add(new AssociationMessageUtilisateur(message, u, etatMessage));
+						} catch (SQLException e) {
+							e.printStackTrace();
+						} finally {
+							try {
+								if (st2 != null)
+									st2.close();
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+
 			return message;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -972,6 +1007,55 @@ public class DBConnection {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Permet de changer l'état d'un message dans la base de données
+	 * 
+	 * @param message     le message à changer
+	 * @param utilisateur l'utilisateur auteur du message
+	 * @param etat        le nouvel état du message
+	 * 
+	 * @return true si le changement a réussi
+	 */
+	public boolean changerEtatMessage(Message message, Utilisateur utilisateur, EtatMessage etat) {
+		AssociationMessageUtilisateur asso = listeAMU.stream()
+				.filter(amu -> amu.getMessage().equals(message) && amu.getUtilisateur().equals(utilisateur)).findAny()
+				.orElse(null);
+
+		if (asso == null)
+			return false;
+
+		// Etat changé
+		asso.setEtat(etat);
+
+		PreparedStatement st = null;
+
+		try {
+			// Update dans la base de données
+			st = this.connection.prepareStatement(
+					"UPDATE AssociationMessageUtilisateur SET etat = ? WHERE idmessage = ? AND iduser = ?");
+			st.setString(1, etat.toString().replace('_', ' '));
+			st.setInt(2, message.getIdMessage());
+			st.setString(3, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import database.DBConnection;
+import model.AssociationMessageUtilisateur.EtatMessage;
+import model.Message;
 import model.Ticket;
 import model.Utilisateur;
 
@@ -21,13 +25,13 @@ public class ServerThread extends Thread {
 	private PrintWriter pw;
 	private BufferedReader br;
 
-	private boolean connexion;
-	private boolean deconnexion;
-	private boolean creationTicket;
+	private Requete requeteActuelle;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
 		System.out.println("new thread");
+
+		requeteActuelle = Requete.NONE;
 	}
 
 	@Override
@@ -48,6 +52,8 @@ public class ServerThread extends Thread {
 			e.printStackTrace();
 
 			closeServerSocket();
+
+			this.interrupt();
 		}
 	}
 
@@ -62,14 +68,16 @@ public class ServerThread extends Thread {
 
 		switch (instruction) {
 		case "connexion":
-			connexion = true;
-
+			requeteActuelle = Requete.CONNEXION;
 			break;
 		case "deconnexion":
-			deconnexion = true;
+			requeteActuelle = Requete.DECONNEXION;
 			break;
 		case "creerTicket":
-			creationTicket = true;
+			requeteActuelle = Requete.CREATION_TICKET;
+			break;
+		case "envoyerMessage":
+			requeteActuelle = Requete.ENVOI_MESSAGE;
 			break;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 //			stringBuilder.append("Utilisateurs:");
@@ -140,45 +148,136 @@ public class ServerThread extends Thread {
 			break;
 
 		default:
-			if (connexion) {
-				String[] logins = instruction.split(DELIMITER);
-				boolean res = DBConnection.getInstance().connecter(logins[0], logins[1]);
+			String[] split = instruction.split(DELIMITER);
+			switch (requeteActuelle) {
+			case CONNEXION:
+				boolean res = DBConnection.getInstance().connecter(split[0], split[1]);
 				pw.println(res); // Identifiants de l'utilisateurs à connecter donnés
 
 				if (res) { // Connexion réussie
 					// Envoi des données
 					Utilisateur u = DBConnection.getInstance().getListeUtilisateurs().stream()
-							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(logins[0])).findFirst().orElse(null);
+							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(split[0])).findFirst().orElse(null);
 					pw.println(u.toString()); // Envoi de l'utilisateur
-					// TODO: Envoyer tout ce qui le concerne
+
+					try {
+						// Les messages en attente passent en non lus
+						// Envoi des messages
+						DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream().filter(
+								amu -> amu.getUtilisateur().equals(u) && amu.getEtat() == EtatMessage.EN_ATTENTE)
+								.forEach(amu -> {
+									DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
+											amu.getUtilisateur(), amu.getEtat());
+								});
+
+						// TODO: Envoyer tout ce qui le concerne
+						// Envoi des messages qu'il a envoyé et ceux dans les tickets auxquels il
+						// appartient
+						// Envoi des tickets qu'il a crée et ceux auxquels il appartient
+						// Envoi des utilisateurs qui sont dans le même ticket que lui
+						// Envoi des groupes (groupes auxquels il appartient et groupes à destination
+						// des tickets)
+
+						List<Ticket> listeTickets = new ArrayList<>();
+
+						// Utilisateurs concernés et leurs tickets et les groupes, les messages et les
+						// associations AMU
+						DBConnection.getInstance().getListeUtilisateurs().forEach(ut -> {
+							pw.println(ut.toString());
+
+							u.getTickets().stream().filter(t -> !listeTickets.contains(t))
+									.filter(t -> ut.getTickets().contains(t)).forEach(t -> {
+										listeTickets.add(t);
+
+										pw.println(t.toString());
+
+										ut.getMessages().stream().forEach(m -> pw.println(m.toString()));
+
+										pw.println(DELIMITER + DELIMITER);
+										t.getMessages().stream().forEach(m -> pw.println(m.toString()));
+
+										pw.println(DELIMITER + DELIMITER);
+										DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+												.filter(amu -> amu.getUtilisateur().equals(ut))
+												.forEach(amu -> pw.println(amu.toString()));
+
+										pw.println(DELIMITER + DELIMITER);
+
+										DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
+												.filter(agu -> agu.getUtilisateur().equals(ut))
+												.forEach(agu -> pw.println(agu.toString()));
+
+										pw.println(DELIMITER + DELIMITER);
+									});
+
+							pw.println(DELIMITER + DELIMITER);
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+
+						// Marquage de fin
+						pw.println(DELIMITER + DELIMITER + DELIMITER);
+					}
 				}
-				connexion = false;
-			} else if (deconnexion) {
+
+				requeteActuelle = Requete.NONE;
+
+				break;
+			case DECONNEXION:
 				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
-				deconnexion = false;
-			} else if (creationTicket) {
-				String[] split = instruction.split(DELIMITER);
+
+				requeteActuelle = Requete.NONE;
+
+				break;
+			case CREATION_TICKET:
 				Ticket ticket = DBConnection.getInstance().creerTicket(split[0], split[1], Integer.parseInt(split[2]));
 
-				if (ticket != null) // Création du ticket réussie
-					pw.println(ticket.toString()); // Envoi du ticket
-				else
-					pw.println(false); // Envoi de false
+				pw.println(ticket == null ? false : ticket.toString()); // Envoi du ticket ou de false si la création
+																		// n'a pas fonctionné
+				requeteActuelle = Requete.NONE;
 
-				creationTicket = false;
+				break;
+			case ENVOI_MESSAGE:
+				Message message = DBConnection.getInstance().creerMessage(split[0], split[1],
+						Integer.parseInt(split[2]));
+
+				pw.println(message == null ? false : message.toString()); // Envoi du message ou de false si la création
+																			// n'a pas fonctionné
+
+				if (message != null)
+					pw.println(split[1] + DELIMITER + split[2]); // Envoi de l'identifiant de l'utilisateur qui l'a
+																	// envoyé et de l'id du ticket
+				try {
+					// Envoi des associations
+					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+							.filter(amu -> amu.getMessage().equals(message)).forEach(amu -> pw.println(amu.toString()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+
+					// Marquage de fin
+					pw.println(DELIMITER + DELIMITER + DELIMITER);
+				}
+				requeteActuelle = Requete.NONE;
+
+				break;
+			case NONE:
+				break;
 			}
 
 			break;
 		}
+
 	}
 
-	private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
-		stringBuilder.append("\t");
-		stringBuilder.append(m);
-		stringBuilder.append("\t\0\0\t");
-
-		return stringBuilder;
-	}
+//	private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
+//		stringBuilder.append("\t");
+//		stringBuilder.append(m);
+//		stringBuilder.append("\t\0\0\t");
+//
+//		return stringBuilder;
+//	}
 
 	private void closeServerSocket() {
 		try {
@@ -194,5 +293,9 @@ public class ServerThread extends Thread {
 			System.out.println("Erreur lors de la fermeture du socket server");
 			e.printStackTrace();
 		}
+	}
+
+	enum Requete {
+		ENVOI_MESSAGE, CREATION_TICKET, CONNEXION, DECONNEXION, NONE;
 	}
 }

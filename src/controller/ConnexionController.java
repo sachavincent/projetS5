@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import communication.Client;
+import communication.ClientThread;
 
 public class ConnexionController implements ActionListener {
 
@@ -28,7 +28,7 @@ public class ConnexionController implements ActionListener {
 		System.out.println("Click");
 		// TODO Encryption
 
-		Client client = Client.getClient();
+		ClientThread client = ClientThread.getClient();
 		if (client != null) {
 			boolean res = client.connect(identifiant, password);
 			System.out.println("Res: " + res);

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import communication.Client;
+import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
@@ -34,7 +34,12 @@ public class Main {
 			int choix;
 			do {
 				System.out.println("Mode Serveur (0) ou mode Client (1) ?");
-				choix = sc.nextInt();
+				String next = sc.next();
+				try {
+					choix = Integer.parseInt(next);
+				} catch (NumberFormatException e) {
+					choix = -1;
+				}
 			} while (choix != 0 && choix != 1);
 			sc.close();
 
@@ -42,7 +47,7 @@ public class Main {
 			case 0: // Serveur
 				// TODO
 				DBConnection.type = Type.SERVEUR;
-				
+
 				new Thread(new Runnable() {
 					public void run() {
 						TCPCommunication.openServerSocket();
@@ -53,8 +58,10 @@ public class Main {
 			case 1: // Client
 				// TODO
 				DBConnection.type = Type.CLIENT;
-//				TCPCommunication.openClientSocket();
-//				TCPCommunication.sendMessage("Hello world!");
+
+				ClientThread clientThread = TCPCommunication.openClientSocket();
+				clientThread.start();
+
 				break;
 			}
 		}
@@ -74,10 +81,10 @@ public class Main {
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (DBConnection.type == Type.CLIENT && Client.getUtilisateur().isConnecte()) {
-					Client.getUtilisateur().setConnecte(false);
+				if (DBConnection.type == Type.CLIENT && ClientThread.getUtilisateur().isConnecte()) {
+					ClientThread.getUtilisateur().setConnecte(false);
 
-					Client.getClient().disconnect();
+					ClientThread.getClient().disconnect();
 				}
 			}
 		});
