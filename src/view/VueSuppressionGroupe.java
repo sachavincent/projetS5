@@ -15,13 +15,13 @@ import database.DBConnection;
 import javafx.beans.Observable;
 
 //Interface permettant de supprimer un groupe via un menu déroulant contenant l'ensemble des groupes
-public class SuppresionGroupe extends JPanel implements Observer {
+public class VueSuppressionGroupe extends JPanel implements Observer {
 
 	private JButton ok = new JButton("OK");
 	private JComboBox<String> ListeGroupe;
 	private JPanel[] panels = new JPanel[4];
 
-	public SuppresionGroupe() {
+	public VueSuppressionGroupe() {
 		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
 		

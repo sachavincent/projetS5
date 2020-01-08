@@ -90,7 +90,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 			new VueModificationGroupe();
 		}
 		if (event.getSource() == buttons[5]) {
-			new SuppresionGroupe();
+			new VueSuppressionGroupe();
 		}
 		if (event.getSource() == buttons[6]) {
 			new AjoutUtilisateurGroupe();
