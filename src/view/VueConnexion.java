@@ -17,6 +17,8 @@ import controller.ConnexionController;
 // Interface permettant de se connecter à l'application et au serveur
 public class VueConnexion extends JPanel implements Observer {
 
+	private static final long serialVersionUID = 1L;
+
 	private JTextField identField = new JTextField(30);
 	private JPasswordField passwordField = new JPasswordField(30);
 
@@ -36,11 +38,11 @@ public class VueConnexion extends JPanel implements Observer {
 		panels[0].setLayout(new GridLayout(2, 1));
 		panels[1].setLayout(new FlowLayout());
 		panels[2].setLayout(new FlowLayout());
-		panels[3].setLayout(new FlowLayout());	
+		panels[3].setLayout(new FlowLayout());
 		panels[4].setLayout(new FlowLayout());
 		panels[5].setLayout(new BorderLayout());
 		panels[6].setLayout(new BorderLayout());
-		
+
 		// ajout au panel
 		panels[1].add(identifiantLabel);
 		panels[1].add(identField);
@@ -56,12 +58,12 @@ public class VueConnexion extends JPanel implements Observer {
 
 		panels[6].add(panels[5], BorderLayout.NORTH);
 
-		//TODO Remove temp
+		// TODO Remove temp
 		identField.setText("sacha.vincent");
 		passwordField.setText("password");
-		
+
 		buttonConnexion.addActionListener(new ConnexionController(identField, passwordField));
-		
+
 		add(panels[6]);
 	}
 

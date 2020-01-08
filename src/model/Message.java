@@ -55,8 +55,8 @@ public class Message extends Observable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + idMessage;
+		int result = prime * idMessage;
+
 		return result;
 	}
 
@@ -74,7 +74,7 @@ public class Message extends Observable {
 		if (getClass() != obj.getClass())
 			return false;
 		Message other = (Message) obj;
-		
+
 		return idMessage == other.idMessage;
 	}
 

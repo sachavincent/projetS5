@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import model.AssociationGroupeUtilisateur;
@@ -30,22 +32,22 @@ public class DBConnection {
 	private Connection connection;
 
 	// Liste des groupes d'utilisateurs
-	private List<GroupeUtilisateurs> listeGroupes = new ArrayList<>();
+	private Set<GroupeUtilisateurs> listeGroupes = new HashSet<>();
 
 	// Liste des messages
-	private List<Message> listeMessages = new ArrayList<>();
+	private Set<Message> listeMessages = new HashSet<>();
 
 	// Liste des utilisateurs
-	private List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+	private Set<Utilisateur> listeUtilisateurs = new HashSet<>();
 
 	// Liste des tickets
-	private List<Ticket> listeTickets = new ArrayList<>();
+	private Set<Ticket> listeTickets = new HashSet<>();
 
 	// Liste des associations entre les utilisateurs et les messages
-	private List<AssociationGroupeUtilisateur> listeAGU = new ArrayList<>();
+	private Set<AssociationGroupeUtilisateur> listeAGU = new HashSet<>();
 
 	// Liste des associations entre les utilisateurs et les groupes
-	private List<AssociationMessageUtilisateur> listeAMU = new ArrayList<>();
+	private Set<AssociationMessageUtilisateur> listeAMU = new HashSet<>();
 
 	/**
 	 * Constructeur privé
@@ -1102,42 +1104,42 @@ public class DBConnection {
 	/**
 	 * @return la liste des groupes
 	 */
-	public List<GroupeUtilisateurs> getListeGroupes() {
+	public Set<GroupeUtilisateurs> getListeGroupes() {
 		return this.listeGroupes;
 	}
 
 	/**
 	 * @return la liste des utilisateurs
 	 */
-	public List<Utilisateur> getListeUtilisateurs() {
+	public Set<Utilisateur> getListeUtilisateurs() {
 		return listeUtilisateurs;
 	}
 
 	/**
 	 * @return la liste des tickets
 	 */
-	public List<Ticket> getListeTickets() {
+	public Set<Ticket> getListeTickets() {
 		return listeTickets;
 	}
 
 	/**
 	 * @return la liste des messages
 	 */
-	public List<Message> getListeMessages() {
+	public Set<Message> getListeMessages() {
 		return listeMessages;
 	}
 
 	/**
 	 * @return la liste des associations entre utilisateurs et groupes
 	 */
-	public List<AssociationGroupeUtilisateur> getListeAssociationsGroupeUtilisateur() {
+	public Set<AssociationGroupeUtilisateur> getListeAssociationsGroupeUtilisateur() {
 		return listeAGU;
 	}
 
 	/**
 	 * @return la liste des associations entre utilisateurs et messages
 	 */
-	public List<AssociationMessageUtilisateur> getListeAssociationsMessageUtilisateur() {
+	public Set<AssociationMessageUtilisateur> getListeAssociationsMessageUtilisateur() {
 		return listeAMU;
 	}
 

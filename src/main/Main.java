@@ -12,7 +12,9 @@ import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
+import view.VueAjoutUtilisateurGroupe;
 import view.VueConnexion;
+import view.VueModificationGroupe;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -91,8 +93,8 @@ public class Main {
 				}
 			}
 		});
-		 frame.setContentPane(new VueConnexion());
-//		frame.setContentPane(new VueSuppressionUtilisateurGroupe());
+//		 frame.setContentPane(new VueConnexion());
+		frame.setContentPane(new VueModificationGroupe());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);
