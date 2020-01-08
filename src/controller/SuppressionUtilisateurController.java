@@ -30,8 +30,14 @@ public class SuppressionUtilisateurController implements ActionListener {
 				this.utilisateur = utilisateur;
 
 		} else if (e.getSource() instanceof JButton) {
-			if (this.utilisateur != null) {
-				DBConnection.getInstance().supprimerUtilisateur(utilisateur);
+			JButton b = (JButton) e.getSource();
+			String nomB = b.getText();
+			if (nomB == "Ok") {
+				if (this.utilisateur != null) {
+					DBConnection.getInstance().supprimerUtilisateur(utilisateur);
+				}
+			} else if (nomB == "Annuler") {
+				// TODO go back
 			}
 
 		}

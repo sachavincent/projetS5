@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -88,14 +87,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		panels[6].add(panels[8], BorderLayout.SOUTH);
 
 		add(panels[6], BorderLayout.NORTH);
-		//affichage
-		JFrame frame = new JFrame("Ajout utilisateur groupe");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 600);
-		frame.setLocationRelativeTo(null);
-		frame.add(panels[6]);
-		frame.pack();
-		frame.setVisible(true);
+		
 	}
 
 	@Override

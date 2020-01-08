@@ -1,13 +1,15 @@
 package view;
 
 import javax.swing.JOptionPane;
+
+import database.DBConnection;
 //Interface permettant de créer un nouveau groupe
-public class AjoutGroupe {
+public class VueAjoutGroupe {
 	private String nom;
 	private int idGrp;
-	public AjoutGroupe() {
+	public VueAjoutGroupe() {
 		nom = JOptionPane.showInputDialog("Nom du groupe");
-		//TODO Groupe g = new Groupe(nom,id); + ajout à la liste des grp
+		DBConnection.getInstance().creerGroupe(nom, null);
 	}
 
 }

@@ -35,9 +35,16 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 				this.groupe = groupe;
 
 		} else if (e.getSource() instanceof JButton) {
-			if (this.utilisateur != null && this.groupe != null)
-				DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
+			JButton b = (JButton) e.getSource();
+			String nomB = b.getText();
+			if (nomB == "Ok") {
+				if (this.utilisateur != null && this.groupe != null)
+					DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
 
+			}
+			else if (nomB == "Annuler") {
+				//TODO get back
+			}
 		}
 	}
 

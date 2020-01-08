@@ -34,11 +34,18 @@ public class AjoutUtilisateurController implements ActionListener {
 			if (type != null)
 				this.typeUtilisateur = type;
 		} else if (e.getSource() instanceof JButton) {
-			if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
-					&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
-					&& !prenomField.getText().isEmpty())
-				DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
-						nomField.getText(), prenomField.getText(), typeUtilisateur);
+			JButton b = (JButton) e.getSource();
+			String nomB = b.getText();
+			if (nomB == "Ok") {
+				if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
+						&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
+						&& !prenomField.getText().isEmpty())
+					DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
+							nomField.getText(), prenomField.getText(), typeUtilisateur);
+			}
+			else if (nomB == "Annuler") {
+				//TODO get back
+			}
 		}
 	}
 }
