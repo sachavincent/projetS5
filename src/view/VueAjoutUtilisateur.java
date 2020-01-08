@@ -87,6 +87,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		panels[6].add(panels[8], BorderLayout.SOUTH);
 
 		add(panels[6], BorderLayout.NORTH);
+		
 	}
 
 	@Override

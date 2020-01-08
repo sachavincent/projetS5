@@ -80,7 +80,7 @@ public class VueFenetreServeur extends JPanel implements ActionListener {
 			new VueAjoutUtilisateur();
 		}
 		if (event.getSource() == buttons[1]) {
-			new ModificationUtilisateur();
+			new VueModificationUtilisateur();
 		}
 		if (event.getSource() == buttons[2]) {
 			new VueSuppressionUtilisateur();
@@ -95,7 +95,7 @@ public class VueFenetreServeur extends JPanel implements ActionListener {
 			new VueSuppressionGroupe();
 		}
 		if (event.getSource() == buttons[6]) {
-			new AjoutUtilisateurGroupe();
+			new VueAjoutUtilisateurGroupe();
 		}
 		if (event.getSource() == buttons[7]) {
 			new VueSuppressionUtilisateurGroupe();

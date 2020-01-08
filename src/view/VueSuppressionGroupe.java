@@ -20,23 +20,25 @@ public class VueSuppressionGroupe extends JPanel implements Observer {
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
 	private JComboBox<String> ListeGroupe;
-	private JPanel[] panels = new JPanel[4];
+	private JPanel[] panels = new JPanel[5];
+	private JLabel titreComboBox = new JLabel("Liste des groupes");
+	private JLabel titrePanel = new JLabel("Suppression d'un groupe");
 
 	public VueSuppressionGroupe() {
 		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
-		
+		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
 		ListeGroupe = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
 		SuppressionGroupeController suppressionGroupeController = new SuppressionGroupeController();
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			panels[i] = new JPanel();
 		}
 		//taille
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
-		ok.setPreferredSize(new Dimension(300, 50));
-		annuler.setPreferredSize(new Dimension(300, 50));
+		ok.setPreferredSize(new Dimension(200, 50));
+		annuler.setPreferredSize(new Dimension(200, 50));
 		//actionListener
 		ok.addActionListener(suppressionGroupeController);
 		annuler.addActionListener(suppressionGroupeController);
@@ -47,14 +49,27 @@ public class VueSuppressionGroupe extends JPanel implements Observer {
 		panels[2].setLayout(new FlowLayout());
 		panels[3].setLayout(new BorderLayout());
 		// ajout
+		panels[4].add(titrePanel);
+		panels[1].add(titreComboBox);
 		panels[1].add(ListeGroupe);
 		panels[2].add(ok);
 		panels[2].add(annuler);
+		panels[0].add(panels[4]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[3].add(panels[0], BorderLayout.NORTH);
 		
 		add(panels[3], BorderLayout.NORTH);
+		
+		//affichage
+		JFrame frame = new JFrame("Ajout utilisateur groupe");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(300, 600);
+		frame.setLocationRelativeTo(null);
+		frame.add(panels[3]);
+		frame.pack();
+		frame.setVisible(true);
+
 
 	}
 

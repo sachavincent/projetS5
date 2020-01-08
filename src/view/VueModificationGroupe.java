@@ -9,6 +9,7 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -25,15 +26,18 @@ public class VueModificationGroupe extends JPanel implements Observer {
 
 	private JLabel nameLabel;
 	private JTextField nameField;
+	private JLabel titrePanel = new JLabel("Modification d'un groupe");
+	private JLabel titreComboBox = new JLabel("liste des groupes");
 
-	private JPanel[] panels = new JPanel[4];
+	private JPanel[] panels = new JPanel[5];
 
-	private Dimension buttonsDimension = new Dimension(300, 50);
+	private Dimension buttonsDimension = new Dimension(200, 50);
 
 	public VueModificationGroupe() {
 		// init
 		nameLabel = new JLabel("Nouveau nom: ");
 		nameField = new JTextField(30);
+		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
 
 		ModificationGroupeController modificationGroupeController = new ModificationGroupeController(nameField);
 		groupesComboBox = new JComboBox<String>(
@@ -41,7 +45,7 @@ public class VueModificationGroupe extends JPanel implements Observer {
 
 		groupesComboBox.addActionListener(modificationGroupeController);
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 			panels[i] = new JPanel();
 
 		okButton.addActionListener(modificationGroupeController);
@@ -60,16 +64,28 @@ public class VueModificationGroupe extends JPanel implements Observer {
 		setLayout(new BorderLayout());
 
 		// ajout
+		panels[4].add(titrePanel);
+		panels[1].add(titreComboBox);
 		panels[1].add(groupesComboBox);
 		panels[2].add(nameLabel);
 		panels[2].add(nameField);
 		panels[3].add(okButton);
 		panels[3].add(annulerButton);
+		//panels[0].add(panels[4]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
 
 		add(panels[0], BorderLayout.NORTH);
+		//affichage
+		JFrame frame = new JFrame("Ajout utilisateur groupe");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(300, 600);
+		frame.setLocationRelativeTo(null);
+		frame.add(panels[0]);
+		frame.pack();
+		frame.setVisible(true);
+	
 	}
 
 	@Override
