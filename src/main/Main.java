@@ -12,7 +12,7 @@ import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import view.VueSuppressionUtilisateurGroupe;
+import view.VueConnexion;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -59,8 +59,8 @@ public class Main {
 				// TODO
 				DBConnection.type = Type.CLIENT;
 
-				ClientThread clientThread = TCPCommunication.openClientSocket();
-				clientThread.start();
+//				ClientThread clientThread = TCPCommunication.openClientSocket();
+//				clientThread.start();
 
 				break;
 			}
@@ -76,11 +76,14 @@ public class Main {
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
 						.getHeight()));
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//		frame.setPreferredSize(new Dimension(500,500));
-//		frame.setLocationRelativeTo(null);
+		// frame.setPreferredSize(new Dimension(500,500));
+		// frame.setLocationRelativeTo(null);
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				if (ClientThread.getUtilisateur() == null)
+					return;
+
 				if (DBConnection.type == Type.CLIENT && ClientThread.getUtilisateur().isConnecte()) {
 					ClientThread.getUtilisateur().setConnecte(false);
 
@@ -88,8 +91,8 @@ public class Main {
 				}
 			}
 		});
-//		frame.setContentPane(new VueConnexion());
-		frame.setContentPane(new VueSuppressionUtilisateurGroupe());
+		 frame.setContentPane(new VueConnexion());
+//		frame.setContentPane(new VueSuppressionUtilisateurGroupe());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);

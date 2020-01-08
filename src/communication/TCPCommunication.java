@@ -32,8 +32,11 @@ public class TCPCommunication {
 			socket = new Socket(ip, PORT);
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-			return new ClientThread(pw, br);
+			
+			ClientThread clientThread = new ClientThread(pw, br);
+			clientThread.start();
+			
+			return clientThread;
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'ouverture du socket client");
 			e.printStackTrace();

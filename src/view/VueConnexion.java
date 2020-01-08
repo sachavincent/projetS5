@@ -56,8 +56,12 @@ public class VueConnexion extends JPanel implements Observer {
 
 		panels[6].add(panels[5], BorderLayout.NORTH);
 
+		//TODO Remove temp
+		identField.setText("sacha.vincent");
+		passwordField.setText("password");
+		
 		buttonConnexion.addActionListener(new ConnexionController(identField, passwordField));
-
+		
 		add(panels[6]);
 	}
 
