@@ -75,7 +75,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == buttons[0]) {
 			setVisible(false);
-			new AjoutUtilisateur();
+			new VueAjoutUtilisateur();
 		}
 		if (event.getSource() == buttons[1]) {
 			new ModificationUtilisateur();

@@ -8,12 +8,13 @@ import javax.swing.JFrame;
 public class main {
 	public static void main(String [] args) {
 		//new SuppressionUtilisateurGroupe();
-		//new AjoutUtilisateur();
+		new VueAjoutUtilisateur();
 		//	new AjoutGroupe();
 		//new ModificationUtilisateur();
-		//new ModificationGroupe();
+		//new VueModificationGroupe();
 		//new SuppresionUtilisateur();
-		new ModificationUtilisateur();
+		//new ModificationUtilisateur();
+		//new SuppresionGroupe();
 
 //		//new Connexion();
 //		// Frame

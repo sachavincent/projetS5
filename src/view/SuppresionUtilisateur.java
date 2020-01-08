@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 //Interface permettant de supprimé un utilisateur via un menu déroulant
@@ -39,11 +40,11 @@ public class SuppresionUtilisateur implements ActionListener{
 		panel[1].add(listeUtilisateur);
 		panel[2].add(ok);
 		panel[0].add(panel[1]);
-		panel[0].add(panel[2]);
+		//panel[0].add(panel[2]);
 		panel[3].add(panel[0],BorderLayout.NORTH);
 		
 		//affichage
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Suppression Utilisateur");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 600);
 		frame.setLocationRelativeTo(null);
@@ -64,14 +65,11 @@ public class SuppresionUtilisateur implements ActionListener{
 			for(int i=0; i< listeU.length; i++) {
 				if(source == listeU[i]) {
 					nom = listeU[i];
-					//break;
+					String s = "confirmation de la supprésion de l'utilisateur :  "+nom;
+					int op = JOptionPane.showConfirmDialog(null, s);
+					//TODO close
 				}
 			}
-		}
-		if (e.getSource() == ok) {
-			//TODO close
-			System.out.println(nom);
-			
 		}
 		
 	}
