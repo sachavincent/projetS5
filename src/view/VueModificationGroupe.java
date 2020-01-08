@@ -77,14 +77,8 @@ public class VueModificationGroupe extends JPanel implements Observer {
 		panels[0].add(panels[3]);
 
 		add(panels[0], BorderLayout.NORTH);
-		//affichage
-		JFrame frame = new JFrame("Ajout utilisateur groupe");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 600);
-		frame.setLocationRelativeTo(null);
-		frame.add(panels[0]);
-		frame.pack();
-		frame.setVisible(true);
+		
+		
 	
 	}
 

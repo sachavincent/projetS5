@@ -62,13 +62,17 @@ public class VueModificationUtilisateur extends JPanel implements Observer {
 		panel[2].add(AttributModif);
 		panel[3].add(ok);
 		panel[3].add(annuler);
-		panel[0].add(panel[5]);
+		//panel[0].add(panel[5]);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
 
 		add(panel[4],BorderLayout.NORTH);
+		
+		
+
+		
 	}
 
 	@Override
