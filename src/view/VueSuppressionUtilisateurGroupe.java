@@ -78,14 +78,6 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 		add(panels[4], BorderLayout.NORTH);
 		
-		// affichage
-		JFrame frame = new JFrame("Ajout utilisateur groupe");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 600);
-		frame.setLocationRelativeTo(null);
-		frame.add(panels[4]);
-		frame.pack();
-		frame.setVisible(true);
 	}
 
 	@Override
