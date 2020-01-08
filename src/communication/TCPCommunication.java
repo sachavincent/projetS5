@@ -7,12 +7,15 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class TCPCommunication {
 
 	private final static int PORT = 1978;
 	private final static String SERVER_IP = "192.168.1.46";
+
+	public final static List<Socket> CLIENTS = new ArrayList<>();
 
 	private static InetAddress ip;
 	private static Socket socket;
@@ -20,12 +23,7 @@ public class TCPCommunication {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 
-	public static void sendMessage(String m) {
-		if (pw != null)
-			pw.println(m);
-	}
-
-	public static Client openClientSocket() {
+	public static ClientThread openClientSocket() {
 		if (socket != null)
 			return null;
 
@@ -35,7 +33,7 @@ public class TCPCommunication {
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-			return new Client(pw, br);
+			return new ClientThread(pw, br);
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'ouverture du socket client");
 			e.printStackTrace();
@@ -47,9 +45,12 @@ public class TCPCommunication {
 
 	public static void closeClientSocket() {
 		try {
-			if (socket != null)
-				socket.close();
+			if (socket != null) {
+				// Suppression du socket de la liste des clients
+				CLIENTS.remove(socket);
 
+				socket.close();
+			}
 			if (pw != null)
 				pw.close();
 
@@ -66,6 +67,8 @@ public class TCPCommunication {
 			serverSocket = new ServerSocket(PORT);
 			while (true) { // TODO : Condition
 				socket = serverSocket.accept();
+
+				CLIENTS.add(socket);
 
 				new ServerThread(socket).start();
 			}
