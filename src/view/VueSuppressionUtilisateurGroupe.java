@@ -28,11 +28,11 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 	private JPanel[] panels = new JPanel[5];
 
-	private Dimension comboBoxDimension = new Dimension(300, 50);
+	private Dimension dimension = new Dimension(300, 50);
 	
 	public VueSuppressionUtilisateurGroupe() {
 		// init
-		okButton.setPreferredSize(new Dimension(300, 50));
+		okButton.setPreferredSize(dimension);
 		groupesComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
 
@@ -43,8 +43,8 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 			panels[i] = new JPanel();
 
 		// taille
-		groupesComboBox.setPreferredSize(comboBoxDimension);
-		utilisateursComboBox.setPreferredSize(comboBoxDimension);
+		groupesComboBox.setPreferredSize(dimension);
+		utilisateursComboBox.setPreferredSize(dimension);
 
 		// actionListener
 		SuppressionUtilisateurGroupeController suppressionUtilisateurGroupeController = new SuppressionUtilisateurGroupeController();

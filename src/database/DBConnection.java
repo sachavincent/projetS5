@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+
 import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
@@ -660,7 +662,7 @@ public class DBConnection {
 	 * @param ancienMDP   l'ancien mot de passe de l'utilisateur
 	 * @param nouveauMDP  le nouveau mot de passe de l'utilisateur
 	 * 
-	 * @return trye si la modification a fonctionné
+	 * @return true si la modification a fonctionné
 	 */
 	public boolean modifierMotDePasseUtilisateur(String identifiant, String ancienMDP, String nouveauMDP) {
 		Utilisateur utilisateur = listeUtilisateurs.stream()
@@ -675,6 +677,9 @@ public class DBConnection {
 			return false;
 
 		listeAGU.stream().map(agu -> agu.getUtilisateur()).filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant))
+				.forEach(u -> u.modifierMotDePasse(ancienMDP, nouveauMDP));
+
+		listeAMU.stream().map(amu -> amu.getUtilisateur()).filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant))
 				.forEach(u -> u.modifierMotDePasse(ancienMDP, nouveauMDP));
 
 		PreparedStatement st = null;
@@ -693,6 +698,77 @@ public class DBConnection {
 			try {
 				if (st != null)
 					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet de modifier un utilisateur (sauf mot de passe) Cette fonction ne
+	 * requiert pas le mot de passe
+	 * 
+	 * @param nouvelUtilisateur l'utilisateur qui remplace l'ancien, son id est
+	 *                          contenu dans l'objet
+	 * 
+	 * @return trye si la modification a fonctionné
+	 */
+	public boolean modifierUtilisateur(Utilisateur nouvelUtilisateur) {
+		Utilisateur utilisateur = listeUtilisateurs.stream().filter(u -> u.equals(nouvelUtilisateur)).findFirst()
+				.orElse(null);
+
+		if (utilisateur == null)
+			return false;
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			// Update dans la base de données
+			st = this.connection.prepareStatement(
+					"UPDATE Utilisateur SET nom = ?, prenom = ?, type = ?, connecte = ? WHERE identifiant = ?");
+			st.setString(1, nouvelUtilisateur.getNom());
+			st.setString(2, nouvelUtilisateur.getPrenom());
+			st.setString(3, nouvelUtilisateur.getType().toString().replace(' ', '_'));
+			st.setInt(4, nouvelUtilisateur.isConnecte() ? 1 : 0);
+			st.setString(5, nouvelUtilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			// Récupération du mot de passe
+			st = this.connection.prepareStatement("SELECT password FROM Utilisateur WHERE identifiant = ?");
+			st.setString(1, nouvelUtilisateur.getIdentifiant());
+
+			rs = st.executeQuery();
+
+			if (!rs.next())
+				return false;
+
+			String password = rs.getString(1);
+			boolean res = nouvelUtilisateur.modifierMotDePasse(null, password);
+
+			if (!res)
+				System.out.println("Modification du mot de passe interrompue");
+
+			utilisateur = nouvelUtilisateur;
+
+			listeAGU.stream().map(agu -> agu.getUtilisateur()).filter(u -> u.equals(nouvelUtilisateur))
+					.forEach(u -> u = nouvelUtilisateur);
+
+			listeAMU.stream().map(amu -> amu.getUtilisateur()).filter(u -> u.equals(nouvelUtilisateur))
+					.forEach(u -> u = nouvelUtilisateur);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+				if (rs != null)
+					rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -1,9 +1,12 @@
 package model;
 
-import static main.Main.*;
+import static main.Main.DELIMITER;
+
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
+
+import com.sun.istack.internal.NotNull;
 
 public class Utilisateur extends Observable {
 
@@ -83,6 +86,9 @@ public class Utilisateur extends Observable {
 	 * @return true si les deux mots de passe sont similaires
 	 */
 	public boolean memeMotDePasse(String password) {
+		if (this.password == null)
+			return true;
+
 		return this.password.equalsIgnoreCase(password);
 	}
 
@@ -94,7 +100,7 @@ public class Utilisateur extends Observable {
 	 * 
 	 * @return true si le mot de passe a changé
 	 */
-	public boolean modifierMotDePasse(String ancienMDP, String nouveauMDP) {
+	public boolean modifierMotDePasse(String ancienMDP, @NotNull String nouveauMDP) {
 		if (memeMotDePasse(ancienMDP)) {
 			password = nouveauMDP;
 
