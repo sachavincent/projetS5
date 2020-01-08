@@ -5,47 +5,57 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 import database.DBConnection;
 import model.*;
+import model.Utilisateur.TypeUtilisateur;
 
 public class ModificationUtilisateurController implements ActionListener {
-	Utilisateur utilisateur;
-	String Identifiant,password,nom,prenom;
-	
-
+	private Utilisateur utilisateur;
+	private String identifiant, password, nom, prenom;
+	private TypeUtilisateur type;
 	public ModificationUtilisateurController() {
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
-			JComboBox<String> utilisateursComboBox = (JComboBox<String>) e.getSource(); 
-			
+			JComboBox<String> utilisateursComboBox = (JComboBox<String>) e.getSource();
 			String source = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
-			switch(source) {
-			case "Identifiant":
-			case "Mot de passe":
-			case "Nom":
-			case "Prenom":
-			case "Type Utilisateur":
-			default:;
-			}
-
+			
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
 
+			switch (source) {
+			case "Identifiant":
+				String id = JOptionPane.showInputDialog("Nouvel identifiant");
+				identifiant = id;
+			case "Mot de passe":
+				String mdp = JOptionPane.showInputDialog("Nouveau Mot de Passe");
+				password = mdp;
+			case "Nom":
+				String Nom = JOptionPane.showInputDialog("Nouveau Nom");
+				nom = Nom;
+			case "Prenom":
+				String Prenom = JOptionPane.showInputDialog("Nouveau Prenom");
+				prenom = Prenom;
+				
+			default:
+				;
+			}
+
 			if (utilisateur != null)
-				this.utilisateur = utilisateur;
+				this.utilisateur = new Utilisateur(identifiant, password, nom, prenom, utilisateur.getType(), true);
 		} else if (e.getSource() instanceof JButton) {
-			if (this.utilisateur != null ) {
+			if (this.utilisateur != null) {
 
 				// Mets à jour la base de données
-				//DBConnection.getInstance().m
+				DBConnection.getInstance().modifierUtilisateur(utilisateur);
 
 			}
 
-	}
+		}
 	}
 
 }
