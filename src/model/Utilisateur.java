@@ -60,6 +60,17 @@ public class Utilisateur extends Observable {
 		this.connecte = connecte;
 	}
 
+	public Utilisateur(String identifiant, String password, String nom, String prenom, TypeUtilisateur type,
+			boolean connecte) {
+		this.identifiant = identifiant;
+		this.password = password;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.type = type;
+
+		this.connecte = connecte;
+	}
+
 	// Enumération donnant le type d'un utilisateur
 	public enum TypeUtilisateur {
 		ETUDIANT, ENSEIGNANT, SECRETAIRE_PEDAGOGIQUE, SERVICE_ADMINISTRATIF, SERVICE_TECHNIQUE
@@ -74,6 +85,24 @@ public class Utilisateur extends Observable {
 	 */
 	public boolean memeMotDePasse(String password) {
 		return this.password.equalsIgnoreCase(password);
+	}
+
+	/**
+	 * Permet de modifier le mot de passe
+	 * 
+	 * @param ancienMDP  ancien mot de passe
+	 * @param nouveauMDP nouveau mot de passe
+	 * 
+	 * @return true si le mot de passe a changé
+	 */
+	public boolean modifierMotDePasse(String ancienMDP, String nouveauMDP) {
+		if (memeMotDePasse(ancienMDP)) {
+			password = nouveauMDP;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -172,7 +201,7 @@ public class Utilisateur extends Observable {
 		if (getClass() != obj.getClass())
 			return false;
 		Utilisateur other = (Utilisateur) obj;
-		
+
 		return identifiant.equalsIgnoreCase(other.getIdentifiant());
 	}
 

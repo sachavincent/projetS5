@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
+import model.Utilisateur.TypeUtilisateur;
 import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
@@ -593,8 +594,49 @@ public class DBConnection {
 
 			listeAGU.stream().map(agu -> agu.getGroupe()).filter(g -> g.equals(groupe))
 					.forEach(g -> g.setNom(groupe.getNom()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-			System.out.println(listeTickets);
+	/**
+	 * Permet d'ajouter un utilisateur à la base de données
+	 * 
+	 * @param identifiant l'identifiant de l'utilisateur
+	 * @param password    le mot de passe de l'utilisateur
+	 * @param nom         le nom de l'utilisateur
+	 * @param prenom      le prénom de l'utilisateur
+	 * @param type        le type de l'utilisateur
+	 * 
+	 * @return true si l'ajout a fonctionné
+	 */
+	public boolean ajouterUtilisateur(String identifiant, String password, String nom, String prenom, String type) {
+		Utilisateur utilisateur = new Utilisateur(identifiant, password, nom, prenom, type, false);
+
+		PreparedStatement st = null;
+		try {
+			// Insertion dans la base de données
+			st = this.connection.prepareStatement(
+					"INSERT Utilisateur (identifiant, password, nom, prenom, type, connecte) VALUES (?, ?, ?, ?, ?, ?)");
+			st.setString(1, identifiant);
+			st.setString(2, password);
+			st.setString(3, nom);
+			st.setString(4, prenom);
+			st.setString(5, type);
+			st.setInt(6, 0);
+
+			st.execute();
+
+			listeUtilisateurs.add(utilisateur);
+
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -606,6 +648,104 @@ public class DBConnection {
 			}
 		}
 
+		return false;
+	}
+
+	/**
+	 * Permet de modifier le mot de passe de l'utilisateur
+	 * 
+	 * @param identifiant l'identifiant de l'utilisateur
+	 * @param ancienMDP   l'ancien mot de passe de l'utilisateur
+	 * @param nouveauMDP  le nouveau mot de passe de l'utilisateur
+	 * 
+	 * @return trye si la modification a fonctionné
+	 */
+	public boolean modifierMotDePasseUtilisateur(String identifiant, String ancienMDP, String nouveauMDP) {
+		Utilisateur utilisateur = listeUtilisateurs.stream()
+				.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant)).findFirst().orElse(null);
+
+		if (utilisateur == null)
+			return false;
+
+		boolean memeMDP = utilisateur.modifierMotDePasse(ancienMDP, nouveauMDP);
+
+		if (!memeMDP)
+			return false;
+
+		listeAGU.stream().map(agu -> agu.getUtilisateur()).filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant))
+				.forEach(u -> u.modifierMotDePasse(ancienMDP, nouveauMDP));
+
+		PreparedStatement st = null;
+		try {
+			// Insertion dans la base de données
+			st = this.connection.prepareStatement("UPDATE Utilisateur SET password = ? WHERE identifiant = ?");
+			st.setString(1, nouveauMDP);
+			st.setString(2, identifiant);
+
+			st.execute();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Permet de supprimer un utilisateur de la base de données
+	 * 
+	 * @param utilisateur l'utilisateur à supprimer
+	 * 
+	 * @return true si la suppression a fonctionné
+	 */
+	public boolean supprimerUtilisateur(Utilisateur utilisateur) {
+		listeUtilisateurs.remove(utilisateur);
+
+		listeAGU.removeIf(agu -> agu.getUtilisateur().equals(utilisateur));
+
+		PreparedStatement st = null;
+		try {
+			// Insertion dans la base de données
+			st = this.connection.prepareStatement("DELETE FROM AssociationGroupeUtilisateur WHERE iduser = ?");
+			st.setString(1, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			st = this.connection.prepareStatement("DELETE FROM AssociationMessageUtilisateur WHERE iduser = ?");
+			st.setString(1, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			st.close();
+
+			st = this.connection.prepareStatement("DELETE FROM Utilisateur WHERE identifiant = ?");
+			st.setString(1, utilisateur.getIdentifiant());
+
+			st.execute();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 	/**
