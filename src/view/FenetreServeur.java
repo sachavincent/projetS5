@@ -81,7 +81,7 @@ public class FenetreServeur extends JPanel implements ActionListener {
 			new ModificationUtilisateur();
 		}
 		if (event.getSource() == buttons[2]) {
-			new SuppresionUtilisateur();
+			new VueSuppressionUtilisateur();
 		}
 		if (event.getSource() == buttons[3]) {
 			String nom = JOptionPane.showInputDialog("Nom du groupe");
