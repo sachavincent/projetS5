@@ -12,7 +12,7 @@ import communication.Client;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import view.FenetreServeur;
+import view.VueFenetreServeur;
 import view.VueAjoutUtilisateur;
 import view.VueModificationGroupe;
 import view.VueSuppressionUtilisateur;
