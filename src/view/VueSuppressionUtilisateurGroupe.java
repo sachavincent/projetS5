@@ -18,6 +18,8 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 	private JButton ok = new JButton("OK");
 	private JComboBox<String> ListeGroupe;
+	private JLabel listeG = new JLabel("ListeGroupe");
+	private JLabel listeU = new JLabel("Liste utilisateur");
 	private JComboBox<String> listeUtilisateur;
 	private JPanel[] panel = new JPanel[5];
 
@@ -49,7 +51,9 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		panel[4].setLayout(new BorderLayout());
 
 		// ajout
+		panel[1].add(listeU);
 		panel[1].add(listeUtilisateur);
+		panel[2].add(listeG);
 		panel[2].add(ListeGroupe);
 		panel[3].add(ok);
 		panel[0].add(panel[1]);
