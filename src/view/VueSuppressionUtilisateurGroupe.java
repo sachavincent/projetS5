@@ -12,58 +12,65 @@ import javax.swing.*;
 import controller.SuppressionUtilisateurGroupeController;
 import database.DBConnection;
 
-//Interface servant à la supprésion d'un groupe
-// elle affiche la liste de tout les groupes puis aprés la sélection du groupe à supprimé affiche une fenètre de confirmation.
+// Interface servant à la suppression d'un groupe
+// Elle affiche la liste de tous les groupes puis après la sélection du groupe à supprimer, affiche une fenêtre de confirmation.
 public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer {
 
-	private JButton ok = new JButton("OK");
-	private JComboBox<String> ListeGroupe;
-	private JLabel listeG = new JLabel("ListeGroupe      ");
-	private JLabel listeU = new JLabel("Liste utilisateur");
-	private JComboBox<String> listeUtilisateur;
-	private JPanel[] panel = new JPanel[5];
+	private static final long serialVersionUID = 1L;
 
+	private JButton okButton = new JButton("OK");
+
+	private JLabel listeGLabel = new JLabel("Liste des groupes");
+	private JLabel listeULabel = new JLabel("Liste des utilisateurs");
+
+	private JComboBox<String> groupesComboBox;
+	private JComboBox<String> utilisateursComboBox;
+
+	private JPanel[] panels = new JPanel[5];
+
+	private Dimension comboBoxDimension = new Dimension(300, 50);
+	
 	public VueSuppressionUtilisateurGroupe() {
 		// init
-		ok.setPreferredSize(new Dimension(300, 50));
-		ListeGroupe = new JComboBox<String>(
+		okButton.setPreferredSize(new Dimension(300, 50));
+		groupesComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
-		
-		listeUtilisateur = new JComboBox<String>(
+
+		utilisateursComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getNom()).toArray(String[]::new));
-		
-	
+
 		for (int i = 0; i < 5; i++)
-			panel[i] = new JPanel();
-		//taille
-		ListeGroupe.setPreferredSize(new Dimension(300, 50));
-		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
-		//actionListener
+			panels[i] = new JPanel();
+
+		// taille
+		groupesComboBox.setPreferredSize(comboBoxDimension);
+		utilisateursComboBox.setPreferredSize(comboBoxDimension);
+
+		// actionListener
 		SuppressionUtilisateurGroupeController suppressionUtilisateurGroupeController = new SuppressionUtilisateurGroupeController();
-		ok.addActionListener(suppressionUtilisateurGroupeController);
-		ListeGroupe.addActionListener(suppressionUtilisateurGroupeController);
-		listeUtilisateur.addActionListener(suppressionUtilisateurGroupeController);
+		okButton.addActionListener(suppressionUtilisateurGroupeController);
+		groupesComboBox.addActionListener(suppressionUtilisateurGroupeController);
+		utilisateursComboBox.addActionListener(suppressionUtilisateurGroupeController);
+
 		// layout
-		panel[0].setLayout(new GridLayout(3, 1));
-		panel[1].setLayout(new FlowLayout());
-		panel[2].setLayout(new FlowLayout());
-		panel[3].setLayout(new FlowLayout());
-		panel[4].setLayout(new BorderLayout());
+		panels[0].setLayout(new GridLayout(3, 1));
+		for (int i = 1; i < 4; i++)
+			panels[1].setLayout(new FlowLayout());
+
+		panels[4].setLayout(new BorderLayout());
 
 		// ajout
-		panel[1].add(listeU);
-		panel[1].add(listeUtilisateur);
-		panel[2].add(listeG);
-		panel[2].add(ListeGroupe);
-		panel[3].add(ok);
-		panel[0].add(panel[1]);
-		panel[0].add(panel[2]);
-		panel[0].add(panel[3]);
-		panel[4].add(panel[0], BorderLayout.NORTH);
+		panels[1].add(listeULabel);
+		panels[1].add(utilisateursComboBox);
+		panels[2].add(listeGLabel);
+		panels[2].add(groupesComboBox);
+		panels[3].add(okButton);
+		panels[0].add(panels[1]);
+		panels[0].add(panels[2]);
+		panels[0].add(panels[3]);
+		panels[4].add(panels[0], BorderLayout.NORTH);
 
-		add(panel[4],BorderLayout.NORTH);
-		
-
+		add(panels[4], BorderLayout.NORTH);
 	}
 
 	@Override

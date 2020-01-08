@@ -12,10 +12,6 @@ import communication.Client;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import view.VueFenetreServeur;
-import view.VueAjoutUtilisateur;
-import view.VueModificationGroupe;
-import view.VueSuppressionUtilisateur;
 import view.VueSuppressionUtilisateurGroupe;
 
 /**
