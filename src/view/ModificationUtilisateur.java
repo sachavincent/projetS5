@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 public class ModificationUtilisateur {
 	//TODO fenetre de confirmation
 	private JButton ok = new JButton("OK");
+	private JButton annuler = new JButton("annuler");
 	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"}; //TODO modif pour avoir la bonne liste
 	private JComboBox<String> listeUtilisateur;
 	private String[] Attribut = {"identifiant","password","nom","prenom","type"};
@@ -32,6 +33,7 @@ public class ModificationUtilisateur {
 		
 		//taille
 		ok.setPreferredSize(d);
+		annuler.setPreferredSize(d);
 		listeUtilisateur.setPreferredSize(d);
 		AttributModif.setPreferredSize(d);
 		
@@ -46,6 +48,7 @@ public class ModificationUtilisateur {
 		panel[1].add(listeUtilisateur);
 		panel[2].add(AttributModif);
 		panel[3].add(ok);
+		panel[3].add(annuler);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);

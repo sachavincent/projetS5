@@ -18,6 +18,7 @@ import javafx.beans.Observable;
 public class VueSuppressionGroupe extends JPanel implements Observer {
 
 	private JButton ok = new JButton("OK");
+	private JButton annuler = new JButton("Annuler");
 	private JComboBox<String> ListeGroupe;
 	private JPanel[] panels = new JPanel[4];
 
@@ -35,8 +36,10 @@ public class VueSuppressionGroupe extends JPanel implements Observer {
 		//taille
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
 		ok.setPreferredSize(new Dimension(300, 50));
+		annuler.setPreferredSize(new Dimension(300, 50));
 		//actionListener
 		ok.addActionListener(suppressionGroupeController);
+		annuler.addActionListener(suppressionGroupeController);
 		ListeGroupe.addActionListener(suppressionGroupeController);
 		// layout
 		panels[0].setLayout(new GridLayout(3, 1));
@@ -46,6 +49,7 @@ public class VueSuppressionGroupe extends JPanel implements Observer {
 		// ajout
 		panels[1].add(ListeGroupe);
 		panels[2].add(ok);
+		panels[2].add(annuler);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[3].add(panels[0], BorderLayout.NORTH);

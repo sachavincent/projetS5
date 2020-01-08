@@ -34,6 +34,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 	private JLabel[] labels = new JLabel[5];
 
 	private JButton okButton = new JButton("Création");
+	private JButton annulerButton = new JButton("Annuler");
 
 	private JPanel[] panels = new JPanel[9];
 
@@ -54,6 +55,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 
 		typeUtilisateurComboBox.addActionListener(ajoutUtilisateurController);
 		okButton.addActionListener(ajoutUtilisateurController);
+		annulerButton.addActionListener(ajoutUtilisateurController);
 		
 		// layout
 		panels[0].setLayout(new GridLayout(3, 1));
@@ -78,6 +80,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 
 		panels[7].add(panels[0]);
 		panels[8].add(okButton);
+		panels[8].add(annulerButton);
 
 		panels[6].setLayout(new BorderLayout());
 		panels[6].add(panels[7], BorderLayout.NORTH);

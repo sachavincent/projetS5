@@ -18,7 +18,9 @@ import model.Utilisateur;
 
 //Interface permettant de supprimé un utilisateur via un menu déroulant
 public class VueSuppressionUtilisateur extends JPanel implements Observer {
+
 	private JButton ok = new JButton("OK");
+	private JButton annuler = new JButton("Annuler");
 	private JComboBox<String> listeUtilisateur;
 	private JPanel[] panel = new JPanel[4];
 
@@ -31,10 +33,13 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 			panel[i] = new JPanel();
 		}
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
+		
 		ok.setPreferredSize(new Dimension(300, 50));
+		annuler.setPreferredSize(new Dimension(300, 50));
 		// actionListener
 		SuppressionUtilisateurController suppressionUtilisateurController = new SuppressionUtilisateurController();
 		ok.addActionListener(suppressionUtilisateurController);
+		annuler.addActionListener(suppressionUtilisateurController);
 		listeUtilisateur.addActionListener(suppressionUtilisateurController);
 		// layout
 		panel[0].setLayout(new GridLayout(3, 1));
@@ -44,11 +49,12 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 		// ajout
 		panel[1].add(listeUtilisateur);
 		panel[2].add(ok);
+		panel[2].add(annuler);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[3].add(panel[0], BorderLayout.NORTH);
 
-		add(panel[3],BorderLayout.NORTH);
+		add(panel[3], BorderLayout.NORTH);
 
 	}
 

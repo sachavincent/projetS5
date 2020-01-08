@@ -9,6 +9,7 @@ public class AjoutUtilisateurGroupe {
 	
 	//TODO fenetre de confirmation
 	private JButton ok = new JButton("OK");
+	private JButton annuler = new JButton("Annuler");
 	private String[] listeGrp = {"groupe 1","groupe 2","groupe 3","groupe 4","groupe 5"};
 	private JComboBox<String> ListeGroupe;
 	private String[] listeU = {"étudiant 1","étudiant 2","étudiant 3","étudiant 4"};
@@ -17,8 +18,11 @@ public class AjoutUtilisateurGroupe {
 	public AjoutUtilisateurGroupe() {
 		//init 
 		ok.setPreferredSize(new Dimension(300,50));
+		annuler.setPreferredSize(new Dimension(300,50));
+		
 		ListeGroupe = new JComboBox<String>(listeGrp);
 		listeUtilisateur = new JComboBox<String>(listeU);
+		
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
 		for (int i =0; i<5;i++)
@@ -35,6 +39,7 @@ public class AjoutUtilisateurGroupe {
 		panel[1].add(listeUtilisateur);
 		panel[2].add(ListeGroupe);
 		panel[3].add(ok);
+		panel[3].add(annuler);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);

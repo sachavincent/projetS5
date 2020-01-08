@@ -20,6 +20,7 @@ import database.DBConnection;
 public class VueModificationGroupe extends JPanel implements Observer {
 
 	private JButton okButton = new JButton("OK");
+	private JButton annulerButton = new JButton("Annuler");
 	private JComboBox<String> groupesComboBox;
 
 	private JLabel nameLabel;
@@ -44,9 +45,11 @@ public class VueModificationGroupe extends JPanel implements Observer {
 			panels[i] = new JPanel();
 
 		okButton.addActionListener(modificationGroupeController);
+		annulerButton.addActionListener(modificationGroupeController);
 		// taille
 
 		okButton.setPreferredSize(buttonsDimension);
+		annulerButton.setPreferredSize(buttonsDimension);
 		groupesComboBox.setPreferredSize(buttonsDimension);
 
 		// layout
@@ -61,6 +64,7 @@ public class VueModificationGroupe extends JPanel implements Observer {
 		panels[2].add(nameLabel);
 		panels[2].add(nameField);
 		panels[3].add(okButton);
+		panels[3].add(annulerButton);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
