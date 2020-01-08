@@ -45,18 +45,7 @@ public class AssociationMessageUtilisateur extends Observable {
 
 	// Enumération donnant l'état d'un message
 	public enum EtatMessage {
-		EN_ATTENTE("EN ATTENTE"), NON_LU("NON LU"), LU("LU");
-
-		EtatMessage(String s) {
-			this.name = s;
-		}
-
-		private String name;
-
-		public String getName() {
-			return name;
-		}
-
+		EN_ATTENTE, NON_LU, LU;
 	}
 
 	/**

@@ -12,6 +12,8 @@ import communication.Client;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
+import view.FenetreServeur;
+import view.VueAjoutUtilisateur;
 import view.VueModificationGroupe;
 
 /**
@@ -42,6 +44,7 @@ public class Main {
 			case 0: // Serveur
 				// TODO
 				DBConnection.type = Type.SERVEUR;
+				
 				new Thread(new Runnable() {
 					public void run() {
 						TCPCommunication.openServerSocket();
@@ -81,7 +84,7 @@ public class Main {
 			}
 		});
 //		frame.setContentPane(new VueConnexion());
-		frame.setContentPane(new VueModificationGroupe());
+		frame.setContentPane(new VueAjoutUtilisateur());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);

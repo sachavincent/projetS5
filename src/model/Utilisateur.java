@@ -67,7 +67,6 @@ public class Utilisateur extends Observable {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.type = type;
-
 		this.connecte = connecte;
 	}
 

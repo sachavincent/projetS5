@@ -65,6 +65,7 @@ public class DBConnection {
 	 */
 	private void populate() {
 		// TODO
+		System.out.println("Populating database...");
 		PreparedStatement st = null;
 		PreparedStatement st2 = null;
 		ResultSet rs = null;
@@ -281,8 +282,8 @@ public class DBConnection {
 				// UPDATE Association dans la base de données
 				st = this.connection.prepareStatement(
 						"UPDATE AssociationMessageUtilisateur SET etat = ? WHERE etat = ? AND iduser = ?");
-				st.setString(1, EtatMessage.NON_LU.getName());
-				st.setString(2, EtatMessage.EN_ATTENTE.getName());
+				st.setString(1, EtatMessage.NON_LU.toString().replace('_', ' '));
+				st.setString(2, EtatMessage.EN_ATTENTE.toString().replace('_', ' '));
 				st.setString(3, identifiantU);
 
 				st.execute();
