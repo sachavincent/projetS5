@@ -19,6 +19,7 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 	private static final long serialVersionUID = 1L;
 
 	private JButton okButton = new JButton("OK");
+	private JButton annulerButton = new JButton("Annuler");
 
 	private JLabel listeGLabel = new JLabel("Liste des groupes");
 	private JLabel listeULabel = new JLabel("Liste des utilisateurs");
@@ -29,13 +30,14 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 	private JPanel[] panels = new JPanel[5];
 
 	private Dimension dimension = new Dimension(300, 50);
-	
+
 	public VueSuppressionUtilisateurGroupe() {
 		// init
 		okButton.setPreferredSize(dimension);
+		annulerButton.setPreferredSize(dimension);
+
 		groupesComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
-
 		utilisateursComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getNom()).toArray(String[]::new));
 
@@ -48,7 +50,10 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 		// actionListener
 		SuppressionUtilisateurGroupeController suppressionUtilisateurGroupeController = new SuppressionUtilisateurGroupeController();
+
 		okButton.addActionListener(suppressionUtilisateurGroupeController);
+		annulerButton.addActionListener(suppressionUtilisateurGroupeController);
+
 		groupesComboBox.addActionListener(suppressionUtilisateurGroupeController);
 		utilisateursComboBox.addActionListener(suppressionUtilisateurGroupeController);
 
@@ -65,12 +70,22 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		panels[2].add(listeGLabel);
 		panels[2].add(groupesComboBox);
 		panels[3].add(okButton);
+		panels[3].add(annulerButton);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
 		panels[4].add(panels[0], BorderLayout.NORTH);
 
 		add(panels[4], BorderLayout.NORTH);
+		
+		// affichage
+		JFrame frame = new JFrame("Ajout utilisateur groupe");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(300, 600);
+		frame.setLocationRelativeTo(null);
+		frame.add(panels[4]);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	@Override
