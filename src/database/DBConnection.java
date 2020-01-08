@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import model.AssociationGroupeUtilisateur;
 import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
-import model.Utilisateur.TypeUtilisateur;
 import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
@@ -371,7 +370,9 @@ public class DBConnection {
 			st.execute();
 
 			rs = st.getGeneratedKeys();
-			rs.next();
+
+			if (!rs.next())
+				return false;
 
 			int idgroupe = rs.getInt(1);
 
@@ -618,7 +619,7 @@ public class DBConnection {
 	 * 
 	 * @return true si l'ajout a fonctionné
 	 */
-	public boolean ajouterUtilisateur(String identifiant, String password, String nom, String prenom, String type) {
+	public boolean creerUtilisateur(String identifiant, String password, String nom, String prenom, String type) {
 		Utilisateur utilisateur = new Utilisateur(identifiant, password, nom, prenom, type, false);
 
 		PreparedStatement st = null;
@@ -747,6 +748,154 @@ public class DBConnection {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Permet de créer un ticket
+	 * 
+	 * @param titre       le titre du ticket
+	 * @param identifiant l'identifiant de l'utilisateur qui crée le ticket
+	 * @param idGroupe    l'id du groupe qui reçoit le ticket
+	 * 
+	 * @return le ticket crée
+	 */
+	public Ticket creerTicket(String titre, String identifiant, int idGroupe) {
+		GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
+				.orElse(null);
+
+		if (groupe == null)
+			return null;
+
+		Utilisateur utilisateur = listeUtilisateurs.stream()
+				.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant)).findFirst().orElse(null);
+
+		if (utilisateur == null)
+			return null;
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			// Insertion dans la base de données
+			st = this.connection.prepareStatement("INSERT INTO Ticket (titre, iduser, idgroupe) VALUES (?, ?, ?)");
+			st.setString(1, titre);
+			st.setString(2, identifiant);
+			st.setInt(3, idGroupe);
+
+			st.execute();
+
+			st.close();
+
+			rs = st.getGeneratedKeys();
+			if (!rs.next()) // L'insertion n'a pas fonctionné
+				return null;
+
+			int idTicket = rs.getInt(1);
+
+			rs.close();
+
+			// Récupération de la date de création
+			st = this.connection.prepareStatement("SELECT created_at FROM Ticket WHERE idticket = ?");
+			st.setInt(1, idTicket);
+
+			rs = st.executeQuery();
+
+			if (!rs.next()) // L'insertion n'a pas fonctionné
+				return null;
+
+			Ticket ticket = new Ticket(idTicket, titre, rs.getDate(1), groupe);
+			listeTickets.add(ticket);
+			utilisateur.getTickets().add(ticket);
+
+			return ticket;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Permet de créer un message
+	 * 
+	 * @param contenu     le contenu du message
+	 * @param identifiant l'identifiant de l'utilisateur qui crée le message
+	 * @param idTicket    l'id du ticket contenant le message
+	 * 
+	 * @return le message crée
+	 */
+	public Message creerMessage(String contenu, String identifiant, int idTicket) {
+		Ticket ticket = listeTickets.stream().filter(t -> t.getIdTicket() == idTicket).findFirst().orElse(null);
+
+		if (ticket == null)
+			return null;
+
+		Utilisateur utilisateur = listeUtilisateurs.stream()
+				.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiant)).findFirst().orElse(null);
+
+		if (utilisateur == null)
+			return null;
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			// Insertion dans la base de données
+			st = this.connection.prepareStatement("INSERT INTO Message (contenu, iduser, idticket) VALUES (?, ?, ?)");
+			st.setString(1, contenu);
+			st.setString(2, utilisateur.getIdentifiant());
+			st.setInt(3, ticket.getIdTicket());
+
+			st.execute();
+
+			st.close();
+
+			rs = st.getGeneratedKeys();
+			if (!rs.next()) // L'insertion n'a pas fonctionné
+				return null;
+
+			int idMessage = rs.getInt(1);
+
+			rs.close();
+
+			// Récupération de la date de création
+			st = this.connection.prepareStatement("SELECT created_at FROM Message WHERE idmessage = ?");
+			st.setInt(1, idMessage);
+
+			rs = st.executeQuery();
+
+			if (!rs.next()) // L'insertion n'a pas fonctionné
+				return null;
+
+			Message message = new Message(idMessage, contenu, rs.getDate(1));
+			listeMessages.add(message);
+			ticket.getMessages().add(message);
+			utilisateur.getMessages().add(message);
+
+			return message;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (st != null)
+					st.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 	/**

@@ -37,7 +37,7 @@ public class AjoutUtilisateurController implements ActionListener {
 			if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
 					&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
 					&& !prenomField.getText().isEmpty())
-				DBConnection.getInstance().ajouterUtilisateur(identifiantField.getText(), passwordField.getText(),
+				DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
 						nomField.getText(), prenomField.getText(), typeUtilisateur);
 		}
 	}

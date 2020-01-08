@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 
 public class VueFenetreServeur extends JPanel implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
+
 	private String[] nomsButtons = new String[] { "Ajouter un utilisateur", "Modifier un utilisateur",
 			"Supprimer un utilisateur", "Ajouter un groupe", "Modifier un groupe", "Supprimer un groupe",
 			"Ajouter un utilisateur à un groupe", "Supprimer un utilisateur d'un groupe" };

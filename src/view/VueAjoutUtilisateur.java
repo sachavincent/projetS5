@@ -54,7 +54,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 
 		typeUtilisateurComboBox.addActionListener(ajoutUtilisateurController);
 		okButton.addActionListener(ajoutUtilisateurController);
-
+		
 		// layout
 		panels[0].setLayout(new GridLayout(3, 1));
 

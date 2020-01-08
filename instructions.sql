@@ -23,7 +23,7 @@ CREATE TABLE Utilisateur (
 CREATE TABLE Ticket (
 	idticket	 INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	titre 		 VARCHAR(100),
-	created_at   DATETIME,
+	created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
 	iduser		 VARCHAR(100) NOT NULL,
 	idgroupe	 INT(4) NOT NULL,
 	FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant),
@@ -33,7 +33,7 @@ CREATE TABLE Ticket (
 CREATE TABLE Message (
 	idmessage	 INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	contenu 	 VARCHAR(10000) NOT NULL,
-	created_at   DATETIME,
+	created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
 	iduser		 VARCHAR(100) NOT NULL,
 	idticket	 INT(4) NOT NULL,
 	FOREIGN KEY (iduser) REFERENCES `Utilisateur` (identifiant),
