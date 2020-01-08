@@ -6,66 +6,59 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observer;
 
 import javax.swing.*;
 
+import controller.SuppressionGroupeController;
+import database.DBConnection;
+import javafx.beans.Observable;
+
 //Interface permettant de supprimer un groupe via un menu déroulant contenant l'ensemble des groupes
-public class SuppresionGroupe implements ActionListener {
+public class SuppresionGroupe extends JPanel implements Observer {
+
 	private JButton ok = new JButton("OK");
-	private String[] listeGrp = { "groupe 1", "groupe 2", "groupe 3", "groupe 4", "groupe 5" }; // TODO changer la liste
-																								// des groupes pour
-																								// qu'elle corresponde à
-																								// la vrai liste
 	private JComboBox<String> ListeGroupe;
-	private JPanel[] panel = new JPanel[4];
+	private JPanel[] panels = new JPanel[4];
 
 	public SuppresionGroupe() {
 		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
-		ListeGroupe = new JComboBox<String>(listeGrp);
+		
+		ListeGroupe = new JComboBox<String>(
+				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
+		SuppressionGroupeController suppressionGroupeController = new SuppressionGroupeController();
+		
 		for (int i = 0; i < 4; i++) {
-			panel[i] = new JPanel();
+			panels[i] = new JPanel();
 		}
+		//taille
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
 		ok.setPreferredSize(new Dimension(300, 50));
-		ok.addActionListener(this);
-		ListeGroupe.addActionListener(this);
+		//actionListener
+		ok.addActionListener(suppressionGroupeController);
+		ListeGroupe.addActionListener(suppressionGroupeController);
 		// layout
-		panel[0].setLayout(new GridLayout(3, 1));
-		panel[1].setLayout(new FlowLayout());
-		panel[2].setLayout(new FlowLayout());
-		panel[3].setLayout(new BorderLayout());
+		panels[0].setLayout(new GridLayout(3, 1));
+		panels[1].setLayout(new FlowLayout());
+		panels[2].setLayout(new FlowLayout());
+		panels[3].setLayout(new BorderLayout());
 		// ajout
-		panel[1].add(ListeGroupe);
-		panel[2].add(ok);
-		panel[0].add(panel[1]);
-		panel[0].add(panel[2]);
-		panel[3].add(panel[0], BorderLayout.NORTH);
+		panels[1].add(ListeGroupe);
+		panels[2].add(ok);
+		panels[0].add(panels[1]);
+		panels[0].add(panels[2]);
+		panels[3].add(panels[0], BorderLayout.NORTH);
+		
+		add(panels[3], BorderLayout.NORTH);
 
-		// affichage
-		JFrame frame = new JFrame("Suppression groupe");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 600);
-		frame.setLocationRelativeTo(null);
-		frame.add(panel[3]);
-		frame.pack();
-		frame.setVisible(true);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		String nom;
-		if (e.getSource() == ListeGroupe) {
-			JComboBox action = (JComboBox) e.getSource();
-			String source = (String) action.getSelectedItem();
-			for (int i = 0; i < listeGrp.length; i++) {
-				if (source == listeGrp[i]) {
-					nom = listeGrp[i];
-					String s = "confirmation de la supprésion de l'utilisateur :  " + nom;
-					int op = JOptionPane.showConfirmDialog(null, s);
-					// TODO close
-				}
-			}
-		}
+
+	@Override
+	public void update(java.util.Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

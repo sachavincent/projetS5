@@ -40,7 +40,7 @@ public class SuppresionUtilisateur implements ActionListener{
 		panel[1].add(listeUtilisateur);
 		panel[2].add(ok);
 		panel[0].add(panel[1]);
-		//panel[0].add(panel[2]);
+		panel[0].add(panel[2]);
 		panel[3].add(panel[0],BorderLayout.NORTH);
 		
 		//affichage
