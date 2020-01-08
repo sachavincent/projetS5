@@ -15,6 +15,8 @@ import database.DBConnection.Type;
 import view.FenetreServeur;
 import view.VueAjoutUtilisateur;
 import view.VueModificationGroupe;
+import view.VueSuppressionUtilisateur;
+import view.VueSuppressionUtilisateurGroupe;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -84,7 +86,7 @@ public class Main {
 			}
 		});
 //		frame.setContentPane(new VueConnexion());
-		frame.setContentPane(new VueAjoutUtilisateur());
+		frame.setContentPane(new VueSuppressionUtilisateurGroupe());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);

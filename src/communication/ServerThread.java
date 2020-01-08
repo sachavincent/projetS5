@@ -1,5 +1,7 @@
 package communication;
 
+import static main.Main.DELIMITER;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,8 +10,9 @@ import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import static main.Main.*;
+
 import database.DBConnection;
+import model.Ticket;
 import model.Utilisateur;
 
 public class ServerThread extends Thread {
@@ -20,6 +23,7 @@ public class ServerThread extends Thread {
 
 	private boolean connexion;
 	private boolean deconnexion;
+	private boolean creationTicket;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -63,6 +67,9 @@ public class ServerThread extends Thread {
 			break;
 		case "deconnexion":
 			deconnexion = true;
+			break;
+		case "creerTicket":
+			creationTicket = true;
 			break;
 		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
 //			stringBuilder.append("Utilisateurs:");
@@ -143,12 +150,22 @@ public class ServerThread extends Thread {
 					Utilisateur u = DBConnection.getInstance().getListeUtilisateurs().stream()
 							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(logins[0])).findFirst().orElse(null);
 					pw.println(u.toString()); // Envoi de l'utilisateur
-					//TODO: Envoyer tout ce qui le concerne
+					// TODO: Envoyer tout ce qui le concerne
 				}
 				connexion = false;
 			} else if (deconnexion) {
 				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
 				deconnexion = false;
+			} else if (creationTicket) {
+				String[] split = instruction.split(DELIMITER);
+				Ticket ticket = DBConnection.getInstance().creerTicket(split[0], split[1], Integer.parseInt(split[2]));
+
+				if (ticket != null) // Création du ticket réussie
+					pw.println(ticket.toString()); // Envoi du ticket
+				else
+					pw.println(false); // Envoi de false
+
+				creationTicket = false;
 			}
 
 			break;

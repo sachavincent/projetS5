@@ -1,13 +1,11 @@
 package model;
 
+import static main.Main.DELIMITER;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
-
-import com.sun.istack.internal.NotNull;
-
-import static main.Main.*;
 
 public class Ticket extends Observable {
 

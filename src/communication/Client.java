@@ -58,6 +58,37 @@ public class Client {
 	}
 
 	/**
+	 * Permet d'envoyer une demande de création de ticket au serveur
+	 * 
+	 * @param titre                  le titre du ticket
+	 * @param identifiantUtilisateur l'identifiant de l'utilisateur qui fait la
+	 *                               demande
+	 * @param idGroupe               l'id du groupe qui reçoit le ticket
+	 * @return le ticket crée
+	 */
+	public Ticket creerTicket(String titre, int idGroupe) {
+		pw.println("creerTicket");
+		pw.println(titre + DELIMITER + Client.getUtilisateur().getIdentifiant() + DELIMITER + idGroupe);
+
+		try {
+			// Attente du booléen de confirmation
+			while (!br.ready()) {
+			}
+			String message = br.readLine();
+
+			// Erreur
+			if(message.equals("false"))
+				return null;
+			
+			return getTicket(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Déconnecter l'utilisateur
 	 */
 	public void disconnect() {
