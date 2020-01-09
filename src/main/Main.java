@@ -13,7 +13,9 @@ import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
+import model.Utilisateur.TypeUtilisateur;
 import view.client.VueConnexion;
+import view.client.VueCreationTicket;
 import view.server.VueFenetreServeur;
 
 public class Main {
@@ -97,13 +99,13 @@ public class Main {
 					}
 				});
 
-				frame.setContentPane(new VueConnexion());
-				// centrage + affichage
-				frame.pack();
-				frame.setVisible(true);
-				frame.toFront();
-				frame.requestFocus();
-
+//				frame.setContentPane(new VueConnexion());
+//				// centrage + affichage
+//				frame.pack();
+//				frame.setVisible(true);
+//				frame.toFront();
+//				frame.requestFocus();
+				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
 				break;
 			}
 		}

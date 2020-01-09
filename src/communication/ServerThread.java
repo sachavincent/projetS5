@@ -41,13 +41,26 @@ public class ServerThread extends Thread {
 		try {
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+			TCPCommunication.CLIENTS.add(pw);
+
 			ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
 			executor.scheduleAtFixedRate(() -> {
 				try {
+					if (Thread.currentThread().isInterrupted()) {
+						TCPCommunication.CLIENTS.remove(pw);
+
+						TCPCommunication.closeServerSocket();
+
+						executor.shutdown();
+					}
+
 					if (br.ready())
 						readAndReply(socket, br.readLine());
 				} catch (IOException e) {
 					e.printStackTrace();
+
+					executor.shutdown();
 				}
 			}, 0, 333, TimeUnit.MILLISECONDS);
 		} catch (IOException e) {
@@ -162,21 +175,28 @@ public class ServerThread extends Thread {
 				pw.println(res); // Identifiants de l'utilisateurs à connecter donnés
 
 				if (res) { // Connexion réussie
-					// Envoi des données
 					Utilisateur u = DBConnection.getInstance().getListeUtilisateurs().stream()
 							.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(split[0])).findFirst().orElse(null);
-					pw.println(u.toString()); // Envoi de l'utilisateur
 
+					// Envoi des données
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw)) {
+							writer.println("CONNEXION");
+						}
+						pw.println(u.toString()); // Envoi de l'utilisateur
+					});
+
+					// Les messages en attente passent en non lus
+					// Envoi des messages
+					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream().filter(
+							amu -> amu.getUtilisateur().equals(u) && amu.getEtat() == EtatMessage.EN_ATTENTE)
+							.forEach(amu -> {
+								amu.getUtilisateur().setConnecte(true);
+
+								DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
+										amu.getUtilisateur(), amu.getEtat());
+							});
 					try {
-						// Les messages en attente passent en non lus
-						// Envoi des messages
-						DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream().filter(
-								amu -> amu.getUtilisateur().equals(u) && amu.getEtat() == EtatMessage.EN_ATTENTE)
-								.forEach(amu -> {
-									DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
-											amu.getUtilisateur(), amu.getEtat());
-								});
-
 						// TODO: Envoyer tout ce qui le concerne
 						// Envoi des messages qu'il a envoyé et ceux dans les tickets auxquels il
 						// appartient

@@ -59,7 +59,7 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 
 		((Stream<TypeUtilisateur>) Arrays.stream(TypeUtilisateur.values()))
 				.map(type -> type.toString().replace('_', ' ')).forEach(type -> typeUtilisateurComboBox.addItem(type));
-		
+
 		typeUtilisateurComboBox.addActionListener(ajoutUtilisateurController);
 		okButton.addActionListener(ajoutUtilisateurController);
 		annulerButton.addActionListener(ajoutUtilisateurController);
@@ -71,7 +71,7 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 			panels[1].setLayout(new FlowLayout());
 
 		// ajout
-		//panels[1].add(titre);
+		// panels[1].add(titre);
 		panels[1].add(labels[0]);
 		panels[1].add(fields[0]);
 		panels[2].add(labels[1]);
@@ -93,14 +93,13 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 		panels[6].setLayout(new BorderLayout());
 		panels[6].add(panels[7], BorderLayout.NORTH);
 		panels[6].add(panels[8], BorderLayout.SOUTH);
-		
+
 		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[6], BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
-
 	}
 
 	@Override

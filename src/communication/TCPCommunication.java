@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import main.LectureFichier;
 
@@ -17,7 +17,7 @@ public class TCPCommunication {
 	public static int PORT = 1978;
 	public static String SERVER_IP = "192.168.1.23";
 
-	public final static List<Socket> CLIENTS = new ArrayList<>();
+	public final static Set<PrintWriter> CLIENTS = new HashSet<>();
 
 	private static InetAddress ip;
 	private static Socket socket;
@@ -61,9 +61,6 @@ public class TCPCommunication {
 	public static void closeClientSocket() {
 		try {
 			if (socket != null) {
-				// Suppression du socket de la liste des clients
-				CLIENTS.remove(socket);
-
 				socket.close();
 			}
 			if (pw != null)
@@ -82,8 +79,6 @@ public class TCPCommunication {
 			serverSocket = new ServerSocket(PORT);
 			while (true) { // TODO : Condition
 				socket = serverSocket.accept();
-
-				CLIENTS.add(socket);
 
 				new ServerThread(socket).start();
 			}

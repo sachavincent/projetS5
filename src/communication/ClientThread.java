@@ -43,7 +43,7 @@ public class ClientThread extends Thread {
 	}
 
 	enum Requete {
-		MESSAGE, NONE, CHANGEMENT_ETAT_MESSAGE;
+		MESSAGE, CONNEXION, NONE, CHANGEMENT_ETAT_MESSAGE;
 	}
 
 	@Override
@@ -65,6 +65,12 @@ public class ClientThread extends Thread {
 
 								requete = Requete.MESSAGE;
 								break;
+							case "CONNEXION":
+								// Un utilisateur s'est connecté
+
+								requete = Requete.CONNEXION;
+
+								System.out.println("Connexion d'un utilisateur");
 							}
 							break;
 
@@ -111,9 +117,34 @@ public class ClientThread extends Thread {
 
 							} while (!line.equals(DELIMITER + DELIMITER + DELIMITER)); // TODO: Handle timeout
 
+							requete = Requete.NONE;
 							break;
 						case CHANGEMENT_ETAT_MESSAGE:
 							// TODO
+							requete = Requete.NONE;
+							break;
+						case CONNEXION:
+							Utilisateur util = getUtilisateur(line);
+							DBConnection.getInstance().getListeUtilisateurs().stream().filter(u -> u.equals(util))
+									.forEach(u -> u.setConnecte(true));
+
+							DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
+									.filter(agu -> agu.getUtilisateur().equals(util))
+									.forEach(agu -> agu.getUtilisateur().setConnecte(true));
+
+							// Les messages en attente passent en non lus
+							// Envoi des messages
+							DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream().filter(
+									amu -> amu.getUtilisateur().equals(util) && amu.getEtat() == EtatMessage.EN_ATTENTE)
+									.forEach(amu -> {
+										amu.getUtilisateur().setConnecte(true);
+										DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
+												amu.getUtilisateur(), amu.getEtat());
+									});
+
+							System.out.println("Utilisateur connecté : " + util);
+							
+							requete = Requete.NONE;
 							break;
 						}
 					}
@@ -226,7 +257,7 @@ public class ClientThread extends Thread {
 					utilisateur.getTickets().add(ticket);
 					DBConnection.getInstance().getListeTickets().add(ticket);
 					DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
-					
+
 					while (!br.ready()) {
 					}
 
@@ -333,7 +364,11 @@ public class ClientThread extends Thread {
 			if (message.equals("false"))
 				return null;
 
-			return getTicket(message);
+			Ticket ticket = getTicket(message);
+
+			DBConnection.getInstance().getListeTickets().add(ticket);
+
+			return ticket;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

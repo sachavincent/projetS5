@@ -422,6 +422,13 @@ public class DBConnection {
 	 */
 	public boolean ajouterUtilisateurAGroupe(Utilisateur utilisateur, GroupeUtilisateurs groupe) {
 		PreparedStatement st = null;
+
+		if (!listeAGU.isEmpty()) {
+			if (listeAGU.stream().filter(agu -> agu.getGroupe().equals(groupe))
+					.anyMatch(agu -> agu.getUtilisateur().getType() != utilisateur.getType()))
+				return false;
+		}
+
 		try {
 			// Ajout à la base de données
 			st = this.connection
