@@ -47,19 +47,19 @@ public class CreationTicketController implements ActionListener {
 								groupeUtilisateurs.getIdGroupe());
 						if (ticket == null) {
 							JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-							JOptionPane.showMessageDialog(topFrame, "Création Erreur");
+							JOptionPane.showMessageDialog(topFrame, "Erreur lors de la création du ticket");
 							topFrame.setVisible(false);
 							topFrame.dispose();
 						} else {
 							JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-							JOptionPane.showMessageDialog(topFrame, "Création réussi");
+							JOptionPane.showMessageDialog(topFrame, "Création du ticket réussie");
 							topFrame.setVisible(false);
 							topFrame.dispose();
 							
 						}
 					} else {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-						JOptionPane.showMessageDialog(topFrame, "Erreur");
+						JOptionPane.showMessageDialog(topFrame, "Erreur lors de la création du ticket");
 						topFrame.setVisible(false);
 						topFrame.dispose();
 					}

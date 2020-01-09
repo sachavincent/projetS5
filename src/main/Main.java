@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -13,9 +12,7 @@ import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import model.Utilisateur.TypeUtilisateur;
 import view.client.VueConnexion;
-import view.client.VueCreationTicket;
 import view.server.VueFenetreServeur;
 
 public class Main {
