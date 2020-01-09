@@ -183,7 +183,7 @@ public class ServerThread extends Thread {
 						if (!writer.equals(pw)) {
 							writer.println("CONNEXION");
 						}
-						pw.println(u.toString()); // Envoi de l'utilisateur
+						writer.println(u.toString()); // Envoi de l'utilisateur
 					});
 
 					// Les messages en attente passent en non lus
@@ -197,7 +197,6 @@ public class ServerThread extends Thread {
 										amu.getUtilisateur(), amu.getEtat());
 							});
 					try {
-						// TODO: Envoyer tout ce qui le concerne
 						// Envoi des messages qu'il a envoyé et ceux dans les tickets auxquels il
 						// appartient
 						// Envoi des tickets qu'il a crée et ceux auxquels il appartient
@@ -211,8 +210,12 @@ public class ServerThread extends Thread {
 						// associations AMU
 						DBConnection.getInstance().getListeUtilisateurs().forEach(ut -> {
 							pw.println(ut.toString());
+							System.out.println("User sent: " + ut.toString());
 
-							ut.getMessages().stream().forEach(m -> pw.println(m.toString()));
+							ut.getMessages().stream().forEach(m -> {
+								System.out.println("Message sent: " + m.toString());
+								pw.println(m.toString());
+							});
 
 							pw.println(DELIMITER + DELIMITER);
 
@@ -234,13 +237,19 @@ public class ServerThread extends Thread {
 							}
 
 							DBConnection.getInstance().getListeGroupes().stream()
-									.forEach(g -> pw.println(g.toString()));
+									.forEach(g -> {
+										System.out.println("Groupe: " + g.toString());
+										pw.println(g.toString());
+									});
 
 							pw.println(DELIMITER + DELIMITER);
 
 							DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
 									.filter(amu -> amu.getUtilisateur().equals(ut))
-									.forEach(amu -> pw.println(amu.toString()));
+									.forEach(amu -> {
+										pw.println(amu.toString());
+										System.out.println("AMU sent: " + amu.toString());
+									});
 
 							pw.println(DELIMITER + DELIMITER);
 
