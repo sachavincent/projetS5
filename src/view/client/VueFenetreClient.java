@@ -15,7 +15,6 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -120,38 +118,78 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelLeft.add(secretariatLabel);
 		panelLeft.add(panelSecr);
 
+		JPanel messages = new JPanel();
+		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS));
+
+//		SpringLayout layoutMessages = new SpringLayout();
+
 		JPanel panelMessage = new JPanel();
-		SpringLayout springLayout = new SpringLayout();
-		JLabel nom = new JLabel("Sacha V.");
-		JLabel dateMessage = new JLabel("Hier à 23:14");
-
-		JTextArea contenuMessage = new JTextArea(5, 2);
-		contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
-		contenuMessage.setEditable(false);
-//		contenuMessage.setPreferredSize(new Dimension(screenWidth / 8, screenHeight / 15));
-//		message.add(contenuMessage, BorderLayout.CENTER);
-//		nom.setBorder(new EmptyBorder(0, 50, 0, 0));
-//		message.setBorder(new EmptyBorder(100, screenWidth / 3, 0, 0));
-
-		panelMessage.add(nom);
-		panelMessage.add(contenuMessage);
-		panelMessage.add(dateMessage);
-
-		springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
-
-		// panelMessage si 1er message sinon précédent
-		springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage);
-		springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
-		springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST, panelMessage);
-		springLayout.putConstraint(SpringLayout.EAST, panelMessage, 20, SpringLayout.EAST, nom);
-		springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
-		springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
-
-		panelMessage.setLayout(springLayout);
-
 		JScrollPane panelMessages = new JScrollPane();
-		panelMessages.setBorder(BorderFactory.createEmptyBorder());
-		panelMessages.getViewport().add(panelMessage);
+//		panelMessages.setBorder(BorderFactory.createEmptyBorder());
+		panelMessages.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+		{
+			SpringLayout springLayout = new SpringLayout();
+			JLabel nom = new JLabel("Sacha V.");
+			JLabel dateMessage = new JLabel("Hier à 23:14");
+
+			JTextArea contenuMessage = new JTextArea(5, 2);
+			contenuMessage.setText("adqzdq");
+			contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
+			contenuMessage.setEditable(false);
+			panelMessage.add(nom);
+			panelMessage.add(contenuMessage);
+			panelMessage.add(dateMessage);
+
+			springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
+
+			// panelMessage si 1er message sinon précédent
+			springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage);
+			springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST,
+					panelMessage);
+			springLayout.putConstraint(SpringLayout.EAST, panelMessage, 20, SpringLayout.EAST, nom);
+			springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
+
+			panelMessage.setLayout(springLayout);
+
+			messages.add(panelMessage);
+		}
+
+		JPanel panelMessage2 = new JPanel();
+		{
+			SpringLayout springLayout = new SpringLayout();
+			JLabel nom = new JLabel("Sacha V.");
+			JLabel dateMessage = new JLabel("Hier à 23:14");
+
+			JTextArea contenuMessage = new JTextArea(5, 2);
+			contenuMessage.setText("ab");
+			contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
+			contenuMessage.setEditable(false);
+			panelMessage2.add(nom);
+			panelMessage2.add(contenuMessage);
+			panelMessage2.add(dateMessage);
+
+			springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
+
+			// panelMessage si 1er message sinon précédent
+			springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage2);
+			springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST,
+					panelMessage2);
+			springLayout.putConstraint(SpringLayout.EAST, panelMessage2, 20, SpringLayout.EAST, nom);
+			springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
+
+			panelMessage2.setLayout(springLayout);
+
+			messages.add(panelMessage2);
+		}
+//		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
+//		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
+		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
+//		messages.setLayout(layoutMessages);
+		panelMessages.getViewport().add(messages);
 
 		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
