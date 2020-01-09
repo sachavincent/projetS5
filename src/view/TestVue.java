@@ -1,10 +1,8 @@
-package view.client;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,12 +15,10 @@ import controller.client.CreationTicketController;
 import database.DBConnection;
 import model.Utilisateur.TypeUtilisateur;
 
-// Interface permettant de se connecter à l'application et au serveur
-public class VueCreationTicket extends JFrame implements Observer {
-
+public class TestVue extends JPanel{
 	private static final long serialVersionUID = 1L;
 
-	private JTextField titreField = new JTextField(30);
+	private JTextField titreField = new JTextField(20);
 
 	private JComboBox<String> groupesComboBox = new JComboBox<>(new String[] { "Choisir un groupe" });
 
@@ -32,8 +28,8 @@ public class VueCreationTicket extends JFrame implements Observer {
 
 	private JButton okButton = new JButton("OK");
 	private JButton annulerButton = new JButton("Annuler");
-
-	public VueCreationTicket(TypeUtilisateur typeUtilisateur) {
+	
+	public TestVue(TypeUtilisateur typeUtilisateur)  {
 		for (int i = 0; i < 7; i++)
 			panels[i] = new JPanel();
 			
@@ -76,17 +72,13 @@ public class VueCreationTicket extends JFrame implements Observer {
 		
 //		panels[1].add(annulerButton);
 //		panels[1].add(okButton);
-
-		setTitle("NeOCampus");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
-		setResizable(false);
-		setVisible(true);
-
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
+		
+		JPanel pf = new JPanel();
+		pf.setLayout(new BorderLayout());
+		pf.add(panels[3],BorderLayout.NORTH);
+		add(pf,BorderLayout.NORTH);
+		
+		
 	}
 
 }
