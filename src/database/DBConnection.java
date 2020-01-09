@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -363,11 +364,13 @@ public class DBConnection {
 	 * @return true si l'insertion a fonctionné
 	 */
 	public boolean creerGroupe(String nom, List<Utilisateur> listeUtilisateurs) {
+		System.out.println("Nom récupéré : " + nom);
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			// Ajout à la base de donnéesa
-			st = this.connection.prepareStatement("INSERT INTO GroupeUtilisateurs (nom) VALUES (?)");
+			st = this.connection.prepareStatement("INSERT INTO GroupeUtilisateurs (nom) VALUES (?)",
+					Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, nom);
 
 			st.execute();
@@ -853,7 +856,8 @@ public class DBConnection {
 
 		try {
 			// Insertion dans la base de données
-			st = this.connection.prepareStatement("INSERT INTO Ticket (titre, iduser, idgroupe) VALUES (?, ?, ?)");
+			st = this.connection.prepareStatement("INSERT INTO Ticket (titre, iduser, idgroupe) VALUES (?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, titre);
 			st.setString(2, identifiant);
 			st.setInt(3, idGroupe);
@@ -926,7 +930,8 @@ public class DBConnection {
 
 		try {
 			// Insertion dans la base de données
-			st = this.connection.prepareStatement("INSERT INTO Message (contenu, iduser, idticket) VALUES (?, ?, ?)");
+			st = this.connection.prepareStatement("INSERT INTO Message (contenu, iduser, idticket) VALUES (?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
 			st.setString(1, contenu);
 			st.setString(2, utilisateur.getIdentifiant());
 			st.setInt(3, ticket.getIdTicket());

@@ -25,7 +25,7 @@ public class SuppressionUtilisateurController implements ActionListener {
 			String source = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
 
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
-					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
+					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
 
 			if (utilisateur != null)
 				this.utilisateur = utilisateur;

@@ -28,16 +28,14 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 
 	private JTextField[] fields = new JTextField[4];
 
-	private JComboBox<String> typeUtilisateurComboBox = new JComboBox<>(
-			(String[]) (((Stream<TypeUtilisateur>) Arrays.stream(TypeUtilisateur.values()))
-					.map(type -> type.toString().replace('_', ' ')).toArray(String[]::new)));
+	private JComboBox<String> typeUtilisateurComboBox = new JComboBox<>();
 
 	private String[] nomsLabels = new String[] { "Identifiant", "Mot de passe", "Nom", "Prenom", "Type Utilisateur" };
 	private JLabel[] labels = new JLabel[5];
-	private JLabel titre = new JLabel("Ajout d'un Utilisateur",SwingConstants.CENTER);
+	private JLabel titre = new JLabel("Ajout d'un Utilisateur", SwingConstants.CENTER);
 	private JButton okButton = new JButton("Création");
 	private JButton annulerButton = new JButton("Annuler");
-	
+
 	private JPanel[] panels = new JPanel[9];
 
 	public VueAjoutUtilisateur() {
@@ -51,14 +49,21 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 		for (int i = 0; i < 4; i++)
 			fields[i] = new JTextField(TAILLE_TEXT_FIELDS);
 
+		okButton.setEnabled(false);
+
 		// action listeners
 		AjoutUtilisateurController ajoutUtilisateurController = new AjoutUtilisateurController(fields[0], fields[1],
-				fields[2], fields[3]);
+				fields[2], fields[3], okButton);
 
+		typeUtilisateurComboBox.addItem("Choisir un type d'utilisateur");
+
+		((Stream<TypeUtilisateur>) Arrays.stream(TypeUtilisateur.values()))
+				.map(type -> type.toString().replace('_', ' ')).forEach(type -> typeUtilisateurComboBox.addItem(type));
+		
 		typeUtilisateurComboBox.addActionListener(ajoutUtilisateurController);
 		okButton.addActionListener(ajoutUtilisateurController);
 		annulerButton.addActionListener(ajoutUtilisateurController);
-		
+
 		// layout
 		panels[0].setLayout(new GridLayout(3, 1));
 
@@ -82,22 +87,19 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 			panels[0].add(panels[i]);
 
 		panels[7].add(panels[0]);
-		panels[8].add(okButton);
 		panels[8].add(annulerButton);
+		panels[8].add(okButton);
 
 		panels[6].setLayout(new BorderLayout());
 		panels[6].add(panels[7], BorderLayout.NORTH);
 		panels[6].add(panels[8], BorderLayout.SOUTH);
 
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[6], BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
 
-		
-		
 	}
 
 	@Override

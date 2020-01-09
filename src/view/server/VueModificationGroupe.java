@@ -69,8 +69,9 @@ public class VueModificationGroupe extends JFrame implements Observer {
 		panels[1].add(groupesComboBox);
 		panels[2].add(nameLabel);
 		panels[2].add(nameField);
-		panels[3].add(okButton);
 		panels[3].add(annulerButton);
+		panels[3].add(okButton);
+		
 		//panels[0].add(panels[4]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);

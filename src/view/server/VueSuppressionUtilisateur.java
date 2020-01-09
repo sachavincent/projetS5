@@ -20,6 +20,8 @@ import database.DBConnection;
 //Interface permettant de supprimé un utilisateur via un menu déroulant
 public class VueSuppressionUtilisateur extends JFrame implements Observer {
 
+	private static final long serialVersionUID = 1L;
+	
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
 	private JComboBox<String> listeUtilisateur;
@@ -31,11 +33,11 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
 		listeUtilisateur = new JComboBox<String>(
-				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getNom()).toArray(String[]::new));
+				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getIdentifiant()).toArray(String[]::new));
 		for (int i = 0; i < 5; i++) {
 			panel[i] = new JPanel();
 		}
-		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
+		titrePanel.setFont(titrePanel.getFont().deriveFont(20f));
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
 		
 		ok.setPreferredSize(new Dimension(200, 50));
@@ -53,8 +55,9 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 		// ajout
 		panel[1].add(titreComboBox);
 		panel[1].add(listeUtilisateur);
-		panel[2].add(ok);
 		panel[2].add(annuler);
+		panel[2].add(ok);
+		
 		panel[4].add(titrePanel);
 		panel[0].add(panel[4]);
 		panel[0].add(panel[1]);
@@ -67,8 +70,6 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 		pack();
 		setResizable(false);
 		setVisible(true);
-		
-
 	}
 
 	@Override

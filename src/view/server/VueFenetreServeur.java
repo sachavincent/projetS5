@@ -6,21 +6,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.server.FenetreServeurController;
 
 // Interface Serveur avec toutes les options auquel il a accés 
 
-public class VueFenetreServeur extends JFrame implements Observer {
+public class VueFenetreServeur extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
