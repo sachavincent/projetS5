@@ -39,7 +39,7 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 		nomPanel.setFont(nomPanel.getFont().deriveFont(15f));
 		for (int i = 0; i < 6; i++)
 			panel[i] = new JPanel();
-
+		ok.setEnabled(false);
 		// taille
 		ok.setPreferredSize(d);
 		annuler.setPreferredSize(d);

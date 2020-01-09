@@ -27,7 +27,8 @@ public class ModificationUtilisateurController implements ActionListener {
 		if (e.getSource() instanceof JComboBox) {
 			JComboBox<String> utilisateursComboBox = (JComboBox<String>) e.getSource();
 			String source = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
-
+			int index = utilisateursComboBox.getSelectedIndex();
+			
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
 
