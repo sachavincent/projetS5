@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 
 import communication.ClientThread;
 import database.DBConnection;
+import main.Encryption;
 import view.client.VueFenetreClient;
 
 public class ConnexionController implements ActionListener {
@@ -30,6 +31,7 @@ public class ConnexionController implements ActionListener {
 			return;
 
 		System.out.println("Click");
+		password = Encryption.SHA1(password);
 		// TODO Encryption
 
 		ClientThread client = ClientThread.getClient();

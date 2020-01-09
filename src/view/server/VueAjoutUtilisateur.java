@@ -71,7 +71,7 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 			panels[1].setLayout(new FlowLayout());
 
 		// ajout
-		panels[1].add(titre);
+		//panels[1].add(titre);
 		panels[1].add(labels[0]);
 		panels[1].add(fields[0]);
 		panels[2].add(labels[1]);

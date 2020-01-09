@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import database.DBConnection;
+import main.Encryption;
 
 public class AjoutUtilisateurController implements ActionListener {
 	private JTextField identifiantField;
@@ -58,7 +59,7 @@ public class AjoutUtilisateurController implements ActionListener {
 						&& !prenomField.getText().isEmpty()) {
 
 					boolean res = DBConnection.getInstance().creerUtilisateur(identifiantField.getText(),
-							passwordField.getText(), nomField.getText(), prenomField.getText(), typeUtilisateur);
+							Encryption.SHA1(passwordField.getText()), nomField.getText(), prenomField.getText(), typeUtilisateur);
 
 					if (res) {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

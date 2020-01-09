@@ -22,9 +22,6 @@ import view.server.VueFenetreServeur;
  */
 
 public class Main {
-	private Scanner x;
-	private int ip;
-	private int port;
 
 	public final static String DELIMITER = "\0";
 
@@ -123,37 +120,8 @@ public class Main {
 		frame.setVisible(true);
 	}
 
-	public void openFile() {
-		try {
-			x = new Scanner(new File("settings.txt"));
-		} catch (Exception e) {
-			System.out.println("fichier introuvable");
-		}
-
-	}
 
 	
-	public void FileReader() {
-		String txt;
-		String eq;
-		String nb;
-
-		while (x.hasNext()) {
-			txt = x.next();
-			eq = x.next();
-			nb = x.next();
-			if (txt.equals("ip")) {
-				ip = Integer.parseInt(nb);
-			}
-			if (txt.equals("port")) {
-				port = Integer.parseInt(nb);
-			}
-
-		}
-		
-		// .txt avec ip = et port = sur 2 lignes
-		// recup les lignes dans 2 variable
-		// maj variable
-	}
+	
 
 }

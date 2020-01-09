@@ -15,9 +15,11 @@ public class main {
 
 	public static void main(String[] args) {
 
-		String password = "123456";
-		System.out.println(password);
-		System.out.println("MD5 : "+ Encryption.SHA1(password));
+		LectureFichier f = new LectureFichier();
+		f.openFile();
+		f.fileReader();
+		System.out.println(f.getIp());
+		System.out.println(f.getPort());
 	}
 
 }
