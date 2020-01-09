@@ -3,10 +3,13 @@ package controller.client;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import communication.ClientThread;
+import view.client.VueFenetreClient;
 
 public class ConnexionController implements ActionListener {
 
@@ -31,10 +34,16 @@ public class ConnexionController implements ActionListener {
 		ClientThread client = ClientThread.getClient();
 		if (client != null) {
 			boolean res = client.connect(identifiant, password);
-			System.out.println("Res: " + res);
-//			if(res)
-//				Client.getUtilisateur().setConnecte(true);
+			if (res) {
+				System.out.println("true");
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(identifiantField);
+				topFrame.dispose();
+				
+				new VueFenetreClient();
+			}
+			// TODO Message d'erreur
 		}
+		// TODO Message d'erreur
 	}
 
 }
