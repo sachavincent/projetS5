@@ -15,7 +15,7 @@ import main.LectureFichier;
 public class TCPCommunication {
 
 	public static int PORT = 1978;
-	public static String SERVER_IP = "192.168.1.23";
+	public static String SERVER_IP = "90.55.189.128";
 
 	public final static Set<PrintWriter> CLIENTS = new HashSet<>();
 
