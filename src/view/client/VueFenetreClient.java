@@ -119,8 +119,8 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelLeft.add(panelSecr);
 
 		JPanel messages = new JPanel();
-		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS));
-
+		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS)); 
+		
 //		SpringLayout layoutMessages = new SpringLayout();
 
 		JPanel panelMessage = new JPanel();
@@ -153,7 +153,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			panelMessage.setLayout(springLayout);
 
-			messages.add(panelMessage);
+			messages.add(panelMessage,BorderLayout.EAST);
 		}
 
 		JPanel panelMessage2 = new JPanel();
@@ -183,13 +183,19 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			panelMessage2.setLayout(springLayout);
 
-			messages.add(panelMessage2);
+			messages.add(panelMessage2,BorderLayout.WEST);
 		}
 //		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
 //		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
 		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
 //		messages.setLayout(layoutMessages);
-		panelMessages.getViewport().add(messages);
+		JPanel test = new JPanel();
+		JPanel test2 = new JPanel();
+		test2.setLayout(new GridLayout(1,1,1,2));
+		test.setLayout(new GridLayout(1,1,12,12));
+		test.add(messages);
+		test2.add(test);
+		panelMessages.getViewport().add(test2);
 
 		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
