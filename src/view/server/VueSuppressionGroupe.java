@@ -29,7 +29,6 @@ public class VueSuppressionGroupe extends JFrame implements Observer {
 	private JLabel titrePanel = new JLabel("Suppression d'un groupe");
 
 	public VueSuppressionGroupe() {
-		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
 		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
 

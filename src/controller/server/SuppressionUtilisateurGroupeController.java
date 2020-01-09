@@ -85,7 +85,7 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 					} else {
 						// Afficher erreur
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-						JOptionPane.showMessageDialog(topFrame, "Erreur lors de la suppréssion");
+						JOptionPane.showMessageDialog(topFrame, "Erreur lors de la suppression");
 
 					}
 				} else {

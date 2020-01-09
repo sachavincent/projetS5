@@ -30,7 +30,6 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 	private JLabel titreComboBox = new JLabel("Sélection de l'utilisateur");
 
 	public VueSuppressionUtilisateur() {
-		// TODO pop up de confirmation quand on clique sur "OK"
 		// init
 		listeUtilisateur = new JComboBox<String>(
 				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getIdentifiant()).toArray(String[]::new));
@@ -75,7 +74,7 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

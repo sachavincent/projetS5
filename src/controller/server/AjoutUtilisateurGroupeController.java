@@ -3,6 +3,7 @@ package controller.server;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -70,15 +71,18 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 			if (nomB.equals("OK")) {
 				if (this.utilisateur != null && this.groupe != null) {
 					boolean res = DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
-					
 
 					if (res) {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 						JOptionPane.showMessageDialog(topFrame, "Ajout réussi");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 					} else {
 						// Afficher erreur
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 						JOptionPane.showMessageDialog(topFrame, "Erreur lors de l'ajout :(");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 
 					}
 				} else {
@@ -99,15 +103,17 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 				.filter(u -> u.getIdentifiant().equals(identifiant)).findFirst().orElse(null);
 
 		this.utilisateur = utilisateur;
-		
-		if (utilisateur != null) {
-			
-			//groupesComboBox.removeAllItems();
-			//groupesComboBox.addItem("Choisir un groupe");
 
-			DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
-					.filter(agu -> agu.getUtilisateur().equals(utilisateur)).map(agu -> agu.getGroupe())
-					.forEach(g -> groupesComboBox.addItem(g.getNom()));
+		if (utilisateur != null) {
+
+			 groupesComboBox.removeAllItems();
+			 groupesComboBox.addItem("Choisir un groupe");
+			DBConnection.getInstance().getListeGroupes().stream().filter(g -> {
+				return DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
+						.filter(agu -> agu.getGroupe().equals(g))
+						.noneMatch(agu -> agu.getUtilisateur().equals(utilisateur));
+			}).forEach(g -> groupesComboBox.addItem(g.getNom()));
+
 		}
 	}
 

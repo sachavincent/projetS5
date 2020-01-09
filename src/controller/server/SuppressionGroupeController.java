@@ -44,11 +44,13 @@ public class SuppressionGroupeController implements ActionListener {
 					if (res) {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 						JOptionPane.showMessageDialog(topFrame, "Suppression réussi");
-						groupe.setModelChanged();
-						groupe.notifyObservers();
+						topFrame.setVisible(false);
+						topFrame.dispose();
+//						groupe.setModelChanged();
+//						groupe.notifyObservers();
 					} else {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-						JOptionPane.showMessageDialog(topFrame, "Erreur suppréssion");
+						JOptionPane.showMessageDialog(topFrame, "Erreur lors de la suppression");
 					}
 				}
 			} else if (nomB.equals("Annuler")) {

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -21,6 +22,9 @@ import view.server.VueFenetreServeur;
  */
 
 public class Main {
+	private Scanner x;
+	private int ip;
+	private int port;
 
 	public final static String DELIMITER = "\0";
 
@@ -65,6 +69,7 @@ public class Main {
 								.getHeight()));
 				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 				frame.setContentPane(new VueFenetreServeur());
+				// frame.setBackground(Color);
 				// centrage + affichage
 				frame.pack();
 				frame.toFront();
@@ -72,7 +77,6 @@ public class Main {
 				frame.setVisible(true);
 				return;
 
-				
 			case 1: // Client
 				// TODO
 				DBConnection.type = Type.CLIENT;
@@ -86,7 +90,6 @@ public class Main {
 
 		DBConnection db = DBConnection.getInstance();
 
-		
 		// Frame
 		JFrame frame = new JFrame("NeOCampus");
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,7 +101,7 @@ public class Main {
 //		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// frame.setPreferredSize(new Dimension(500,500));
 		// frame.setLocationRelativeTo(null);
-		
+
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (ClientThread.getUtilisateur() == null)
@@ -111,13 +114,46 @@ public class Main {
 				}
 			}
 		});
-		
+
 		frame.setContentPane(new VueConnexion());
 		// centrage + affichage
 		frame.pack();
 		frame.toFront();
 		frame.requestFocus();
 		frame.setVisible(true);
+	}
+
+	public void openFile() {
+		try {
+			x = new Scanner(new File("settings.txt"));
+		} catch (Exception e) {
+			System.out.println("fichier introuvable");
+		}
+
+	}
+
+	
+	public void FileReader() {
+		String txt;
+		String eq;
+		String nb;
+
+		while (x.hasNext()) {
+			txt = x.next();
+			eq = x.next();
+			nb = x.next();
+			if (txt.equals("ip")) {
+				ip = Integer.parseInt(nb);
+			}
+			if (txt.equals("port")) {
+				port = Integer.parseInt(nb);
+			}
+
+		}
+		
+		// .txt avec ip = et port = sur 2 lignes
+		// recup les lignes dans 2 variable
+		// maj variable
 	}
 
 }

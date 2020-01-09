@@ -17,12 +17,11 @@ import model.Utilisateur;
 
 public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 
-	// TODO fenetre de confirmation
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
 	private JLabel nomPanel = new JLabel("Ajout d'un utilisateur à un groupe");
-	private JLabel listeGrp = new JLabel("liste des groupes");
-	private JLabel listeU = new JLabel("liste des utilisateurs");
+	private JLabel listeGrp = new JLabel("Choisir un groupe");
+	private JLabel listeU = new JLabel("Choisir un utilisateurs");
 	private JComboBox<String> listeGroupeComboBox = new JComboBox<String>();;
 	private JComboBox<String> listeUtilisateurComboBox = new JComboBox<String>();;
 	private JPanel[] panel = new JPanel[6];
@@ -96,7 +95,6 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -32,7 +32,7 @@ public class SuppressionUtilisateurController implements ActionListener {
 
 			if (utilisateur != null)
 				this.utilisateur = utilisateur;
-			if (index !=0)
+			if (index != 0)
 				ok.setEnabled(true);
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
@@ -40,14 +40,14 @@ public class SuppressionUtilisateurController implements ActionListener {
 			if (nomB.equals("OK")) {
 				if (this.utilisateur != null) {
 					boolean res = DBConnection.getInstance().supprimerUtilisateur(utilisateur);
-					if(res) {
+					if (res) {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 						JOptionPane.showMessageDialog(topFrame, "Suppression réussi");
 						topFrame.setVisible(false);
 						topFrame.dispose();
-					}else {
+					} else {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-						JOptionPane.showMessageDialog(topFrame, "Echec Suppression");
+						JOptionPane.showMessageDialog(topFrame, "Echec lors de la suppression");
 						topFrame.setVisible(false);
 						topFrame.dispose();
 					}
