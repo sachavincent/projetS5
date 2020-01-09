@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -20,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import communication.ClientThread;
 import controller.client.FenetreClientController;
+import database.DBConnection;
 import model.Ticket;
 
 //Interface pour le Client
@@ -29,7 +32,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
-	private ImageIcon plusIcon = new ImageIcon("icons/add_ticket.png", "Add ticket");
+	private ImageIcon plusIcon = new ImageIcon("icons/add_ticket.png", "Créer un ticket");
 
 	private JPanel panelTickets = new JPanel();
 
@@ -129,10 +132,23 @@ public class VueFenetreClient extends JFrame implements Observer {
 		servicesAdmLabel.addMouseListener(fenetreClientController);
 		servicesTechLabel.addMouseListener(fenetreClientController);
 		secretariatLabel.addMouseListener(fenetreClientController);
-		
+
 		plus1.addMouseListener(fenetreClientController);
 		plus2.addMouseListener(fenetreClientController);
 		plus3.addMouseListener(fenetreClientController);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (ClientThread.getUtilisateur() == null)
+					return;
+
+				if (DBConnection.type == DBConnection.Type.CLIENT && ClientThread.getUtilisateur().isConnecte()) {
+					ClientThread.getClient().disconnect();
+
+					System.out.println("Déconnexion");
+				}
+			}
+		});
 
 		// ajout
 		// affichage

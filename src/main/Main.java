@@ -92,20 +92,20 @@ public class Main {
 							return;
 
 						if (DBConnection.type == Type.CLIENT && ClientThread.getUtilisateur().isConnecte()) {
-							ClientThread.getUtilisateur().setConnecte(false);
-
 							ClientThread.getClient().disconnect();
+							
+							System.out.println("Déconnexion");
 						}
 					}
 				});
 
-//				frame.setContentPane(new VueConnexion());
-//				// centrage + affichage
-//				frame.pack();
-//				frame.setVisible(true);
-//				frame.toFront();
-//				frame.requestFocus();
-				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
+				frame.setContentPane(new VueConnexion());
+				// centrage + affichage
+				frame.pack();
+				frame.setVisible(true);
+				frame.toFront();
+				frame.requestFocus();
+//				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
 				break;
 			}
 		}

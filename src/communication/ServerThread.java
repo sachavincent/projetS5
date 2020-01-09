@@ -188,13 +188,13 @@ public class ServerThread extends Thread {
 
 					// Les messages en attente passent en non lus
 					// Envoi des messages
-					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream().filter(
-							amu -> amu.getUtilisateur().equals(u) && amu.getEtat() == EtatMessage.EN_ATTENTE)
+					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+							.filter(amu -> amu.getUtilisateur().equals(u) && amu.getEtat() == EtatMessage.EN_ATTENTE)
 							.forEach(amu -> {
 								amu.getUtilisateur().setConnecte(true);
 
-								DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
-										amu.getUtilisateur(), amu.getEtat());
+								DBConnection.getInstance().changerEtatMessage(amu.getMessage(), amu.getUtilisateur(),
+										amu.getEtat());
 							});
 					try {
 						// TODO: Envoyer tout ce qui le concerne
