@@ -47,13 +47,13 @@ public class Utilisateur extends Observable {
 		case "ENSEIGNANT":
 			this.type = TypeUtilisateur.ENSEIGNANT;
 			break;
-		case "SERVICE_ADMINISTRATIF":
+		case "SERVICE ADMINISTRATIF":
 			this.type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
 			break;
-		case "SERVICE_TECHNIQUE":
+		case "SERVICE TECHNIQUE":
 			this.type = TypeUtilisateur.SERVICE_TECHNIQUE;
 			break;
-		case "SECRETAIRE_PEDAGOGIQUE":
+		case "SECRETAIRE PEDAGOGIQUE":
 			this.type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
 			break;
 		default:
