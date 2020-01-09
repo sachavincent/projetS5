@@ -32,12 +32,12 @@ public class SuppressionGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "OK") {
+			if (nomB.equals("OK")) {
 				if (this.groupe != null) {
 					boolean res = DBConnection.getInstance().supprimerGroupe(groupe);
 
 					System.out.println(res);
-					
+
 					if (res) {
 						// TODO Afficher succès
 						groupe.setModelChanged();
@@ -46,7 +46,7 @@ public class SuppressionGroupeController implements ActionListener {
 						// TODO Afficher erreur
 					}
 				}
-			} else if (nomB == "Annuler") {
+			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();

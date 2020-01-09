@@ -7,7 +7,9 @@ import javax.swing.JButton;
 
 import view.server.VueAjoutGroupe;
 import view.server.VueAjoutUtilisateur;
+import view.server.VueAjoutUtilisateurGroupe;
 import view.server.VueModificationGroupe;
+import view.server.VueModificationUtilisateur;
 import view.server.VueSuppressionGroupe;
 import view.server.VueSuppressionUtilisateur;
 import view.server.VueSuppressionUtilisateurGroupe;
@@ -27,7 +29,7 @@ public class FenetreServeurController implements ActionListener {
 				new VueAjoutUtilisateur();
 				break;
 			case "Modifier un utilisateur":
-
+				new VueModificationUtilisateur();
 				break;
 			case "Supprimer un utilisateur":
 				new VueSuppressionUtilisateur();
@@ -42,7 +44,7 @@ public class FenetreServeurController implements ActionListener {
 				new VueSuppressionGroupe();
 				break;
 			case "Ajouter un utilisateur à un groupe":
-
+				new VueAjoutUtilisateurGroupe();
 				break;
 			case "Supprimer un utilisateur d'un groupe":
 				new VueSuppressionUtilisateurGroupe();
