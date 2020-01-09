@@ -36,6 +36,7 @@ public class SuppressionUtilisateurController implements ActionListener {
 			if (nomB.equals("OK")) {
 				if (this.utilisateur != null) {
 					DBConnection.getInstance().supprimerUtilisateur(utilisateur);
+					
 				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
