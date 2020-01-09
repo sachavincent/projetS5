@@ -225,8 +225,10 @@ public class DBConnection {
 	/**
 	 * Permet de connecter l'utilisateur
 	 * 
-	 * @param identifiantU idenfiant de l'utilisateur
-	 * @param password     mot de passe de l'utilisateur
+	 * @param identifiantU
+	 *            idenfiant de l'utilisateur
+	 * @param password
+	 *            mot de passe de l'utilisateur
 	 * @return reussite de la connexion
 	 */
 	public boolean connecter(String identifiantU, String password) {
@@ -235,6 +237,9 @@ public class DBConnection {
 
 		if (utilisateur == null) // Identifiant incorrect
 			return false;
+
+		if (utilisateur.isConnecte())
+			deconnecter(identifiantU);
 
 		// On vérifie que les mots de passe correspondent
 		boolean reussite = utilisateur.memeMotDePasse(password);
@@ -319,7 +324,8 @@ public class DBConnection {
 	/**
 	 * Permet de déconnecter un utilisateur dans la base de données
 	 * 
-	 * @param identifiantU l'identifiant de l'utilisateur
+	 * @param identifiantU
+	 *            l'identifiant de l'utilisateur
 	 */
 	public void deconnecter(String identifiantU) {
 		PreparedStatement st = null;
@@ -334,9 +340,10 @@ public class DBConnection {
 			// Mise à jour des listes
 			Utilisateur u = listeUtilisateurs.stream().filter(ut -> ut.getIdentifiant().equalsIgnoreCase(identifiantU))
 					.findFirst().orElse(null);
-			if (u != null)
+			if (u != null) {
 				u.setConnecte(false);
-
+				System.out.println("Déconnecté : " + u.toString());
+			}
 			// Mise à jour des listes
 			for (AssociationGroupeUtilisateur agu : listeAGU) {
 				Utilisateur uti = agu.getUtilisateur();
@@ -359,8 +366,10 @@ public class DBConnection {
 	/**
 	 * Permet de créer un groupe
 	 * 
-	 * @param nom               le nom du groupe
-	 * @param listeUtilisateurs la liste des utilisateurs du groupe
+	 * @param nom
+	 *            le nom du groupe
+	 * @param listeUtilisateurs
+	 *            la liste des utilisateurs du groupe
 	 * @return true si l'insertion a fonctionné
 	 */
 	public boolean creerGroupe(String nom, List<Utilisateur> listeUtilisateurs) {
@@ -416,8 +425,10 @@ public class DBConnection {
 	/**
 	 * Permet d'ajouter un utilisateur à un groupe
 	 * 
-	 * @param utilisateur l'utilisateur
-	 * @param groupe      le groupe
+	 * @param utilisateur
+	 *            l'utilisateur
+	 * @param groupe
+	 *            le groupe
 	 * @return true si l'insertion s'est bien déroulée
 	 */
 	public boolean ajouterUtilisateurAGroupe(Utilisateur utilisateur, GroupeUtilisateurs groupe) {
@@ -462,7 +473,8 @@ public class DBConnection {
 	/**
 	 * Permet de supprimer un groupe
 	 * 
-	 * @param groupe le groupe à supprimer
+	 * @param groupe
+	 *            le groupe à supprimer
 	 * @return true si la suppression a eue lieu
 	 */
 	public boolean supprimerGroupe(GroupeUtilisateurs groupe) {
@@ -512,8 +524,10 @@ public class DBConnection {
 	/**
 	 * Permet de supprimer un utilisateur d'un groupe
 	 * 
-	 * @param utilisateur l'utilisateur
-	 * @param groupe      le groupe
+	 * @param utilisateur
+	 *            l'utilisateur
+	 * @param groupe
+	 *            le groupe
 	 * @return true si la suppression s'est bien déroulée
 	 */
 	public boolean supprimerUtilisateurDeGroupe(GroupeUtilisateurs groupe, Utilisateur utilisateur) {
@@ -550,7 +564,8 @@ public class DBConnection {
 	/**
 	 * Permet de supprimer un ticket
 	 * 
-	 * @param ticket le ticket à supprimer
+	 * @param ticket
+	 *            le ticket à supprimer
 	 * @return si la suppression a bien été effectuée
 	 */
 	public boolean supprimerTicket(Ticket ticket) {
@@ -592,7 +607,8 @@ public class DBConnection {
 	/**
 	 * Permet de mettre à jour un GroupeUtilisateurs
 	 * 
-	 * @param groupe le groupe à mettre à jour
+	 * @param groupe
+	 *            le groupe à mettre à jour
 	 */
 	public void updateGroupe(GroupeUtilisateurs groupe) {
 		PreparedStatement st = null;
@@ -628,11 +644,16 @@ public class DBConnection {
 	/**
 	 * Permet d'ajouter un utilisateur à la base de données
 	 * 
-	 * @param identifiant l'identifiant de l'utilisateur
-	 * @param password    le mot de passe de l'utilisateur
-	 * @param nom         le nom de l'utilisateur
-	 * @param prenom      le prénom de l'utilisateur
-	 * @param type        le type de l'utilisateur
+	 * @param identifiant
+	 *            l'identifiant de l'utilisateur
+	 * @param password
+	 *            le mot de passe de l'utilisateur
+	 * @param nom
+	 *            le nom de l'utilisateur
+	 * @param prenom
+	 *            le prénom de l'utilisateur
+	 * @param type
+	 *            le type de l'utilisateur
 	 * 
 	 * @return true si l'ajout a fonctionné
 	 */
@@ -673,9 +694,12 @@ public class DBConnection {
 	/**
 	 * Permet de modifier le mot de passe de l'utilisateur
 	 * 
-	 * @param identifiant l'identifiant de l'utilisateur
-	 * @param ancienMDP   l'ancien mot de passe de l'utilisateur
-	 * @param nouveauMDP  le nouveau mot de passe de l'utilisateur
+	 * @param identifiant
+	 *            l'identifiant de l'utilisateur
+	 * @param ancienMDP
+	 *            l'ancien mot de passe de l'utilisateur
+	 * @param nouveauMDP
+	 *            le nouveau mot de passe de l'utilisateur
 	 * 
 	 * @return true si la modification a fonctionné
 	 */
@@ -725,8 +749,9 @@ public class DBConnection {
 	 * Permet de modifier un utilisateur (sauf mot de passe) Cette fonction ne
 	 * requiert pas le mot de passe
 	 * 
-	 * @param nouvelUtilisateur l'utilisateur qui remplace l'ancien, son id est
-	 *                          contenu dans l'objet
+	 * @param nouvelUtilisateur
+	 *            l'utilisateur qui remplace l'ancien, son id est contenu dans
+	 *            l'objet
 	 * 
 	 * @return trye si la modification a fonctionné
 	 */
@@ -795,7 +820,8 @@ public class DBConnection {
 	/**
 	 * Permet de supprimer un utilisateur de la base de données
 	 * 
-	 * @param utilisateur l'utilisateur à supprimer
+	 * @param utilisateur
+	 *            l'utilisateur à supprimer
 	 * 
 	 * @return true si la suppression a fonctionné
 	 */
@@ -844,9 +870,12 @@ public class DBConnection {
 	/**
 	 * Permet de créer un ticket
 	 * 
-	 * @param titre       le titre du ticket
-	 * @param identifiant l'identifiant de l'utilisateur qui crée le ticket
-	 * @param idGroupe    l'id du groupe qui reçoit le ticket
+	 * @param titre
+	 *            le titre du ticket
+	 * @param identifiant
+	 *            l'identifiant de l'utilisateur qui crée le ticket
+	 * @param idGroupe
+	 *            l'id du groupe qui reçoit le ticket
 	 * 
 	 * @return le ticket crée
 	 */
@@ -876,8 +905,6 @@ public class DBConnection {
 
 			st.execute();
 
-			st.close();
-
 			rs = st.getGeneratedKeys();
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
@@ -885,7 +912,8 @@ public class DBConnection {
 			int idTicket = rs.getInt(1);
 
 			rs.close();
-
+			st.close();
+			
 			// Récupération de la date de création
 			st = this.connection.prepareStatement("SELECT created_at FROM Ticket WHERE idticket = ?");
 			st.setInt(1, idTicket);
@@ -919,9 +947,12 @@ public class DBConnection {
 	/**
 	 * Permet de créer un message
 	 * 
-	 * @param contenu     le contenu du message
-	 * @param identifiant l'identifiant de l'utilisateur qui crée le message
-	 * @param idTicket    l'id du ticket contenant le message
+	 * @param contenu
+	 *            le contenu du message
+	 * @param identifiant
+	 *            l'identifiant de l'utilisateur qui crée le message
+	 * @param idTicket
+	 *            l'id du ticket contenant le message
 	 * 
 	 * @return le message crée
 	 */
@@ -950,14 +981,13 @@ public class DBConnection {
 
 			st.execute();
 
-			st.close();
-
 			rs = st.getGeneratedKeys();
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
 
 			int idMessage = rs.getInt(1);
 
+			st.close();
 			rs.close();
 
 			// Récupération de la date de création
@@ -1031,9 +1061,12 @@ public class DBConnection {
 	/**
 	 * Permet de changer l'état d'un message dans la base de données
 	 * 
-	 * @param message     le message à changer
-	 * @param utilisateur l'utilisateur auteur du message
-	 * @param etat        le nouvel état du message
+	 * @param message
+	 *            le message à changer
+	 * @param utilisateur
+	 *            l'utilisateur auteur du message
+	 * @param etat
+	 *            le nouvel état du message
 	 * 
 	 * @return true si le changement a réussi
 	 */
