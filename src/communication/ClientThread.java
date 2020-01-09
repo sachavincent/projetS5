@@ -43,7 +43,7 @@ public class ClientThread extends Thread {
 	}
 
 	enum Requete {
-		MESSAGE, CONNEXION, NONE, CHANGEMENT_ETAT_MESSAGE;
+		MESSAGE, CONNEXION, NONE, OUVERTURE_TICKET;
 	}
 
 	@Override
@@ -71,6 +71,15 @@ public class ClientThread extends Thread {
 								requete = Requete.CONNEXION;
 
 								System.out.println("Connexion d'un utilisateur");
+								break;
+
+							case "OUVERTURE TICKET":
+								// L'utilisateur ouvre un ticket
+
+								requete = Requete.OUVERTURE_TICKET;
+
+								System.out.println("Ouverture ticket");
+								break;
 							}
 							break;
 
@@ -119,12 +128,30 @@ public class ClientThread extends Thread {
 
 							requete = Requete.NONE;
 							break;
-						case CHANGEMENT_ETAT_MESSAGE:
-							// TODO
+						case OUVERTURE_TICKET:
+							Utilisateur util = getUtilisateur(line);
+
+							while (!br.ready()) {
+							}
+
+							line = br.readLine();
+
+							ticket = getTicket(line);
+
+							DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+									.filter(amu -> amu.getUtilisateur().equals(util)
+											&& amu.getEtat() == EtatMessage.NON_LU
+											&& ticket.getMessages().contains(amu.getMessage()))
+									.forEach(amu -> {
+										DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
+												amu.getUtilisateur(), EtatMessage.LU);
+									});
+
 							requete = Requete.NONE;
+
 							break;
 						case CONNEXION:
-							Utilisateur util = getUtilisateur(line);
+							util = getUtilisateur(line);
 							DBConnection.getInstance().getListeUtilisateurs().stream().filter(u -> u.equals(util))
 									.forEach(u -> u.setConnecte(true));
 
@@ -139,11 +166,11 @@ public class ClientThread extends Thread {
 									.forEach(amu -> {
 										amu.getUtilisateur().setConnecte(true);
 										DBConnection.getInstance().changerEtatMessage(amu.getMessage(),
-												amu.getUtilisateur(), amu.getEtat());
+												amu.getUtilisateur(), EtatMessage.NON_LU);
 									});
 
 							System.out.println("Utilisateur connecté : " + util);
-							
+
 							requete = Requete.NONE;
 							break;
 						}
@@ -264,7 +291,7 @@ public class ClientThread extends Thread {
 				}
 
 				DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
-				
+
 				// Liste des groupes
 				while (!br.ready()) {
 				}
@@ -377,6 +404,35 @@ public class ClientThread extends Thread {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Permet d'ouvrir un ticket
+	 * 
+	 * @param idTicket l'id du ticket
+	 * 
+	 * @return true si l'ouverture a fonctionné
+	 */
+	public boolean ouvrirTicket(int idTicket) {
+		canReceive = false;
+
+		pw.println("ouvrirTicket");
+		pw.println(utilisateur.getIdentifiant() + DELIMITER + idTicket);
+
+		try {
+			// Attente du booléen de confirmation
+			while (!br.ready()) {
+			}
+			String message = br.readLine();
+
+			return Boolean.parseBoolean(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			canReceive = true;
+		}
+
+		return false;
 	}
 
 	/**
