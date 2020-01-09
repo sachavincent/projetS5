@@ -231,6 +231,8 @@ public class VueFenetreClient extends JFrame implements Observer {
 		plus2.addMouseListener(fenetreClientController);
 		plus3.addMouseListener(fenetreClientController);
 
+		fieldMessage.addKeyListener(fenetreClientController);
+
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (ClientThread.getUtilisateur() == null)

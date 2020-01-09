@@ -1,7 +1,7 @@
 package controller.client;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -9,17 +9,18 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import communication.ClientThread;
 import database.DBConnection;
 import model.Ticket;
 import model.Utilisateur.TypeUtilisateur;
 import view.client.VueCreationTicket;
 
-public class FenetreClientController implements ActionListener, MouseListener {
+public class FenetreClientController implements MouseListener, KeyListener {
 
 	private ImageIcon openedTicketIcon;
 	private ImageIcon closedTicketIcon;
@@ -43,6 +44,8 @@ public class FenetreClientController implements ActionListener, MouseListener {
 	private JLabel plusTech;
 	private JLabel plusSecr;
 
+	private Ticket ticket;
+
 	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
 			JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2, JPanel panelTech2, JLabel plusAdm,
 			JLabel plusTech, JLabel plusSecr) {
@@ -53,8 +56,7 @@ public class FenetreClientController implements ActionListener, MouseListener {
 					ImageIO.read(getClass().getResource("/resources/icons/opened_ticket.png")));
 			invisibleIcon = new ImageIcon(
 					ImageIO.read(getClass().getResource("/resources/icons/invisible_ticket.png")));
-			ticketIcon = new ImageIcon(
-					ImageIO.read(getClass().getResource("/resources/icons/ticket.png")));
+			ticketIcon = new ImageIcon(ImageIO.read(getClass().getResource("/resources/icons/ticket.png")));
 		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -125,7 +127,9 @@ public class FenetreClientController implements ActionListener, MouseListener {
 			if (typeUtilisateur != null) {
 				if (typeUtilisateur == type) {
 					System.out.println(typeUtilisateur);
-					JLabel jlabel = new JLabel(t.getTitre());
+					JLabel jlabel = new JLabel("Ticket n°" + idGroupe + " - " + t.getTitre());
+					jlabel.addMouseListener(this);
+
 					jlabel.setBorder(new EmptyBorder(5, 20, 2, 0));
 					jlabel.setIcon(ticketIcon);
 
@@ -163,40 +167,49 @@ public class FenetreClientController implements ActionListener, MouseListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JButton) {
-		}
-
-	}
-
-	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2) {
-			if (e.getSource().equals(servicesAdmLabel)) {
+		if (e.getSource().equals(servicesAdmLabel)) {
+			if (e.getClickCount() == 2) {
 				if (isServiceOpened(servicesAdmLabel))
 					closeService(servicesAdmLabel);
 				else
 					openService(servicesAdmLabel);
-			} else if (e.getSource().equals(servicesTechLabel)) {
+			}
+		} else if (e.getSource().equals(servicesTechLabel)) {
+			if (e.getClickCount() == 2) {
 				if (isServiceOpened(servicesTechLabel))
 					closeService(servicesTechLabel);
 				else
 					openService(servicesTechLabel);
-			} else if (e.getSource().equals(secretariatLabel)) {
+			}
+		} else if (e.getSource().equals(secretariatLabel)) {
+			if (e.getClickCount() == 2) {
 				if (isServiceOpened(secretariatLabel))
 					closeService(secretariatLabel);
 				else
 					openService(secretariatLabel);
 			}
-		} else {
-			if (e.getSource().equals(plusAdm)) {
-				new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
-			} else if (e.getSource().equals(plusTech)) {
-				new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
-			} else if (e.getSource().equals(plusSecr)) {
-				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
-			}
+		} else if (e.getSource().equals(plusAdm)) {
+			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
+		} else if (e.getSource().equals(plusTech)) {
+			new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
+		} else if (e.getSource().equals(plusSecr)) {
+			new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
+		} else if (e.getSource() instanceof JLabel) { // Tickets
+			JLabel labelTicket = (JLabel) e.getSource();
+			System.out.println("Label:" + labelTicket.getText());
+			int idTicket = Integer.parseInt(labelTicket.getText().split("°")[1].split(" - ")[0]);
+			Ticket ticket = DBConnection.getInstance().getListeTickets().stream()
+					.filter(t -> t.getIdTicket() == idTicket).findFirst().orElse(null);
+
+			if (ticket != null)
+				this.ticket = ticket;
+
+			boolean res = ClientThread.getClient().ouvrirTicket(this.ticket.getIdTicket());
+
+			System.out.println("ouverture : " + res);
 		}
+
 	}
 
 	@Override
@@ -213,6 +226,27 @@ public class FenetreClientController implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getSource() instanceof JTextField) {
+			JTextField textField = (JTextField) e.getSource();
+			String message = textField.getText();
+
+			if (!message.isEmpty()) {
+				ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket());
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
 	}
 
 }

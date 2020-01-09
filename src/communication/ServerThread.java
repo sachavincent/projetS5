@@ -94,79 +94,9 @@ public class ServerThread extends Thread {
 		case "envoyerMessage":
 			requeteActuelle = Requete.ENVOI_MESSAGE;
 			break;
-		case "Y": // Connexion de l'utilisateur, récupération des données du serveur
-			// stringBuilder.append("Utilisateurs:");
-			// stringBuilder.append(DBConnection.getInstance().getListeUtilisateurs().size()
-			// + "\t\0\0\t");
-			// DBConnection.getInstance().getListeUtilisateurs().forEach(o -> {
-			// appendLn(stringBuilder, o.toString());
-			//
-			// stringBuilder.append("\t\tMessages:");
-			// stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
-			// o.getMessages().forEach(m -> {
-			// stringBuilder.append("\t\t");
-			// appendLn(stringBuilder, m.toString());
-			// });
-			//
-			// stringBuilder.append("\t\tTickets:");
-			// stringBuilder.append(o.getTickets().size() + "\t\0\0\t");
-			// o.getTickets().forEach(m -> {
-			// stringBuilder.append("\t\t");
-			// appendLn(stringBuilder, m.toString());
-			// });
-			// stringBuilder.append("\t\0\0\t");
-			// });
-			//
-			// stringBuilder.append("Groupes:");
-			// stringBuilder.append(DBConnection.getInstance().getListeGroupes().size() +
-			// "\t\0\0\t");
-			// DBConnection.getInstance().getListeGroupes().forEach(o -> {
-			// appendLn(stringBuilder, o.toString());
-			//
-			// stringBuilder.append("\t\tUtilisateurs:");
-			// stringBuilder.append(o.getUtilisateurs().size() + "\t\0\0\t");
-			// o.getUtilisateurs().forEach(m -> {
-			// stringBuilder.append("\t\t");
-			// appendLn(stringBuilder, m.toString());
-			// });
-			// stringBuilder.append("\t\0\0\t");
-			// });
-			//
-			// stringBuilder.append("Tickets:");
-			// stringBuilder.append(DBConnection.getInstance().getListeTickets().size() +
-			// "\t\0\0\t");
-			// DBConnection.getInstance().getListeTickets().forEach(o -> {
-			// appendLn(stringBuilder, o.toString());
-			//
-			// stringBuilder.append("\t\tMessages:");
-			// stringBuilder.append(o.getMessages().size() + "\t\0\0\t");
-			// o.getMessages().forEach(m -> {
-			// stringBuilder.append("\t\t");
-			// appendLn(stringBuilder, m.toString());
-			// });
-			// stringBuilder.append("\t\0\0\t");
-			// });
-			//
-			// stringBuilder.append("Messages:");
-			// stringBuilder.append(DBConnection.getInstance().getListeMessages().size() +
-			// "\t\0\0\t");
-			// DBConnection.getInstance().getListeMessages().forEach(o -> {
-			// appendLn(stringBuilder, o.toString());
-			//
-			// stringBuilder.append("\t\0\0\t");
-			// });
-			//
-			// stringBuilder.append("AMU:");
-			// stringBuilder
-			// .append(DBConnection.getInstance().getListeAssociationsMessageUtilisateur().size()
-			// + "\t\0\0\t");
-			// DBConnection.getInstance().getListeAssociationsMessageUtilisateur()
-			// .forEach(o -> appendLn(stringBuilder, o.toString()));
-			//
-			// System.out.println(stringBuilder.toString());
-			// pw.println(stringBuilder.toString());
+		case "ouvrirTicket":
+			requeteActuelle = Requete.OUVERTURE_TICKET;
 			break;
-
 		default:
 			String[] split = instruction.split(DELIMITER);
 			switch (requeteActuelle) {
@@ -236,17 +166,15 @@ public class ServerThread extends Thread {
 								pw.println(DELIMITER + DELIMITER);
 							}
 
-							DBConnection.getInstance().getListeGroupes().stream()
-									.forEach(g -> {
-										System.out.println("Groupe: " + g.toString());
-										pw.println(g.toString());
-									});
+							DBConnection.getInstance().getListeGroupes().stream().forEach(g -> {
+								System.out.println("Groupe: " + g.toString());
+								pw.println(g.toString());
+							});
 
 							pw.println(DELIMITER + DELIMITER);
 
 							DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
-									.filter(amu -> amu.getUtilisateur().equals(ut))
-									.forEach(amu -> {
+									.filter(amu -> amu.getUtilisateur().equals(ut)).forEach(amu -> {
 										pw.println(amu.toString());
 										System.out.println("AMU sent: " + amu.toString());
 									});
@@ -316,6 +244,27 @@ public class ServerThread extends Thread {
 				requeteActuelle = Requete.NONE;
 
 				break;
+			case OUVERTURE_TICKET:
+				String identifiantUtilisateur = split[0];
+				int idTicket = Integer.parseInt(split[1]);
+
+				Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
+						.filter(u -> u.getIdentifiant().equalsIgnoreCase(identifiantUtilisateur)).findAny()
+						.orElse(null);
+
+				if (utilisateur != null) {
+					ticket = DBConnection.getInstance().getListeTickets().stream()
+							.filter(t -> t.getIdTicket() == idTicket).findAny().orElse(null);
+
+					if (ticket != null) {
+						res = DBConnection.getInstance().ouvrirTicket(utilisateur, ticket);
+
+						pw.println(res);
+					}
+
+				}
+				requeteActuelle = Requete.NONE;
+				break;
 			case NONE:
 				break;
 			}
@@ -324,14 +273,6 @@ public class ServerThread extends Thread {
 		}
 
 	}
-
-	// private StringBuilder appendLn(StringBuilder stringBuilder, String m) {
-	// stringBuilder.append("\t");
-	// stringBuilder.append(m);
-	// stringBuilder.append("\t\0\0\t");
-	//
-	// return stringBuilder;
-	// }
 
 	private void closeServerSocket() {
 		try {
@@ -350,6 +291,6 @@ public class ServerThread extends Thread {
 	}
 
 	enum Requete {
-		ENVOI_MESSAGE, CREATION_TICKET, CONNEXION, DECONNEXION, NONE;
+		ENVOI_MESSAGE, CREATION_TICKET, CONNEXION, DECONNEXION, OUVERTURE_TICKET, NONE;
 	}
 }
