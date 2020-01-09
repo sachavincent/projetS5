@@ -48,7 +48,7 @@ public class VueCreationTicket extends JFrame implements Observer {
 		// layout pour les panels
 		panels[0].setLayout(new GridLayout(2, 1));
 
-		CreationTicketController controller = new CreationTicketController(titreLabel, groupesComboBox);
+		CreationTicketController controller = new CreationTicketController(titreField, groupesComboBox);
 
 		okButton.addActionListener(controller);
 		annulerButton.addActionListener(controller);

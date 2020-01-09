@@ -15,12 +15,19 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import communication.ClientThread;
 import controller.client.FenetreClientController;
@@ -47,6 +54,9 @@ public class VueFenetreClient extends JFrame implements Observer {
 	private JPanel panelAdm = new JPanel();
 	private JPanel panelTech = new JPanel();
 	private JPanel panelSecr = new JPanel();
+
+	private JPanel rightSidePanel = new JPanel();
+	private JTextField fieldMessage = new JTextField();
 
 	public VueFenetreClient() {
 		setTitle("NeOCampus");
@@ -86,8 +96,9 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelTickets.setPreferredSize(new Dimension(screenWidth / 4, screenHeight));
 		panelTickets.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		// panelTickets.setLayout(new BoxLayout(panelTickets, BoxLayout.Y_AXIS));
 		panelTickets.setLayout(new GridLayout(1, 2));
+
+		rightSidePanel.setLayout(new BorderLayout());
 
 		panelAdm.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
 		panelTech.setLayout(new BoxLayout(panelTech, BoxLayout.Y_AXIS));
@@ -108,6 +119,43 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelLeft.add(panelTech);
 		panelLeft.add(secretariatLabel);
 		panelLeft.add(panelSecr);
+
+		JPanel panelMessage = new JPanel();
+		SpringLayout springLayout = new SpringLayout();
+		JLabel nom = new JLabel("Sacha V.");
+		JLabel dateMessage = new JLabel("Hier à 23:14");
+
+		JTextArea contenuMessage = new JTextArea(5, 2);
+		contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
+		contenuMessage.setEditable(false);
+//		contenuMessage.setPreferredSize(new Dimension(screenWidth / 8, screenHeight / 15));
+//		message.add(contenuMessage, BorderLayout.CENTER);
+//		nom.setBorder(new EmptyBorder(0, 50, 0, 0));
+//		message.setBorder(new EmptyBorder(100, screenWidth / 3, 0, 0));
+
+		panelMessage.add(nom);
+		panelMessage.add(contenuMessage);
+		panelMessage.add(dateMessage);
+
+		springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
+
+		// panelMessage si 1er message sinon précédent
+		springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage);
+		springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
+		springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST, panelMessage);
+		springLayout.putConstraint(SpringLayout.EAST, panelMessage, 20, SpringLayout.EAST, nom);
+		springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
+		springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
+
+		panelMessage.setLayout(springLayout);
+
+		JScrollPane panelMessages = new JScrollPane();
+		panelMessages.setBorder(BorderFactory.createEmptyBorder());
+		panelMessages.getViewport().add(panelMessage);
+
+		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
+		rightSidePanel.add(fieldMessage, BorderLayout.SOUTH);
 
 		JLabel plus1 = new JLabel(plusIcon);
 		plus1.setBorder(new EmptyBorder(10, 10, 0, 0));
@@ -161,6 +209,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 		// ajout
 		// affichage
 		add(panelTickets, BorderLayout.WEST);
+		add(rightSidePanel, BorderLayout.CENTER);
 		pack();
 		setVisible(true);
 	}

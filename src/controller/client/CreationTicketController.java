@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import communication.ClientThread;
 import database.DBConnection;
@@ -14,12 +14,12 @@ import model.Ticket;
 
 public class CreationTicketController implements ActionListener {
 
-	private JLabel titreLabel;
+	private JTextField titreField;
 
 	private JComboBox<String> groupesComboBox;
 
-	public CreationTicketController(JLabel titreLabel, JComboBox<String> groupesComboBox) {
-		this.titreLabel = titreLabel;
+	public CreationTicketController(JTextField titreField, JComboBox<String> groupesComboBox) {
+		this.titreField = titreField;
 		this.groupesComboBox = groupesComboBox;
 	}
 
@@ -31,7 +31,7 @@ public class CreationTicketController implements ActionListener {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
 			if (nomB.equals("OK")) {
-				if (!titreLabel.getText().equals("") && groupesComboBox.getSelectedIndex() != 0) {
+				if (!titreField.getText().equals("") && groupesComboBox.getSelectedIndex() != 0) {
 
 					String nomGroupe = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
 
@@ -40,7 +40,7 @@ public class CreationTicketController implements ActionListener {
 
 					if (groupeUtilisateurs != null) {
 
-						Ticket ticket = ClientThread.getClient().creerTicket(titreLabel.getText(),
+						Ticket ticket = ClientThread.getClient().creerTicket(titreField.getText(),
 								groupeUtilisateurs.getIdGroupe());
 						if (ticket == null) {
 							// TODO Afficher erreur

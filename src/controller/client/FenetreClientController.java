@@ -53,6 +53,8 @@ public class FenetreClientController implements ActionListener, MouseListener {
 					ImageIO.read(getClass().getResource("/resources/icons/opened_ticket.png")));
 			invisibleIcon = new ImageIcon(
 					ImageIO.read(getClass().getResource("/resources/icons/invisible_ticket.png")));
+			ticketIcon = new ImageIcon(
+					ImageIO.read(getClass().getResource("/resources/icons/ticket.png")));
 		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
