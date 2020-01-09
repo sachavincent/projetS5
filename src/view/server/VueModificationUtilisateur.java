@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,8 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.ModificationGroupeController;
-import controller.ModificationUtilisateurController;
+import controller.server.ModificationGroupeController;
+import controller.server.ModificationUtilisateurController;
 import database.DBConnection;
 
 //Affiche une interface permettant de modifier un paramètre d'un utilisateur via 2 menu déroulant.

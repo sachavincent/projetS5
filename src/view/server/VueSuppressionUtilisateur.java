@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.SuppressionUtilisateurController;
+import controller.server.SuppressionUtilisateurController;
 import database.DBConnection;
 
 //Interface permettant de supprimé un utilisateur via un menu déroulant

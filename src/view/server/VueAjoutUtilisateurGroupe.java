@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.*;
 import java.util.Observable;
@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import com.sun.javafx.geom.AreaOp.AddOp;
 
-import controller.AjoutUtilisateurGroupeController;
+import controller.server.AjoutUtilisateurGroupeController;
 import database.DBConnection;
 
 public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {

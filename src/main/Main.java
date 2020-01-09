@@ -12,7 +12,7 @@ import communication.ClientThread;
 import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
-import view.VueConnexion;
+import view.client.VueConnexion;
 
 /**
  * TODO Renommer cette classe parce que bon

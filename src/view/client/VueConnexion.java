@@ -1,4 +1,4 @@
-package view;
+package view.client;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.ConnexionController;
+import controller.client.ConnexionController;
 
 // Interface permettant de se connecter à l'application et au serveur
 public class VueConnexion extends JPanel implements Observer {

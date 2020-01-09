@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,7 +10,7 @@ import java.util.Observer;
 
 import javax.swing.*;
 
-import controller.SuppressionGroupeController;
+import controller.server.SuppressionGroupeController;
 import database.DBConnection;
 import javafx.beans.Observable;
 

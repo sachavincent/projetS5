@@ -1,4 +1,4 @@
-package controller;
+package controller.server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
-import view.FenetreClient;
+import view.client.FenetreClient;
 
 public class ModificationGroupeController implements ActionListener {
 

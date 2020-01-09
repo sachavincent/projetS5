@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controller.SuppressionUtilisateurGroupeController;
+import controller.server.SuppressionUtilisateurGroupeController;
 import database.DBConnection;
 import model.GroupeUtilisateurs;
 import model.Utilisateur;

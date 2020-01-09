@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import controller.AjoutUtilisateurController;
+import controller.server.AjoutUtilisateurController;
 import model.Utilisateur.TypeUtilisateur;
 
 //Interface permettant de créer un nouvel utilisateur.

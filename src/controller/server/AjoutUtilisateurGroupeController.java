@@ -1,5 +1,6 @@
-package controller;
+package controller.server;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,11 +11,14 @@ import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
+import model.Utilisateur;
 
-public class SuppressionGroupeController implements ActionListener {
+public class AjoutUtilisateurGroupeController implements ActionListener {
+
+	private Utilisateur utilisateur;
 	private GroupeUtilisateurs groupe;
 
-	public SuppressionGroupeController() {
+	public AjoutUtilisateurGroupeController() {
 
 	}
 
@@ -24,8 +28,14 @@ public class SuppressionGroupeController implements ActionListener {
 			JComboBox<String> groupesComboBox = (JComboBox<String>) e.getSource();
 			String source = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
 
+			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
+					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
 			GroupeUtilisateurs groupe = DBConnection.getInstance().getListeGroupes().stream()
 					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
+
+			if (utilisateur != null)
+				this.utilisateur = utilisateur;
+
 			if (groupe != null)
 				this.groupe = groupe;
 
@@ -33,18 +43,16 @@ public class SuppressionGroupeController implements ActionListener {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
 			if (nomB == "OK") {
-				if (this.groupe != null) {
-					DBConnection.getInstance().supprimerGroupe(groupe);
-				}
+				if (this.utilisateur != null && this.groupe != null)
+					DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
 			}
-			else if (nomB == "Annuler") {
+			else if(nomB == "Annuler") {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();
 			}
 
 		}
-
 	}
 
 }

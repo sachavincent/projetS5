@@ -1,4 +1,4 @@
-package view;
+package view.server;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.ModificationGroupeController;
+import controller.server.ModificationGroupeController;
 import database.DBConnection;
 
 //Interface permettant la modification du nom d'un grouoe

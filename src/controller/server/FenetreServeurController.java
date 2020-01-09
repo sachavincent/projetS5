@@ -1,15 +1,15 @@
-package controller;
+package controller.server;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import view.VueAjoutUtilisateur;
-import view.VueModificationGroupe;
-import view.VueSuppressionGroupe;
-import view.VueSuppressionUtilisateur;
-import view.VueSuppressionUtilisateurGroupe;
+import view.server.VueAjoutUtilisateur;
+import view.server.VueModificationGroupe;
+import view.server.VueSuppressionGroupe;
+import view.server.VueSuppressionUtilisateur;
+import view.server.VueSuppressionUtilisateurGroupe;
 
 public class FenetreServeurController implements ActionListener {
 
