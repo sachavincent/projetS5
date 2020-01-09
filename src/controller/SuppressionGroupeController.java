@@ -31,21 +31,16 @@ public class SuppressionGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "Ok") {
+			if (nomB == "OK") {
 				if (this.groupe != null) {
 					DBConnection.getInstance().supprimerGroupe(groupe);
 				}
 			}
-			else if (nomB == "Annler") {
+			else if (nomB == "Annuler") {
 				//TODO get back
 			}
 
 		}
-
-//	if (source == listeGrp[i]) {
-//		nom = listeGrp[i];
-//		String s = "confirmation de la supprésion de l'utilisateur :  " + nom;
-//		int op = JOptionPane.showConfirmDialog(null, s);
 
 	}
 

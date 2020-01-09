@@ -69,4 +69,7 @@ public class GroupeUtilisateurs extends Observable {
 		return idGroupe == other.idGroupe;
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
 }

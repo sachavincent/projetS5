@@ -107,4 +107,8 @@ public class Ticket extends Observable {
 		return builder.toString();
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
+	
 }

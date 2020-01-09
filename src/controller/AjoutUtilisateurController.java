@@ -36,7 +36,7 @@ public class AjoutUtilisateurController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "Ok") {
+			if (nomB == "Création") {
 				if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
 						&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
 						&& !prenomField.getText().isEmpty())

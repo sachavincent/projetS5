@@ -120,4 +120,8 @@ public class AssociationMessageUtilisateur extends Observable {
 		return true;
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
+	
 }

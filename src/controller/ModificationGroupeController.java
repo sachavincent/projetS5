@@ -34,7 +34,7 @@ public class ModificationGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nom = b.getText();
-			if (nom == "Ok") {
+			if (nom == "OK") {
 				if (this.groupe != null && !nameField.getText().isEmpty()) {
 					this.groupe.setNom(nameField.getText());
 

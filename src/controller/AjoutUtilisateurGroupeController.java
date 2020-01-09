@@ -40,7 +40,7 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "Ok") {
+			if (nomB == "OK") {
 				if (this.utilisateur != null && this.groupe != null)
 					DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
 			}
