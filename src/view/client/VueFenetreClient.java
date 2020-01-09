@@ -14,10 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import communication.ClientThread;
-import controller.server.FenetreServeurController;
-import database.DBConnection;
+import controller.client.FenetreClientController;
 import model.Ticket;
-import model.Utilisateur.TypeUtilisateur;
 
 //Interface pour le Client
 //contient le fils de discussion, une zone pour envoyer un message ainsi que toute les groupes auquel appartient l'utilisateur
@@ -68,11 +66,11 @@ public class VueFenetreClient extends JFrame implements Observer {
 //		panelTickets.add(servicesTechLabel);
 //		panelTickets.add(secretariatLabel);
 
-		FenetreServeurController fenetreServeurController = new FenetreServeurController(servicesAdmLabel,
+		FenetreClientController fenetreClientController = new FenetreClientController(servicesAdmLabel,
 				servicesTechLabel, secretariatLabel, panelAdm);
-		servicesAdmLabel.addMouseListener(fenetreServeurController);
-		servicesTechLabel.addMouseListener(fenetreServeurController);
-		secretariatLabel.addMouseListener(fenetreServeurController);
+		servicesAdmLabel.addMouseListener(fenetreClientController);
+		servicesTechLabel.addMouseListener(fenetreClientController);
+		secretariatLabel.addMouseListener(fenetreClientController);
 
 
 		// ajout
