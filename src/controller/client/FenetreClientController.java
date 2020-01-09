@@ -9,9 +9,11 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import communication.ClientThread;
@@ -191,6 +193,11 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			}
 		} else if (e.getSource().equals(plusAdm)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
+			
+//			JLabel l = (JLabel) e.getSource();
+//			JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(l);
+//			topFrame.setVisible(false);
+//			topFrame.setVisible(true);
 		} else if (e.getSource().equals(plusTech)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
 		} else if (e.getSource().equals(plusSecr)) {
