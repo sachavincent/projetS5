@@ -16,7 +16,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import database.DBConnection;
+import model.AssociationGroupeUtilisateur;
+import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
+import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
 import model.Utilisateur;
@@ -151,6 +154,18 @@ public class ServerThread extends Thread {
 
 							Set<Ticket> set = u.getTickets().stream().filter(t -> !listeTickets.contains(t))
 									.collect(Collectors.toSet());
+
+							ut.getTickets().stream().filter(t -> {
+								GroupeUtilisateurs groupe = t.getGroupeDestination();
+								AssociationGroupeUtilisateur asso = DBConnection.getInstance()
+										.getListeAssociationsGroupeUtilisateur().stream()
+										.filter(agu -> agu.getGroupe().equals(groupe)).findFirst().orElse(null);
+								if (asso == null)
+									return false;
+
+								return asso.getUtilisateur().getType() == u.getType();
+							}).forEach(t -> set.add(t));
+
 							if (set.isEmpty())
 								pw.println(DELIMITER + DELIMITER);
 							else {
@@ -242,22 +257,37 @@ public class ServerThread extends Thread {
 				Message message = DBConnection.getInstance().creerMessage(split[0], split[1],
 						Integer.parseInt(split[2]));
 
+				if (message != null)
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw))
+							writer.println("MESSAGE");
+					});
+
 				pw.println(message == null ? false : message.toString()); // Envoi du message ou de false si la création
 																			// n'a pas fonctionné
 
 				if (message != null)
-					pw.println(split[1] + DELIMITER + split[2]); // Envoi de l'identifiant de l'utilisateur qui l'a
-																	// envoyé et de l'id du ticket
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw))
+							writer.println(split[1] + DELIMITER + split[2]);
+
+						// Envoi de l'identifiant de l'utilisateur qui l'a envoyé et de l'id du ticket
+					});
+
 				try {
-					// Envoi des associations
-					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
-							.filter(amu -> amu.getMessage().equals(message)).forEach(amu -> pw.println(amu.toString()));
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						// Envoi des associations
+						DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+								.filter(amu -> amu.getMessage().equals(message))
+								.forEach(amu -> pw.println(amu.toString()));
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
 					// Marquage de fin
 					pw.println(DELIMITER + DELIMITER + DELIMITER);
 				}
+				
 				requeteActuelle = Requete.NONE;
 
 				break;
@@ -288,7 +318,7 @@ public class ServerThread extends Thread {
 						}
 					});
 				}
-				
+
 				requeteActuelle = Requete.NONE;
 				break;
 			case NONE:
