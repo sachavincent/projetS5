@@ -733,7 +733,7 @@ public class DBConnection {
 					"UPDATE Utilisateur SET nom = ?, prenom = ?, type = ?, connecte = ? WHERE identifiant = ?");
 			st.setString(1, nouvelUtilisateur.getNom());
 			st.setString(2, nouvelUtilisateur.getPrenom());
-			st.setString(3, nouvelUtilisateur.getType().toString().replace(' ', '_'));
+			st.setString(3, nouvelUtilisateur.getType().toString());
 			st.setInt(4, nouvelUtilisateur.isConnecte() ? 1 : 0);
 			st.setString(5, nouvelUtilisateur.getIdentifiant());
 

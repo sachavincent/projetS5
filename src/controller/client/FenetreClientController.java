@@ -9,15 +9,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import communication.ClientThread;
-import database.DBConnection;
 import view.client.VueFenetreClient;
 
-public class ConnexionController implements ActionListener {
+public class FenetreClientController implements ActionListener {
 
 	private JTextField identifiantField;
 	private JPasswordField passwordField;
 
-	public ConnexionController(JTextField identifiantField, JPasswordField passwordField) {
+	public FenetreClientController(JTextField identifiantField, JPasswordField passwordField) {
 		this.identifiantField = identifiantField;
 		this.passwordField = passwordField;
 	}
@@ -39,7 +38,7 @@ public class ConnexionController implements ActionListener {
 				System.out.println("true");
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(identifiantField);
 				topFrame.dispose();
-
+				
 				new VueFenetreClient();
 			}
 			// TODO Message d'erreur

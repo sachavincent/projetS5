@@ -1,17 +1,20 @@
 package view.client;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import communication.ClientThread;
+import controller.server.FenetreServeurController;
 import database.DBConnection;
 import model.Ticket;
 import model.Utilisateur.TypeUtilisateur;
@@ -21,59 +24,58 @@ import model.Utilisateur.TypeUtilisateur;
 
 public class VueFenetreClient extends JFrame implements Observer {
 
+	private static final long serialVersionUID = 1L;
+
 	private ImageIcon openedTicketIcon = new ImageIcon("icons/opened_ticket.png", "Ticket ouvert");
-	private ImageIcon closedTicketicon = new ImageIcon("icons/closed_ticket.png", "Ticket ouvert");
+	private ImageIcon closedTicketIcon = new ImageIcon("icons/closed_ticket.png", "Ticket férmé");
 
 	private JPanel panelTickets = new JPanel();
+
 	private JLabel servicesAdmLabel;
 	private JLabel servicesTechLabel;
 	private JLabel secretariatLabel;
 
+	private Set<Ticket> tickets;
+
+	private JPanel panelAdm = new JPanel();
+
 	public VueFenetreClient() {
+		setLayout(new BorderLayout());
 		// init
 		servicesAdmLabel = new JLabel("Services administratifs");
-		servicesAdmLabel.setIcon(closedTicketicon);
+		servicesAdmLabel.setIcon(closedTicketIcon);
 
 		servicesTechLabel = new JLabel("Services techniques");
-		servicesTechLabel.setIcon(closedTicketicon);
+		servicesTechLabel.setIcon(closedTicketIcon);
 
 		secretariatLabel = new JLabel("Secrétariat pédagogique");
-		secretariatLabel.setIcon(closedTicketicon);
+		secretariatLabel.setIcon(closedTicketIcon);
 
 		if (ClientThread.getUtilisateur() == null) {
 			System.out.println("Utilisateur null");
+
 			return;
 		}
-		
-		Set<Ticket> tickets = ClientThread.getUtilisateur().getTickets();
 
-		tickets.stream().forEach(t -> {
-			int idGroupe = t.getGroupeDestination().getIdGroupe();
-			TypeUtilisateur typeUtilisateur = DBConnection.getInstance().getListeAssociationsGroupeUtilisateur()
-					.stream().filter(agu -> agu.getGroupe().getIdGroupe() == idGroupe)
-					.map(agu -> agu.getUtilisateur().getType()).findFirst().orElse(null);
+		tickets = ClientThread.getUtilisateur().getTickets();
 
-			if (typeUtilisateur != null) {
-				if (typeUtilisateur == TypeUtilisateur.SERVICE_ADMINISTRATIF
-						&& servicesAdmLabel.getIcon().equals(closedTicketicon)) {
-					servicesAdmLabel.setIcon(openedTicketIcon);
-				} else if (typeUtilisateur == TypeUtilisateur.SERVICE_TECHNIQUE
-						&& servicesTechLabel.getIcon().equals(closedTicketicon)) {
-					servicesTechLabel.setIcon(openedTicketIcon);
-				} else if (typeUtilisateur == TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE
-						&& servicesTechLabel.getIcon().equals(closedTicketicon)) {
-					servicesTechLabel.setIcon(openedTicketIcon);
-				}
-			}
-		});
-
-		panelTickets.add(servicesAdmLabel);
-		panelTickets.add(servicesTechLabel);
-		panelTickets.add(secretariatLabel);
 		// layout
+		panelTickets.setLayout(new BoxLayout(panelTickets, BoxLayout.Y_AXIS));
+		panelAdm.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
+		
+		panelTickets.add(servicesAdmLabel);
+		panelTickets.add(panelAdm);
+//		panelTickets.add(servicesTechLabel);
+//		panelTickets.add(secretariatLabel);
+
+		FenetreServeurController fenetreServeurController = new FenetreServeurController(servicesAdmLabel,
+				servicesTechLabel, secretariatLabel, panelAdm);
+		servicesAdmLabel.addMouseListener(fenetreServeurController);
+		servicesTechLabel.addMouseListener(fenetreServeurController);
+		secretariatLabel.addMouseListener(fenetreServeurController);
+
 
 		// ajout
-
 		// affichage
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(
@@ -81,9 +83,11 @@ public class VueFenetreClient extends JFrame implements Observer {
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
 						.getHeight()));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		add(servicesAdmLabel);
+		add(panelTickets, BorderLayout.CENTER);
 		pack();
 		setVisible(true);
+
+//		this.panelAdm.add(new JLabel("Help"));
 	}
 
 	@Override

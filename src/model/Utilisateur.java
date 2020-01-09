@@ -47,17 +47,17 @@ public class Utilisateur extends Observable {
 		case "ENSEIGNANT":
 			this.type = TypeUtilisateur.ENSEIGNANT;
 			break;
-		case "SERVICE ADMINISTRATIF":
+		case "SERVICE_ADMINISTRATIF":
 			this.type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
 			break;
-		case "SERVICE TECHNIQUE":
+		case "SERVICE_TECHNIQUE":
 			this.type = TypeUtilisateur.SERVICE_TECHNIQUE;
 			break;
-		case "SECRETAIRE PEDAGOGIQUE":
+		case "SECRETAIRE_PEDAGOGIQUE":
 			this.type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
 			break;
 		default:
-			throw new IllegalArgumentException("TypeUtilisateur invalide");
+			throw new IllegalArgumentException("TypeUtilisateur invalide : " + type);
 		}
 
 		this.connecte = connecte;
