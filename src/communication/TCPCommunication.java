@@ -13,7 +13,7 @@ import java.util.List;
 public class TCPCommunication {
 
 	private final static int PORT = 1978;
-	private final static String SERVER_IP = "192.168.1.46";
+	private final static String SERVER_IP = "192.168.1.23";
 
 	public final static List<Socket> CLIENTS = new ArrayList<>();
 
