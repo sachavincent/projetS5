@@ -16,10 +16,7 @@ import database.DBConnection.Type;
 import view.client.VueConnexion;
 import view.server.VueFenetreServeur;
 
-/**
- * TODO Renommer cette classe parce que bon
- *
- */
+
 
 public class Main {
 
