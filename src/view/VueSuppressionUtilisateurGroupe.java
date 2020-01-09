@@ -80,7 +80,6 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		panels[4].add(panels[0], BorderLayout.NORTH);
 
 		add(panels[4], BorderLayout.NORTH);
-		
 	}
 
 	@Override
