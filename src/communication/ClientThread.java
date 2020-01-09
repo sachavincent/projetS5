@@ -106,7 +106,9 @@ public class ClientThread extends Thread {
 
 							while (!br.ready()) {
 							}
-
+							
+							line = br.readLine();
+							
 							String[] split = line.split(DELIMITER);
 
 							String identifiantU = split[0];
@@ -514,6 +516,22 @@ public class ClientThread extends Thread {
 				return null;
 
 			Message msg = getMessage(message);
+
+			DBConnection.getInstance().getListeMessages().add(msg);
+
+			while (!br.ready()) {
+			}
+
+			message = br.readLine();
+			while (!message.equals(DELIMITER + DELIMITER + DELIMITER)) {
+				AssociationMessageUtilisateur amu = getAMU(message);
+				DBConnection.getInstance().getListeAssociationsMessageUtilisateur().add(amu);
+
+				while (!br.ready()) {
+				}
+
+				message = br.readLine();
+			}
 
 			return msg;
 		} catch (IOException e) {

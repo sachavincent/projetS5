@@ -242,16 +242,30 @@ public class ServerThread extends Thread {
 				Message message = DBConnection.getInstance().creerMessage(split[0], split[1],
 						Integer.parseInt(split[2]));
 
+				if (message != null)
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw))
+							writer.println("MESSAGE");
+					});
+
 				pw.println(message == null ? false : message.toString()); // Envoi du message ou de false si la création
 																			// n'a pas fonctionné
 
 				if (message != null)
-					pw.println(split[1] + DELIMITER + split[2]); // Envoi de l'identifiant de l'utilisateur qui l'a
-																	// envoyé et de l'id du ticket
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw))
+							writer.println(split[1] + DELIMITER + split[2]);
+
+						// Envoi de l'identifiant de l'utilisateur qui l'a envoyé et de l'id du ticket
+					});
+
 				try {
-					// Envoi des associations
-					DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
-							.filter(amu -> amu.getMessage().equals(message)).forEach(amu -> pw.println(amu.toString()));
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						// Envoi des associations
+						DBConnection.getInstance().getListeAssociationsMessageUtilisateur().stream()
+								.filter(amu -> amu.getMessage().equals(message))
+								.forEach(amu -> pw.println(amu.toString()));
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
@@ -288,7 +302,7 @@ public class ServerThread extends Thread {
 						}
 					});
 				}
-				
+
 				requeteActuelle = Requete.NONE;
 				break;
 			case NONE:
