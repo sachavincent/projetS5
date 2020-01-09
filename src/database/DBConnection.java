@@ -1041,7 +1041,7 @@ public class DBConnection {
 
 							st2.setInt(1, message.getIdMessage());
 							st2.setString(2, u.getIdentifiant());
-							st2.setString(3, etatMessage.toString());
+							st2.setString(3, etatMessage.toString().replace('_', ' '));
 
 							st2.execute();
 

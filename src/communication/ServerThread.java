@@ -16,7 +16,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import database.DBConnection;
+import model.AssociationGroupeUtilisateur;
+import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
+import model.GroupeUtilisateurs;
 import model.Message;
 import model.Ticket;
 import model.Utilisateur;
@@ -151,6 +154,18 @@ public class ServerThread extends Thread {
 
 							Set<Ticket> set = u.getTickets().stream().filter(t -> !listeTickets.contains(t))
 									.collect(Collectors.toSet());
+
+							ut.getTickets().stream().filter(t -> {
+								GroupeUtilisateurs groupe = t.getGroupeDestination();
+								AssociationGroupeUtilisateur asso = DBConnection.getInstance()
+										.getListeAssociationsGroupeUtilisateur().stream()
+										.filter(agu -> agu.getGroupe().equals(groupe)).findFirst().orElse(null);
+								if (asso == null)
+									return false;
+
+								return asso.getUtilisateur().getType() == u.getType();
+							}).forEach(t -> set.add(t));
+
 							if (set.isEmpty())
 								pw.println(DELIMITER + DELIMITER);
 							else {
