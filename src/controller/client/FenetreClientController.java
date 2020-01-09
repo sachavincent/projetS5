@@ -235,7 +235,11 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			String message = textField.getText();
 
 			if (!message.isEmpty()) {
-				ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket());
+				if (ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket()) != null) {
+					textField.setText("");
+
+					textField.revalidate();
+				}
 			}
 		}
 	}

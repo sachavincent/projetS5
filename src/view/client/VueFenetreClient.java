@@ -56,6 +56,9 @@ public class VueFenetreClient extends JFrame implements Observer {
 	private JPanel rightSidePanel = new JPanel();
 	private JTextField fieldMessage = new JTextField();
 
+	public static void main(String[] args) {
+		new VueFenetreClient();
+	}
 	public VueFenetreClient() {
 		setTitle("NeOCampus");
 
@@ -225,19 +228,19 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 		panelTickets.add(panelLeft);
 		panelTickets.add(panelRight);
-
-		FenetreClientController fenetreClientController = new FenetreClientController(servicesAdmLabel,
-				servicesTechLabel, secretariatLabel, panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1,
-				plus2, plus3);
-		servicesAdmLabel.addMouseListener(fenetreClientController);
-		servicesTechLabel.addMouseListener(fenetreClientController);
-		secretariatLabel.addMouseListener(fenetreClientController);
-
-		plus1.addMouseListener(fenetreClientController);
-		plus2.addMouseListener(fenetreClientController);
-		plus3.addMouseListener(fenetreClientController);
-
-		fieldMessage.addKeyListener(fenetreClientController);
+//
+//		FenetreClientController fenetreClientController = new FenetreClientController(servicesAdmLabel,
+//				servicesTechLabel, secretariatLabel, panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1,
+//				plus2, plus3);
+//		servicesAdmLabel.addMouseListener(fenetreClientController);
+//		servicesTechLabel.addMouseListener(fenetreClientController);
+//		secretariatLabel.addMouseListener(fenetreClientController);
+//
+//		plus1.addMouseListener(fenetreClientController);
+//		plus2.addMouseListener(fenetreClientController);
+//		plus3.addMouseListener(fenetreClientController);
+//
+//		fieldMessage.addKeyListener(fenetreClientController);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
