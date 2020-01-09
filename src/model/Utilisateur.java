@@ -8,6 +8,8 @@ import java.util.Set;
 
 import com.sun.istack.internal.NotNull;
 
+import main.Encryption;
+
 public class Utilisateur extends Observable {
 
 	// Identifiant unique
@@ -99,9 +101,11 @@ public class Utilisateur extends Observable {
 	 * @return true si les deux mots de passe sont similaires
 	 */
 	public boolean memeMotDePasse(String password) {
+		
 		if (this.password == null)
 			return true;
-
+		password = Encryption.SHA1(password);
+		
 		return this.password.equalsIgnoreCase(password);
 	}
 

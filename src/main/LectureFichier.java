@@ -3,11 +3,11 @@ package main;
 import java.io.File;
 import java.util.Scanner;
 
-public class FileReader {
+public class LectureFichier {
 	private Scanner x;
 	private int port;
-	private int ip;
-	public FileReader() {
+	private String ip;
+	public LectureFichier() {
 
 	}
 	public void fileReader() {
@@ -20,7 +20,7 @@ public class FileReader {
 			eq = x.next();
 			nb = x.next();
 			if (txt.equals("ip")) {
-				ip = Integer.parseInt(nb);
+				ip = nb;
 			}
 			if (txt.equals("port")) {
 				port = Integer.parseInt(nb);
@@ -31,7 +31,7 @@ public class FileReader {
 	public int getPort() {
 		return port;
 	}
-	public int getIp() {
+	public String getIp() {
 		return ip;
 	}
 	public void openFile() {

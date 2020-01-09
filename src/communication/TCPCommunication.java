@@ -10,10 +10,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.LectureFichier;
+
 public class TCPCommunication {
 
-	private final static int PORT = 1978;
-	private final static String SERVER_IP = "192.168.1.23";
+	public static int PORT = 1978;
+	public static String SERVER_IP = "192.168.1.23";
 
 	public final static List<Socket> CLIENTS = new ArrayList<>();
 
@@ -23,7 +25,17 @@ public class TCPCommunication {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 
+	public void majAdresse() {
+		// modification IP et port
+		LectureFichier file = new LectureFichier();
+		file.openFile();
+		file.fileReader();
+		PORT = file.getPort();
+		SERVER_IP = file.getIp();
+	}
+
 	public static ClientThread openClientSocket() {
+
 		if (socket != null)
 			return null;
 
@@ -32,10 +44,10 @@ public class TCPCommunication {
 			socket = new Socket(ip, PORT);
 			pw = new PrintWriter(socket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
+
 			ClientThread clientThread = new ClientThread(pw, br);
 			clientThread.start();
-			
+
 			return clientThread;
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'ouverture du socket client");
