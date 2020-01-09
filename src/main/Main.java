@@ -92,9 +92,9 @@ public class Main {
 							return;
 
 						if (DBConnection.type == Type.CLIENT && ClientThread.getUtilisateur().isConnecte()) {
-							ClientThread.getUtilisateur().setConnecte(false);
-
 							ClientThread.getClient().disconnect();
+							
+							System.out.println("Déconnexion");
 						}
 					}
 				});

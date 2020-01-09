@@ -256,7 +256,6 @@ public class ClientThread extends Thread {
 
 					utilisateur.getTickets().add(ticket);
 					DBConnection.getInstance().getListeTickets().add(ticket);
-					DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
 
 					while (!br.ready()) {
 					}
@@ -264,6 +263,8 @@ public class ClientThread extends Thread {
 					line = br.readLine();
 				}
 
+				DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
+				
 				// Liste des groupes
 				while (!br.ready()) {
 				}
