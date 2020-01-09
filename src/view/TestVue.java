@@ -76,8 +76,13 @@ public class TestVue extends JPanel{
 		JPanel pf = new JPanel();
 		pf.setLayout(new BorderLayout());
 		pf.add(panels[3],BorderLayout.NORTH);
-		add(pf,BorderLayout.NORTH);
+		//add(pf,BorderLayout.NORTH)
 		
+		JFrame f = new JFrame();
+		f.add(panels[3],BorderLayout.NORTH);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.pack();
+		f.setVisible(true);
 		
 	}
 
