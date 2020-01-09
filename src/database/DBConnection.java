@@ -1023,42 +1023,46 @@ public class DBConnection {
 			ticket.getMessages().add(message);
 			utilisateur.getMessages().add(message);
 
+			Set<Utilisateur> utilisateurs = listeAGU.stream()
+					.filter(agu -> agu.getGroupe().equals(ticket.getGroupeDestination()))
+					.map(agu -> agu.getUtilisateur()).collect(Collectors.toSet());
+			utilisateurs.add(utilisateur);
+
 			// Pour tous les utilisateurs faisant partie des groupes
-			listeAGU.stream().filter(agu -> agu.getGroupe().equals(ticket.getGroupeDestination()))
-					.map(agu -> agu.getUtilisateur()).forEach(u -> {
-						PreparedStatement st2 = null;
-						try {
-							// Insertion dans la base de données
-							st2 = this.connection.prepareStatement(
-									"INSERT INTO AssociationMessageUtilisateur (idmessage, iduser, etat) VALUES (?, ?, ?)");
+			utilisateurs.forEach(u -> {
+				PreparedStatement st2 = null;
+				try {
+					// Insertion dans la base de données
+					st2 = this.connection.prepareStatement(
+							"INSERT INTO AssociationMessageUtilisateur (idmessage, iduser, etat) VALUES (?, ?, ?)");
 
-							EtatMessage etatMessage = EtatMessage.EN_ATTENTE;
+					EtatMessage etatMessage = EtatMessage.EN_ATTENTE;
 
-							if (u.equals(utilisateur))
-								etatMessage = EtatMessage.LU;
-							else if (u.isConnecte())
-								etatMessage = EtatMessage.NON_LU;
+					if (u.equals(utilisateur))
+						etatMessage = EtatMessage.LU;
+					else if (u.isConnecte())
+						etatMessage = EtatMessage.NON_LU;
 
-							st2.setInt(1, message.getIdMessage());
-							st2.setString(2, u.getIdentifiant());
-							st2.setString(3, etatMessage.toString());
+					st2.setInt(1, message.getIdMessage());
+					st2.setString(2, u.getIdentifiant());
+					st2.setString(3, etatMessage.toString());
 
-							st2.execute();
+					st2.execute();
 
+					st2.close();
+
+					listeAMU.add(new AssociationMessageUtilisateur(message, u, etatMessage));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (st2 != null)
 							st2.close();
-
-							listeAMU.add(new AssociationMessageUtilisateur(message, u, etatMessage));
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} finally {
-							try {
-								if (st2 != null)
-									st2.close();
-							} catch (SQLException e) {
-								e.printStackTrace();
-							}
-						}
-					});
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 
 			return message;
 		} catch (SQLException e) {

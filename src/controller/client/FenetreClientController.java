@@ -127,7 +127,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			if (typeUtilisateur != null) {
 				if (typeUtilisateur == type) {
 					System.out.println(typeUtilisateur);
-					JLabel jlabel = new JLabel("Ticket n°" + idGroupe + " - " + t.getTitre());
+					JLabel jlabel = new JLabel("Ticket n°" + t.getIdTicket() + " - " + t.getTitre());
 					jlabel.addMouseListener(this);
 
 					jlabel.setBorder(new EmptyBorder(5, 20, 2, 0));
@@ -202,12 +202,12 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			Ticket ticket = DBConnection.getInstance().getListeTickets().stream()
 					.filter(t -> t.getIdTicket() == idTicket).findFirst().orElse(null);
 
-			if (ticket != null)
+			if (ticket != null && !ticket.equals(this.ticket)) {
 				this.ticket = ticket;
 
-			boolean res = ClientThread.getClient().ouvrirTicket(this.ticket.getIdTicket());
-
-			System.out.println("ouverture : " + res);
+				boolean res = ClientThread.getClient().ouvrirTicket(this.ticket.getIdTicket());
+				System.out.println("ouverture : " + res);
+			}
 		}
 
 	}
@@ -230,7 +230,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getSource() instanceof JTextField) {
+		if (e.getSource() instanceof JTextField && e.getKeyCode() == KeyEvent.VK_ENTER) {
 			JTextField textField = (JTextField) e.getSource();
 			String message = textField.getText();
 
