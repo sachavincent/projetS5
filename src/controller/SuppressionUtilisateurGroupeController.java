@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
@@ -70,7 +72,9 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 					}
 				}
 			} else if (nomB.equals("Annuler")) {
-				// TODO get back
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 		}
 	}

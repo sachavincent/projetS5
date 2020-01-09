@@ -23,6 +23,7 @@ public class VueModificationUtilisateur extends JPanel implements Observer {
 	private JButton annuler = new JButton("annuler");
 	private JLabel nomPanel = new JLabel("Modification d'un utilisateur");
 	private JLabel listeU = new JLabel("liste des utilisateurs");
+	private JLabel type = new JLabel("liste des attributs à modifier");
 	private JComboBox<String> listeUtilisateur;
 	private String[] Attribut = { "identifiant", "password", "nom", "prenom", "type" };
 	private JComboBox<String> AttributModif;
@@ -58,7 +59,9 @@ public class VueModificationUtilisateur extends JPanel implements Observer {
 
 		// ajout
 		panel[5].add(nomPanel);
+		panel[1].add(listeU);
 		panel[1].add(listeUtilisateur);
+		panel[2].add(type);
 		panel[2].add(AttributModif);
 		panel[3].add(ok);
 		panel[3].add(annuler);
@@ -71,6 +74,14 @@ public class VueModificationUtilisateur extends JPanel implements Observer {
 		add(panel[4],BorderLayout.NORTH);
 		
 		
+		//affichage
+				JFrame frame = new JFrame();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(300, 600);
+				frame.setLocationRelativeTo(null);
+				frame.add(panel[4]);
+				frame.pack();
+				frame.setVisible(true);
 
 		
 	}

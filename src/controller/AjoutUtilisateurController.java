@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.Utilisateur;
@@ -44,7 +46,9 @@ public class AjoutUtilisateurController implements ActionListener {
 							nomField.getText(), prenomField.getText(), typeUtilisateur);
 			}
 			else if (nomB == "Annuler") {
-				//TODO get back
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 		}
 	}
