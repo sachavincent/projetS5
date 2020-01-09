@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `GroupeUtilisateurs`;
 
 CREATE TABLE GroupeUtilisateurs (
 	idgroupe INT(4) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	nom VARCHAR(100)
+	nom VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE Utilisateur (

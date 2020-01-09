@@ -227,4 +227,8 @@ public class Utilisateur extends Observable {
 		return builder.toString();
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
+	
 }

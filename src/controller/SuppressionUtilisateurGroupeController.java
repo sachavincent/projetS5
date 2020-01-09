@@ -14,37 +14,81 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 	private GroupeUtilisateurs groupe;
 	private Utilisateur utilisateur;
 
-	public SuppressionUtilisateurGroupeController() {
+	private JComboBox<String> groupesComboBox;
+	private JComboBox<String> utilisateursComboBox;
+	private JButton boutonOk;
+
+	public SuppressionUtilisateurGroupeController(JComboBox<String> groupesComboBox,
+			JComboBox<String> utilisateursComboBox, JButton boutonOk) {
+		this.groupesComboBox = groupesComboBox;
+		this.utilisateursComboBox = utilisateursComboBox;
+		this.boutonOk = boutonOk;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
-			JComboBox<String> groupesComboBox = (JComboBox<String>) e.getSource();
-			String source = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
+			JComboBox<String> sourceComboBox = (JComboBox<String>) e.getSource();
+			int index = sourceComboBox.getSelectedIndex();
+			String source = sourceComboBox.getItemAt(index);
 
-			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
-					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
-			GroupeUtilisateurs groupe = DBConnection.getInstance().getListeGroupes().stream()
-					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
+			if (e.getSource().equals(utilisateursComboBox)) {
+				if (index == 0) {
+					this.boutonOk.setEnabled(false);
 
-			if (utilisateur != null)
-				this.utilisateur = utilisateur;
+					this.utilisateur = null;
+					this.groupe = null;
+				} else
+					setSelectedUser(source);
+			} else if (e.getSource().equals(groupesComboBox)) {
+				if (index == 0) {
+					this.boutonOk.setEnabled(false);
+					
+					this.groupe = null;
+				} else {
+					this.groupe = DBConnection.getInstance().getListeGroupes().stream()
+							.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
 
-			if (groupe != null)
-				this.groupe = groupe;
+					if (this.utilisateur != null && !this.boutonOk.isEnabled() && this.groupe != null)
+						this.boutonOk.setEnabled(true);
+				}
+			}
 
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "Ok") {
-				if (this.utilisateur != null && this.groupe != null)
-					DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
 
+			if (nomB.equals("OK")) {
+				if (this.utilisateur != null && this.groupe != null) {
+					boolean res = DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
+
+					if (res) {
+						// Utilisateur supprimé
+						utilisateur.setModelChanged();
+
+						utilisateur.notifyObservers();
+					}
+				}
+			} else if (nomB.equals("Annuler")) {
+				// TODO get back
 			}
-			else if (nomB == "Annuler") {
-				//TODO get back
-			}
+		}
+	}
+
+	public void setSelectedUser(String identifiant) {
+		Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
+				.filter(u -> u.getIdentifiant().equals(identifiant)).findFirst().orElse(null);
+
+		this.utilisateur = utilisateur;
+
+		if (utilisateur != null) {
+
+			groupesComboBox.removeAllItems();
+			groupesComboBox.addItem("Choisir un groupe");
+
+			DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
+					.filter(agu -> agu.getUtilisateur().equals(utilisateur)).map(agu -> agu.getGroupe())
+					.forEach(g -> groupesComboBox.addItem(g.getNom()));
 		}
 	}
 

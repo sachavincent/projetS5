@@ -75,4 +75,8 @@ public class AssociationGroupeUtilisateur extends Observable {
 		return true;
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
+	
 }

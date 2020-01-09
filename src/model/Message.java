@@ -78,6 +78,10 @@ public class Message extends Observable {
 		return idMessage == other.idMessage;
 	}
 
+	public void setModelChanged() {
+		setChanged();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
