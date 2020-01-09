@@ -190,10 +190,6 @@ public class ServerThread extends Thread {
 							pw.println(DELIMITER + DELIMITER);
 						});
 
-						// Aucun ticket, rien n'a été envoyé
-						if (listeTickets.isEmpty()) {
-							// TODO
-						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
@@ -207,7 +203,15 @@ public class ServerThread extends Thread {
 
 				break;
 			case DECONNEXION:
+				Utilisateur utt = DBConnection.getInstance().getListeUtilisateurs().stream()
+						.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(instruction)).findFirst().orElse(null);
+
 				DBConnection.getInstance().deconnecter(instruction); // Identifiant de l'utilisateur à déconnecter donné
+
+				TCPCommunication.CLIENTS.forEach(writer -> {
+					writer.println("DECONNEXION");
+					writer.println(utt.toString());
+				});
 
 				requeteActuelle = Requete.NONE;
 
@@ -217,6 +221,20 @@ public class ServerThread extends Thread {
 
 				pw.println(ticket == null ? false : ticket.toString()); // Envoi du ticket ou de false si la création
 																		// n'a pas fonctionné
+
+				utt = DBConnection.getInstance().getListeUtilisateurs().stream()
+						.filter(ut -> ut.getIdentifiant().equalsIgnoreCase(split[1])).findFirst().orElse(null);
+
+				if (ticket != null)
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw)) {
+							writer.println("CREATION TICKET");
+
+							writer.println(utt.toString());
+							writer.println(ticket.toString());
+						}
+					});
+
 				requeteActuelle = Requete.NONE;
 
 				break;
@@ -237,7 +255,6 @@ public class ServerThread extends Thread {
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
-
 					// Marquage de fin
 					pw.println(DELIMITER + DELIMITER + DELIMITER);
 				}
@@ -262,7 +279,16 @@ public class ServerThread extends Thread {
 						pw.println(res);
 					}
 
+					TCPCommunication.CLIENTS.forEach(writer -> {
+						if (!writer.equals(pw)) {
+							writer.println("OUVERTURE TICKET");
+
+							writer.println(utilisateur.toString());
+							writer.println(ticket.toString());
+						}
+					});
 				}
+				
 				requeteActuelle = Requete.NONE;
 				break;
 			case NONE:
