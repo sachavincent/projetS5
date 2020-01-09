@@ -185,17 +185,47 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			messages.add(panelMessage2,BorderLayout.WEST);
 		}
+		JPanel panelMessage3 = new JPanel();
+		{
+			SpringLayout springLayout = new SpringLayout();
+			JLabel nom = new JLabel("Sacha V.");
+			JLabel dateMessage = new JLabel("Hier à 23:14");
+
+			JTextArea contenuMessage = new JTextArea(5, 2);
+			contenuMessage.setText("JE SUIS UN TEST");
+			contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
+			contenuMessage.setEditable(false);
+			panelMessage3.add(nom);
+			panelMessage3.add(contenuMessage);
+			panelMessage3.add(dateMessage);
+
+			springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
+
+			// panelMessage si 1er message sinon précédent
+			springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage3);
+			springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST,
+					panelMessage3);
+			springLayout.putConstraint(SpringLayout.EAST, panelMessage3, 20, SpringLayout.EAST, nom);
+			springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
+
+			panelMessage3.setLayout(springLayout);
+
+			messages.add(panelMessage3,BorderLayout.WEST);
+		}
 //		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
 //		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
 		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
-//		messages.setLayout(layoutMessages);
+//		messages.setLayout(layoutMessages);7
+		
 		JPanel test = new JPanel();
 		JPanel test2 = new JPanel();
 		test2.setLayout(new GridLayout(1,1,1,2));
 		test.setLayout(new GridLayout(1,1,12,12));
 		test.add(messages);
 		test2.add(test);
-		panelMessages.getViewport().add(test2);
+		panelMessages.getViewport().add(test);
 
 		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
