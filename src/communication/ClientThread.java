@@ -272,9 +272,10 @@ public class ClientThread extends Thread {
 			}
 
 			ClientThread.getUtilisateur().setConnecte(true);
-
-			canReceive = true;
-
+			
+			System.out.println(DBConnection.getInstance().getListeGroupes());
+			System.out.println(DBConnection.getInstance().getListeMessages());
+			System.out.println(DBConnection.getInstance().getListeAssociationsMessageUtilisateur());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

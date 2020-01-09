@@ -93,8 +93,8 @@ public class Main {
 				}
 			}
 		});
-//		 frame.setContentPane(new VueConnexion());
-		frame.setContentPane(new VueModificationGroupe());
+		 frame.setContentPane(new VueConnexion());
+//		frame.setContentPane(new VueModificationGroupe());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);
