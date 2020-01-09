@@ -1,5 +1,6 @@
 package controller.client;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -8,8 +9,11 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 import database.DBConnection;
 import model.Ticket;
@@ -19,17 +23,20 @@ public class FenetreClientController implements ActionListener, MouseListener {
 
 	private ImageIcon openedTicketIcon = new ImageIcon("icons/opened_ticket.png", "Ticket ouvert");
 	private ImageIcon closedTicketIcon = new ImageIcon("icons/closed_ticket.png", "Ticket fermé");
+	private ImageIcon ticketIcon = new ImageIcon("icons/ticket.png", "Ticket");
 
 	private JLabel servicesAdmLabel;
 	private JLabel servicesTechLabel;
 	private JLabel secretariatLabel;
 
 	private JPanel panelAdm;
+	private JPanel panelTech;
+	private JPanel panelSecr;
 
 	private Set<Ticket> tickets;
 
 	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
-			JPanel panelAdm) {
+			JPanel panelAdm, JPanel panelTech, JPanel panelSecr) {
 		this.servicesAdmLabel = servicesAdmLabel;
 		this.servicesTechLabel = servicesTechLabel;
 		this.secretariatLabel = secretariatLabel;
@@ -37,36 +44,59 @@ public class FenetreClientController implements ActionListener, MouseListener {
 		this.tickets = DBConnection.getInstance().getListeTickets();
 
 		this.panelAdm = panelAdm;
+		this.panelTech = panelAdm;
+		this.panelSecr = panelAdm;
 	}
 
 	private void closeService(JLabel label) {
 		label.setIcon(closedTicketIcon);
 
+		if (label.equals(servicesAdmLabel)) {
+			panelAdm.removeAll();
+			panelAdm.revalidate();
+		}
 		System.out.println("closing");
 	}
 
 	private void openService(JLabel label) {
 		label.setIcon(openedTicketIcon);
 
+		JPanel panel;
+		TypeUtilisateur type;
 		if (label.equals(servicesAdmLabel)) {
-			System.out.println(tickets);
-			tickets.stream().forEach(t -> {
-				int idGroupe = t.getGroupeDestination().getIdGroupe();
-				TypeUtilisateur typeUtilisateur = DBConnection.getInstance().getListeAssociationsGroupeUtilisateur()
-						.stream().filter(agu -> agu.getGroupe().getIdGroupe() == idGroupe)
-						.map(agu -> agu.getUtilisateur().getType()).findFirst().orElse(null);
-
-				if (typeUtilisateur != null) {
-					System.out.println(typeUtilisateur);
-					if (typeUtilisateur == TypeUtilisateur.SERVICE_ADMINISTRATIF) {
-						this.panelAdm.add(new JLabel(t.getTitre()));
-						System.out.println("ajout");
-					}
-
-				}
-			});
-
+			panel = panelAdm;
+			type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
+		} else if (label.equals(servicesTechLabel)) {
+			panel = panelTech;
+			type = TypeUtilisateur.SERVICE_TECHNIQUE;
+		} else if (label.equals(secretariatLabel)) {
+			panel = panelSecr;
+			type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
+		} else {
+			throw new IllegalArgumentException("Wrong label");
 		}
+
+		System.out.println(tickets);
+		tickets.stream().forEach(t -> {
+			int idGroupe = t.getGroupeDestination().getIdGroupe();
+
+			TypeUtilisateur typeUtilisateur = DBConnection.getInstance().getListeAssociationsGroupeUtilisateur()
+					.stream().filter(agu -> agu.getGroupe().getIdGroupe() == idGroupe)
+					.map(agu -> agu.getUtilisateur().getType()).findFirst().orElse(null);
+
+			if (typeUtilisateur != null) {
+				System.out.println(typeUtilisateur);
+				if (typeUtilisateur == type) {
+					JLabel jlabel = new JLabel(t.getTitre());
+					jlabel.setBorder(new EmptyBorder(5, 20, 2, 0));
+					jlabel.setIcon(ticketIcon);
+					panel.add(jlabel);
+					panel.revalidate();
+				}
+
+			}
+		});
+
 		System.out.println("opening");
 	}
 

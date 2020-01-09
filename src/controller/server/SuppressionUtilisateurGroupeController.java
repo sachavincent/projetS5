@@ -44,7 +44,7 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 
 					this.utilisateur = null;
 					this.groupe = null;
-					
+
 					groupesComboBox.setSelectedItem(groupesComboBox.getItemAt(0));
 				} else
 					setSelectedUser(source);

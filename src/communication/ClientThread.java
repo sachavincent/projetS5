@@ -150,6 +150,7 @@ public class ClientThread extends Thread {
 
 			String line = br.readLine();
 			res = Boolean.parseBoolean(line);
+			System.out.println("bool: " + res);
 
 			if (!res)
 				return false;
@@ -168,7 +169,7 @@ public class ClientThread extends Thread {
 			}
 
 			line = br.readLine();
-			System.out.println(line);
+			System.out.println("User: " + line);
 			while (!line.equals(DELIMITER + DELIMITER + DELIMITER)) { // TODO: Handle timeout
 				Utilisateur utilisateur = getUtilisateur(line);
 				if (utilisateur.equals(ClientThread.getUtilisateur()))

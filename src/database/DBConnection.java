@@ -468,10 +468,15 @@ public class DBConnection {
 				supprimerTicket(ticket);
 
 			// Suppression des associations avec ce groupe
-			for (AssociationGroupeUtilisateur agu : listeAGU) {
-				if (agu.getGroupe().equals(groupe))
-					supprimerUtilisateurDeGroupe(groupe, agu.getUtilisateur());
-			}
+			st = this.connection.prepareStatement("DELETE FROM AssociationGroupeUtilisateur WHERE idgroupe = ?");
+			st.setInt(1, groupe.getIdGroupe());
+
+			st.execute();
+
+			st.close();
+
+			// Suppressions dans la liste
+			listeAGU.removeIf(agu -> agu.getGroupe().equals(groupe));
 
 			// Suppression dans la base de données
 			st = this.connection.prepareStatement("DELETE FROM GroupeUtilisateurs WHERE idgroupe = ?");

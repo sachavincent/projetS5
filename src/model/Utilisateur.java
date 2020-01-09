@@ -48,12 +48,15 @@ public class Utilisateur extends Observable {
 			this.type = TypeUtilisateur.ENSEIGNANT;
 			break;
 		case "SERVICE ADMINISTRATIF":
+		case "SERVICE_ADMINISTRATIF":
 			this.type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
 			break;
 		case "SERVICE TECHNIQUE":
+		case "SERVICE_TECHNIQUE":
 			this.type = TypeUtilisateur.SERVICE_TECHNIQUE;
 			break;
 		case "SECRETAIRE PEDAGOGIQUE":
+		case "SECRETAIRE_PEDAGOGIQUE":
 			this.type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
 			break;
 		default:
@@ -147,6 +150,7 @@ public class Utilisateur extends Observable {
 	public TypeUtilisateur getType() {
 		return type;
 	}
+
 	/**
 	 * @return le mot de passe de l'utilisateur
 	 */

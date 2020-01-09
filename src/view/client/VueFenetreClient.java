@@ -36,8 +36,12 @@ public class VueFenetreClient extends JFrame implements Observer {
 	private Set<Ticket> tickets;
 
 	private JPanel panelAdm = new JPanel();
+	private JPanel panelTech = new JPanel();
+	private JPanel panelSecr = new JPanel();
 
 	public VueFenetreClient() {
+		setTitle("NeOCampus");
+
 		setLayout(new BorderLayout());
 		// init
 		servicesAdmLabel = new JLabel("Services administratifs");
@@ -60,18 +64,21 @@ public class VueFenetreClient extends JFrame implements Observer {
 		// layout
 		panelTickets.setLayout(new BoxLayout(panelTickets, BoxLayout.Y_AXIS));
 		panelAdm.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
-		
+		panelTech.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
+		panelSecr.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
+
 		panelTickets.add(servicesAdmLabel);
 		panelTickets.add(panelAdm);
-//		panelTickets.add(servicesTechLabel);
-//		panelTickets.add(secretariatLabel);
+		panelTickets.add(servicesTechLabel);
+		panelTickets.add(panelTech);
+		panelTickets.add(secretariatLabel);
+		panelTickets.add(panelSecr);
 
 		FenetreClientController fenetreClientController = new FenetreClientController(servicesAdmLabel,
-				servicesTechLabel, secretariatLabel, panelAdm);
+				servicesTechLabel, secretariatLabel, panelAdm, panelTech, panelSecr);
 		servicesAdmLabel.addMouseListener(fenetreClientController);
 		servicesTechLabel.addMouseListener(fenetreClientController);
 		secretariatLabel.addMouseListener(fenetreClientController);
-
 
 		// ajout
 		// affichage
