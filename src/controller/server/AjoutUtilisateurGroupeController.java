@@ -42,11 +42,10 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "OK") {
+			if (nomB.equals("OK")) {
 				if (this.utilisateur != null && this.groupe != null)
 					DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
-			}
-			else if(nomB == "Annuler") {
+			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();

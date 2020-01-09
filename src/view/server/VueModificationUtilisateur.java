@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import controller.server.ModificationGroupeController;
 import controller.server.ModificationUtilisateurController;
@@ -21,7 +22,7 @@ import database.DBConnection;
 public class VueModificationUtilisateur extends JPanel implements Observer {
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
-	private JLabel nomPanel = new JLabel("Modification d'un utilisateur");
+	private JLabel nomPanel = new JLabel("Modification d'un utilisateur",SwingConstants.CENTER);
 	private JLabel listeU = new JLabel("liste des utilisateurs");
 	private JLabel type = new JLabel("liste des attributs à modifier");
 	private JComboBox<String> listeUtilisateur;

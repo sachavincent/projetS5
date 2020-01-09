@@ -38,14 +38,13 @@ public class AjoutUtilisateurController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			if (nomB == "Création") {
+			if (nomB.equals("Création")) {
 				if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
 						&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
 						&& !prenomField.getText().isEmpty())
 					DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
 							nomField.getText(), prenomField.getText(), typeUtilisateur);
-			}
-			else if (nomB == "Annuler") {
+			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();

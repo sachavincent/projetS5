@@ -36,13 +36,13 @@ public class ModificationGroupeController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nom = b.getText();
-			if (nom == "OK") {
+			if (nom.equals("OK")) {
 				if (this.groupe != null && !nameField.getText().isEmpty()) {
 					this.groupe.setNom(nameField.getText());
 
 					// Mets à jour la base de données
 					DBConnection.getInstance().updateGroupe(groupe);
-				} else if(nom == "Annuler") {
+				} else if(nom.equals("Annuler")) {
 					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 					topFrame.setVisible(false);
 					topFrame.dispose();
