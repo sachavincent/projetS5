@@ -104,7 +104,6 @@ public class Utilisateur extends Observable {
 		
 		if (this.password == null)
 			return true;
-		password = Encryption.SHA1(password);
 		
 		return this.password.equalsIgnoreCase(password);
 	}
