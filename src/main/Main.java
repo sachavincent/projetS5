@@ -13,6 +13,7 @@ import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
 import view.client.VueConnexion;
+import view.client.VueFenetreClient;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -68,17 +69,19 @@ public class Main {
 
 		DBConnection db = DBConnection.getInstance();
 
+		
 		// Frame
 		JFrame frame = new JFrame("NeOCampus");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth(),
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
-						.getHeight()));
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setLocationRelativeTo(null);
+//		frame.setPreferredSize(new Dimension(
+//				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth(),
+//				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
+//						.getHeight()));
+//		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// frame.setPreferredSize(new Dimension(500,500));
 		// frame.setLocationRelativeTo(null);
-
+		
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (ClientThread.getUtilisateur() == null)
@@ -91,8 +94,7 @@ public class Main {
 				}
 			}
 		});
-		 frame.setContentPane(new VueConnexion());
-//		frame.setContentPane(new VueModificationGroupe());
+		frame.setContentPane(new VueConnexion());
 		// centrage + affichage
 		frame.pack();
 		frame.setVisible(true);
