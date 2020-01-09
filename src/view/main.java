@@ -3,6 +3,7 @@ package view;
 import java.io.File;
 import java.util.Scanner;
 
+import main.FileReader;
 import view.client.VueFenetreClient;
 import view.server.VueAjoutUtilisateur;
 import view.server.VueAjoutUtilisateurGroupe;
