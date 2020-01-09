@@ -1,11 +1,13 @@
 package controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import database.DBConnection;
@@ -19,17 +21,21 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 	private JComboBox<String> groupesComboBox;
 	private JComboBox<String> utilisateursComboBox;
 	private JButton boutonOk;
+	private JLabel erreurLabel;
 
 	public SuppressionUtilisateurGroupeController(JComboBox<String> groupesComboBox,
-			JComboBox<String> utilisateursComboBox, JButton boutonOk) {
+			JComboBox<String> utilisateursComboBox, JButton boutonOk, JLabel erreurLabel) {
 		this.groupesComboBox = groupesComboBox;
 		this.utilisateursComboBox = utilisateursComboBox;
 		this.boutonOk = boutonOk;
+		this.erreurLabel = erreurLabel;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
+			erreurLabel.setVisible(false);
+
 			JComboBox<String> sourceComboBox = (JComboBox<String>) e.getSource();
 			int index = sourceComboBox.getSelectedIndex();
 			String source = sourceComboBox.getItemAt(index);
@@ -40,12 +46,14 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 
 					this.utilisateur = null;
 					this.groupe = null;
+					
+					groupesComboBox.setSelectedItem(groupesComboBox.getItemAt(0));
 				} else
 					setSelectedUser(source);
 			} else if (e.getSource().equals(groupesComboBox)) {
 				if (index == 0) {
 					this.boutonOk.setEnabled(false);
-					
+
 					this.groupe = null;
 				} else {
 					this.groupe = DBConnection.getInstance().getListeGroupes().stream()
@@ -63,13 +71,32 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 			if (nomB.equals("OK")) {
 				if (this.utilisateur != null && this.groupe != null) {
 					boolean res = DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
+					System.out.println(res);
 
 					if (res) {
 						// Utilisateur supprimé
 						utilisateur.setModelChanged();
 
 						utilisateur.notifyObservers();
+
+						// Afficher réussite
+						erreurLabel.setForeground(Color.GREEN);
+						erreurLabel.setText("Suppression réussie");
+
+						erreurLabel.setVisible(true);
+					} else {
+						// Afficher erreur
+						erreurLabel.setVisible(true);
+						erreurLabel.setText("Communication avec la base de données impossible");
+						erreurLabel.setForeground(Color.RED);
+
 					}
+				} else {
+					// Afficher erreur
+					erreurLabel.setText("Veuillez renseigner tous les champs");
+					erreurLabel.setForeground(Color.RED);
+
+					erreurLabel.setVisible(true);
 				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

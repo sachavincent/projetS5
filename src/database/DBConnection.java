@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -56,8 +55,10 @@ public class DBConnection {
 		if (type == Type.SERVEUR) {
 			this.connection = createNewConnection();
 
-			// populate
-			populate();
+			if (this.connection != null) {
+				// populate
+				populate();
+			}
 		}
 	}
 

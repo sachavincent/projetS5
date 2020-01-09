@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -36,7 +37,8 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 	private JLabel listeULabel = new JLabel("Choisir l'utilisateur à supprimer");
 	private JLabel listeGLabel = new JLabel("Choisir le groupe dans lequel supprimer l'utilisateur");
-	private JLabel titrePanel = new JLabel("Suppression d'un utilisateur d'un groupe", SwingConstants.CENTER);
+	private JLabel titreLabel = new JLabel("Suppression d'un utilisateur à un groupe", SwingConstants.CENTER);
+	private JLabel erreurLabel = new JLabel("", SwingConstants.CENTER);
 
 	private JComboBox<String> groupesComboBox;
 	private JComboBox<String> utilisateursComboBox;
@@ -51,13 +53,18 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 
 	public VueSuppressionUtilisateurGroupe() {
 		// init
-
 		okButton.setPreferredSize(dimension);
 		annulerButton.setPreferredSize(dimension);
 
 		okButton.setEnabled(false);
-		
-		titrePanel.setFont(titrePanel.getFont().deriveFont(20f));
+
+		titreLabel.setFont(titreLabel.getFont().deriveFont(20f));
+
+		erreurLabel.setFont(titreLabel.getFont().deriveFont(20f));
+		erreurLabel.setForeground(Color.GREEN);
+		erreurLabel.setText("test");
+		erreurLabel.setOpaque(true);
+		erreurLabel.setVisible(false);
 
 		listeGroupes = DBConnection.getInstance().getListeGroupes();
 		listeUtilisateurs = DBConnection.getInstance().getListeUtilisateurs();
@@ -75,9 +82,9 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		utilisateursComboBox.addItem("Choisir un utilisateur");
 		for (String s : array)
 			utilisateursComboBox.addItem(s);
-		
+
 		// actionListener
-		controller = new SuppressionUtilisateurGroupeController(groupesComboBox, utilisateursComboBox, okButton);
+		controller = new SuppressionUtilisateurGroupeController(groupesComboBox, utilisateursComboBox, okButton, erreurLabel);
 
 		String identifiant = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
 		controller.setSelectedUser(identifiant);
@@ -99,7 +106,7 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		utilisateursComboBox.addActionListener(controller);
 
 		// layout
-		panels[0].setLayout(new GridLayout(3, 1));
+		panels[0].setLayout(new GridLayout(4, 1));
 		for (int i = 1; i < 4; i++)
 			panels[1].setLayout(new FlowLayout());
 
@@ -114,10 +121,11 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		// panels[0].add(panels[5]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
+		panels[0].add(erreurLabel);
 		panels[0].add(panels[3]);
 //		panels[4].add(panels[0], BorderLayout.NORTH);
-		panels[4].add(titrePanel, BorderLayout.NORTH);
-		panels[0].setBorder(new EmptyBorder(40, 10, 10, 10));
+		panels[4].add(titreLabel, BorderLayout.NORTH);
+		panels[0].setBorder(new EmptyBorder(40, 10, 10, 10));		
 		panels[4].add(panels[0], BorderLayout.CENTER);
 
 		add(panels[4], BorderLayout.NORTH);
