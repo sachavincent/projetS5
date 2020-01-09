@@ -78,7 +78,7 @@ public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer 
 
 		groupesComboBox = new JComboBox<String>(new String[] { "Choisir un groupe" });
 
-		String[] array = listeUtilisateurs.stream().map(g -> g.getIdentifiant()).toArray(String[]::new);
+		String[] array = listeUtilisateurs.stream().map(u -> u.getIdentifiant()).toArray(String[]::new);
 		utilisateursComboBox = new JComboBox<String>();
 		utilisateursComboBox.addItem("Choisir un utilisateur");
 		for (String s : array)
