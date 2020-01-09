@@ -77,10 +77,11 @@ public class VueCreationTicket extends JFrame implements Observer {
 //		JPanel pf = new JPanel();
 //		pf.setLayout(new BorderLayout());
 //		pf.add(panels[3],BorderLayout.NORTH);
-		add(panels[3],BorderLayout.NORTH);
+		
 		
 		setTitle("NeOCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(panels[3],BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
