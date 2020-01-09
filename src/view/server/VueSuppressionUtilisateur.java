@@ -42,8 +42,9 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 		
 		ok.setPreferredSize(new Dimension(200, 50));
 		annuler.setPreferredSize(new Dimension(200, 50));
+		ok.setEnabled(false);
 		// actionListener
-		SuppressionUtilisateurController suppressionUtilisateurController = new SuppressionUtilisateurController();
+		SuppressionUtilisateurController suppressionUtilisateurController = new SuppressionUtilisateurController(ok);
 		ok.addActionListener(suppressionUtilisateurController);
 		annuler.addActionListener(suppressionUtilisateurController);
 		listeUtilisateur.addActionListener(suppressionUtilisateurController);

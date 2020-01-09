@@ -46,7 +46,7 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 		listeUtilisateur.setPreferredSize(d);
 		AttributModif.setPreferredSize(d);
 		//actionListener
-		ModificationUtilisateurController modificationUtilisateurController = new ModificationUtilisateurController();
+		ModificationUtilisateurController modificationUtilisateurController = new ModificationUtilisateurController(ok);
 		ok.addActionListener(modificationUtilisateurController);
 		annuler.addActionListener(modificationUtilisateurController);
 		listeUtilisateur.addActionListener(modificationUtilisateurController);

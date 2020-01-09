@@ -69,7 +69,6 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 			if (nomB.equals("OK")) {
 				if (this.utilisateur != null && this.groupe != null) {
 					boolean res = DBConnection.getInstance().supprimerUtilisateurDeGroupe(groupe, utilisateur);
-					System.out.println(res);
 
 					if (res) {
 						// Utilisateur supprimé

@@ -18,8 +18,10 @@ public class ModificationUtilisateurController implements ActionListener {
 	private TypeUtilisateur type;
 	private String ancienMDP ;
 	private boolean passwordSelect = false;
+	private JButton ok;
 
-	public ModificationUtilisateurController() {
+	public ModificationUtilisateurController(JButton ok) {
+		this.ok = ok;
 	}
 
 	@Override
@@ -31,7 +33,8 @@ public class ModificationUtilisateurController implements ActionListener {
 			
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
-
+			if (index !=0)
+				ok.setEnabled(true);
 			if (utilisateur != null)
 				this.utilisateur = utilisateur;
 			switch (source) {

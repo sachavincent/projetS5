@@ -13,6 +13,7 @@ import communication.TCPCommunication;
 import database.DBConnection;
 import database.DBConnection.Type;
 import view.client.VueConnexion;
+import view.server.VueFenetreServeur;
 
 /**
  * TODO Renommer cette classe parce que bon
@@ -53,8 +54,25 @@ public class Main {
 						TCPCommunication.openServerSocket();
 					}
 				}).start();
+				// Frame
+				JFrame frame = new JFrame("NeOCampus");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setLocationRelativeTo(null);
+				frame.setPreferredSize(new Dimension(
+						GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
+								.getWidth(),
+						GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
+								.getHeight()));
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setContentPane(new VueFenetreServeur());
+				// centrage + affichage
+				frame.pack();
+				frame.toFront();
+				frame.requestFocus();
+				frame.setVisible(true);
+				return;
 
-				break;
+				
 			case 1: // Client
 				// TODO
 				DBConnection.type = Type.CLIENT;
@@ -93,6 +111,7 @@ public class Main {
 				}
 			}
 		});
+		
 		frame.setContentPane(new VueConnexion());
 		// centrage + affichage
 		frame.pack();

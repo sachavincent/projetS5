@@ -38,11 +38,12 @@ public class VueSuppressionGroupe extends JFrame implements Observer {
 		listeGroupes.forEach(g -> g.addObserver(this));
 
 		listeGroupesComboBox = new JComboBox<String>(listeGroupes.stream().map(g -> g.getNom()).toArray(String[]::new));
-		SuppressionGroupeController suppressionGroupeController = new SuppressionGroupeController();
+		SuppressionGroupeController suppressionGroupeController = new SuppressionGroupeController(ok);
 
 		for (int i = 0; i < 5; i++) {
 			panels[i] = new JPanel();
 		}
+		ok.setEnabled(false);
 		// taille
 		listeGroupesComboBox.setPreferredSize(new Dimension(300, 50));
 		ok.setPreferredSize(new Dimension(200, 50));

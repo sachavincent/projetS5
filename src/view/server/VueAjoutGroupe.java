@@ -2,7 +2,9 @@ package view.server;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 
@@ -13,6 +15,7 @@ public class VueAjoutGroupe {
 	public VueAjoutGroupe() {
 		nom = JOptionPane.showInputDialog("Nom du groupe");
 		DBConnection.getInstance().creerGroupe(nom, new ArrayList<>());
+		JOptionPane.showMessageDialog(null, "Ajout réussi");
 	}
 
 }
