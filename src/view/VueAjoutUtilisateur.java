@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import controller.AjoutUtilisateurController;
 import model.Utilisateur.TypeUtilisateur;
@@ -33,10 +34,10 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 
 	private String[] nomsLabels = new String[] { "Identifiant", "Mot de passe", "Nom", "Prenom", "Type Utilisateur" };
 	private JLabel[] labels = new JLabel[5];
-
+	private JLabel titre = new JLabel("Ajout d'un Utilisateur",SwingConstants.CENTER);
 	private JButton okButton = new JButton("Création");
 	private JButton annulerButton = new JButton("Annuler");
-
+	
 	private JPanel[] panels = new JPanel[9];
 
 	public VueAjoutUtilisateur() {
@@ -65,6 +66,7 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 			panels[1].setLayout(new FlowLayout());
 
 		// ajout
+		panels[1].add(titre);
 		panels[1].add(labels[0]);
 		panels[1].add(fields[0]);
 		panels[2].add(labels[1]);
@@ -89,6 +91,14 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 
 		add(panels[6], BorderLayout.NORTH);
 		
+		//affichage
+				JFrame frame = new JFrame();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(300, 600);
+				frame.setLocationRelativeTo(null);
+				frame.add(panels[6]);
+				frame.pack();
+				frame.setVisible(true);
 		
 	}
 

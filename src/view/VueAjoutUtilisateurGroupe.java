@@ -67,7 +67,14 @@ public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
 		panel[4].add(panel[0], BorderLayout.NORTH);
 		add(panel[4],BorderLayout.NORTH);
 		
-		
+		//affichage
+				JFrame frame = new JFrame();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(300, 600);
+				frame.setLocationRelativeTo(null);
+				frame.add(panel[4]);
+				frame.pack();
+				frame.setVisible(true);
 	}
 
 	@Override

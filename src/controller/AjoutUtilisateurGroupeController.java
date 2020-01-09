@@ -1,11 +1,13 @@
 package controller;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
@@ -45,7 +47,9 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 					DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
 			}
 			else if(nomB == "Annuler") {
-				//retour fenetreServeur
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 
 		}

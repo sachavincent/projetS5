@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
@@ -41,7 +43,9 @@ public class ModificationGroupeController implements ActionListener {
 					// Mets à jour la base de données
 					DBConnection.getInstance().updateGroupe(groupe);
 				} else if(nom == "Annuler") {
-					// TODO retour à la fenetreServeur
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+					topFrame.setVisible(false);
+					topFrame.dispose();
 				}
 			}
 		}
