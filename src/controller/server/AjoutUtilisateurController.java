@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -51,7 +52,6 @@ public class AjoutUtilisateurController implements ActionListener {
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
-			System.out.println(nomB);
 			if (nomB.equals("Création")) {
 				if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
 						&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
@@ -60,13 +60,22 @@ public class AjoutUtilisateurController implements ActionListener {
 					boolean res = DBConnection.getInstance().creerUtilisateur(identifiantField.getText(),
 							passwordField.getText(), nomField.getText(), prenomField.getText(), typeUtilisateur);
 
-					System.out.println(res);
+					if (res) {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Ajout réussi");
+						topFrame.setVisible(false);
+						topFrame.dispose();
+					} else {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Erreur lors de l'ajout");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 
-					if (!res) {
-						// TODO Afficher erreur
 					}
 				} else {
-					// TODO Afficher erreur
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+					JOptionPane.showMessageDialog(topFrame, "Erreur");
+
 				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

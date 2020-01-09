@@ -64,7 +64,7 @@ public class VueSuppressionUtilisateur extends JFrame implements Observer {
 		panel[0].add(panel[2]);
 		panel[3].add(panel[0], BorderLayout.NORTH);
 
-
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panel[3], BorderLayout.NORTH);
 		pack();

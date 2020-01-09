@@ -15,8 +15,9 @@ import model.Utilisateur.TypeUtilisateur;
 
 public class ModificationUtilisateurController implements ActionListener {
 	private Utilisateur utilisateur;
-	private String identifiant, password, nom, prenom;
 	private TypeUtilisateur type;
+	private String ancienMDP ;
+	private boolean passwordSelect = false;
 
 	public ModificationUtilisateurController() {
 	}
@@ -30,49 +31,62 @@ public class ModificationUtilisateurController implements ActionListener {
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
 
+			if (utilisateur != null)
+				this.utilisateur = utilisateur;
 			switch (source) {
 			case "Identifiant":
 				String id = JOptionPane.showInputDialog("Nouvel identifiant");
-				identifiant = id;
-
+				this.utilisateur.setIdentifiant(id);
 				break;
 			case "Mot de passe":
 				String mdp = JOptionPane.showInputDialog("Nouveau Mot de Passe");
-				password = mdp;
+				ancienMDP = this.utilisateur.getPassword();
+				this.utilisateur.modifierMotDePasse(this.utilisateur.getPassword(), mdp);
+				passwordSelect = true;
 
 				break;
 			case "Nom":
 				String Nom = JOptionPane.showInputDialog("Nouveau Nom");
-				nom = Nom;
-
+				this.utilisateur.setNom(Nom);
 				break;
 			case "Prenom":
 				String Prenom = JOptionPane.showInputDialog("Nouveau Prenom");
-				prenom = Prenom;
+				this.utilisateur.setPrenom(Prenom);
 
 				break;
 			default:
 				break;
 			}
 
-			if (utilisateur != null)
-				this.utilisateur = new Utilisateur(identifiant, password, nom, prenom, utilisateur.getType(), false);
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nom = b.getText();
 			if (nom.equals("OK")) {
 				if (this.utilisateur != null) {
 					// Mets à jour la base de données
-					boolean res = DBConnection.getInstance().modifierUtilisateur(utilisateur);
-
-					System.out.println(res);
-					if (res) {
-						// TODO Message réussite
+					boolean res;
+					if (passwordSelect) {
+						 res = DBConnection.getInstance().modifierMotDePasseUtilisateur(
+								this.utilisateur.getIdentifiant(), this.utilisateur.getPassword(), ancienMDP);
 					} else {
-						// TODO Message erreur
+						 res = DBConnection.getInstance().modifierUtilisateur(utilisateur);
+					}
+					if (res) {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Modification réussi");
+						topFrame.setVisible(false);
+						topFrame.dispose();
+					} else {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Echec de la Modification");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 					}
 				} else {
-					// TODO Message erreur
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+					JOptionPane.showMessageDialog(topFrame, "Erreur");
+					topFrame.setVisible(false);
+					topFrame.dispose();
 				}
 			} else if (nom.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

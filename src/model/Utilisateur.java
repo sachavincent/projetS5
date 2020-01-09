@@ -73,6 +73,16 @@ public class Utilisateur extends Observable {
 		this.connecte = connecte;
 	}
 
+	public Utilisateur(Utilisateur utilisateur) {
+
+		this.identifiant = utilisateur.identifiant;
+		this.password = utilisateur.password;
+		this.nom = utilisateur.nom;
+		this.prenom = utilisateur.prenom;
+		this.type = utilisateur.getType();
+		this.connecte = utilisateur.isConnecte();
+	}
+
 	// Enumération donnant le type d'un utilisateur
 	public enum TypeUtilisateur {
 		ETUDIANT, ENSEIGNANT, SECRETAIRE_PEDAGOGIQUE, SERVICE_ADMINISTRATIF, SERVICE_TECHNIQUE
@@ -137,6 +147,12 @@ public class Utilisateur extends Observable {
 	public TypeUtilisateur getType() {
 		return type;
 	}
+	/**
+	 * @return le mot de passe de l'utilisateur
+	 */
+	public String getPassword() {
+		return password;
+	}
 
 	/**
 	 * @return si l'utilisateur est connecté
@@ -178,6 +194,13 @@ public class Utilisateur extends Observable {
 	 */
 	public void setConnecte(boolean connecte) {
 		this.connecte = connecte;
+	}
+
+	/**
+	 * @param Identifiant l'indentifiant de l'utilisateur
+	 */
+	public void setIdentifiant(String identifiant) {
+		this.identifiant = identifiant;
 	}
 
 	/**
@@ -230,5 +253,5 @@ public class Utilisateur extends Observable {
 	public void setModelChanged() {
 		setChanged();
 	}
-	
+
 }

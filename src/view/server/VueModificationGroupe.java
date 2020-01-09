@@ -39,12 +39,12 @@ public class VueModificationGroupe extends JFrame implements Observer {
 		nameField = new JTextField(30);
 		titrePanel.setFont(titrePanel.getFont().deriveFont(15f));
 
-		ModificationGroupeController modificationGroupeController = new ModificationGroupeController(nameField);
+		ModificationGroupeController modificationGroupeController = new ModificationGroupeController(nameField,okButton);
 		groupesComboBox = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
 
 		groupesComboBox.addActionListener(modificationGroupeController);
-
+		okButton.setEnabled(false);
 		for (int i = 0; i < 5; i++)
 			panels[i] = new JPanel();
 
@@ -77,7 +77,7 @@ public class VueModificationGroupe extends JFrame implements Observer {
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
 
-		
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[0], BorderLayout.NORTH);
 		pack();
