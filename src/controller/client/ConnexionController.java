@@ -32,7 +32,7 @@ public class ConnexionController implements ActionListener {
 
 		System.out.println("Click");
 		password = Encryption.SHA1(password);
-
+		System.out.println(password);
 		ClientThread client = ClientThread.getClient();
 		if (client != null) {
 			boolean res = client.connect(identifiant, password);

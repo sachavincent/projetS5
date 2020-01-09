@@ -1,6 +1,5 @@
 package controller.client;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,15 +8,14 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import database.DBConnection;
 import model.Ticket;
 import model.Utilisateur.TypeUtilisateur;
+import view.client.VueCreationTicket;
 
 public class FenetreClientController implements ActionListener, MouseListener {
 
@@ -35,8 +33,20 @@ public class FenetreClientController implements ActionListener, MouseListener {
 
 	private Set<Ticket> tickets;
 
+	private JPanel panelAdm2;
+	private JPanel panelTech2;
+
+	private JLabel plusAdm;
+	private JLabel plusTech;
+	private JLabel plusSecr;
+
 	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
-			JPanel panelAdm, JPanel panelTech, JPanel panelSecr) {
+			JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2, JPanel panelTech2, JLabel plusAdm,
+			JLabel plusTech, JLabel plusSecr) {
+		servicesAdmLabel.setIcon(closedTicketIcon);
+		servicesTechLabel.setIcon(closedTicketIcon);
+		secretariatLabel.setIcon(closedTicketIcon);
+
 		this.servicesAdmLabel = servicesAdmLabel;
 		this.servicesTechLabel = servicesTechLabel;
 		this.secretariatLabel = secretariatLabel;
@@ -44,8 +54,15 @@ public class FenetreClientController implements ActionListener, MouseListener {
 		this.tickets = DBConnection.getInstance().getListeTickets();
 
 		this.panelAdm = panelAdm;
-		this.panelTech = panelAdm;
-		this.panelSecr = panelAdm;
+		this.panelTech = panelTech;
+		this.panelSecr = panelSecr;
+
+		this.panelAdm2 = panelAdm2;
+		this.panelTech2 = panelTech2;
+
+		this.plusAdm = plusAdm;
+		this.plusTech = plusTech;
+		this.plusSecr = plusSecr;
 	}
 
 	private void closeService(JLabel label) {
@@ -53,7 +70,19 @@ public class FenetreClientController implements ActionListener, MouseListener {
 
 		if (label.equals(servicesAdmLabel)) {
 			panelAdm.removeAll();
+			panelAdm2.removeAll();
+
 			panelAdm.revalidate();
+			panelAdm2.revalidate();
+		} else if (label.equals(servicesTechLabel)) {
+			panelTech.removeAll();
+			panelTech2.removeAll();
+
+			panelTech.revalidate();
+			panelTech2.revalidate();
+		} else if (label.equals(secretariatLabel)) {
+			panelSecr.removeAll();
+			panelSecr.revalidate();
 		}
 		System.out.println("closing");
 	}
@@ -61,22 +90,16 @@ public class FenetreClientController implements ActionListener, MouseListener {
 	private void openService(JLabel label) {
 		label.setIcon(openedTicketIcon);
 
-		JPanel panel;
 		TypeUtilisateur type;
-		if (label.equals(servicesAdmLabel)) {
-			panel = panelAdm;
+		if (label.equals(servicesAdmLabel))
 			type = TypeUtilisateur.SERVICE_ADMINISTRATIF;
-		} else if (label.equals(servicesTechLabel)) {
-			panel = panelTech;
+		else if (label.equals(servicesTechLabel))
 			type = TypeUtilisateur.SERVICE_TECHNIQUE;
-		} else if (label.equals(secretariatLabel)) {
-			panel = panelSecr;
+		else if (label.equals(secretariatLabel))
 			type = TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE;
-		} else {
+		else
 			throw new IllegalArgumentException("Wrong label");
-		}
 
-		System.out.println(tickets);
 		tickets.stream().forEach(t -> {
 			int idGroupe = t.getGroupeDestination().getIdGroupe();
 
@@ -85,13 +108,33 @@ public class FenetreClientController implements ActionListener, MouseListener {
 					.map(agu -> agu.getUtilisateur().getType()).findFirst().orElse(null);
 
 			if (typeUtilisateur != null) {
-				System.out.println(typeUtilisateur);
 				if (typeUtilisateur == type) {
+					System.out.println(typeUtilisateur);
 					JLabel jlabel = new JLabel(t.getTitre());
 					jlabel.setBorder(new EmptyBorder(5, 20, 2, 0));
 					jlabel.setIcon(ticketIcon);
-					panel.add(jlabel);
-					panel.revalidate();
+
+					JLabel jlabel2 = new JLabel("");
+					jlabel2.setBorder(new EmptyBorder(5, 20, 2, 0));
+					jlabel2.setIcon(new ImageIcon("icons/invisible_ticket.png", "Ticket"));
+					if (label.equals(servicesAdmLabel)) {
+						panelAdm.add(jlabel);
+						panelAdm2.add(jlabel2);
+
+						panelAdm.revalidate();
+						panelAdm2.revalidate();
+					} else if (label.equals(servicesTechLabel)) {
+						panelTech.add(jlabel);
+						panelTech2.add(jlabel2);
+
+						panelTech.revalidate();
+						panelTech2.revalidate();
+					} else if (label.equals(secretariatLabel)) {
+						panelSecr.add(jlabel);
+						panelSecr.revalidate();
+					} else {
+						throw new IllegalArgumentException("Wrong label");
+					}
 				}
 
 			}
@@ -129,45 +172,32 @@ public class FenetreClientController implements ActionListener, MouseListener {
 					closeService(secretariatLabel);
 				else
 					openService(secretariatLabel);
-//			tickets.stream().forEach(t -> {
-//				int idGroupe = t.getGroupeDestination().getIdGroupe();
-//				TypeUtilisateur typeUtilisateur = DBConnection.getInstance().getListeAssociationsGroupeUtilisateur()
-//						.stream().filter(agu -> agu.getGroupe().getIdGroupe() == idGroupe)
-//						.map(agu -> agu.getUtilisateur().getType()).findFirst().orElse(null);
-//
-//				if (typeUtilisateur != null) {
-//					if (typeUtilisateur == TypeUtilisateur.SERVICE_ADMINISTRATIF) {
-//
-//					}
-//
-//				}
-//			});
+			}
+		} else {
+			if (e.getSource().equals(plusAdm)) {
+				new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
+			} else if (e.getSource().equals(plusTech)) {
+				new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
+			} else if (e.getSource().equals(plusSecr)) {
+				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
 			}
 		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+	public void mousePressed(MouseEvent e) {
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

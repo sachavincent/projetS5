@@ -226,6 +226,11 @@ public class ClientThread extends Thread {
 					utilisateur.getTickets().add(ticket);
 					DBConnection.getInstance().getListeTickets().add(ticket);
 					DBConnection.getInstance().getListeUtilisateurs().add(utilisateur);
+					
+					while (!br.ready()) {
+					}
+
+					line = br.readLine();
 				}
 
 				// Liste des groupes
