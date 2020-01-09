@@ -23,7 +23,7 @@ public class FenetreServeurController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JButton) {
 			JButton button = (JButton) e.getSource();
-			String nom = button.getName();
+			String nom = button.getText();
 			switch (nom) {
 			case "Ajouter un utilisateur":
 				new VueAjoutUtilisateur();

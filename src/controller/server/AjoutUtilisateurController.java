@@ -10,7 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import database.DBConnection;
-import model.Utilisateur;
 
 public class AjoutUtilisateurController implements ActionListener {
 	private JTextField identifiantField;
@@ -18,33 +17,57 @@ public class AjoutUtilisateurController implements ActionListener {
 	private JTextField nomField;
 	private JTextField prenomField;
 
+	private JButton okButton;
+
 	private String typeUtilisateur;
 
-	public AjoutUtilisateurController(JTextField id, JTextField mdp, JTextField nom, JTextField prenom) {
+	public AjoutUtilisateurController(JTextField id, JTextField mdp, JTextField nom, JTextField prenom,
+			JButton okButton) {
 		this.identifiantField = id;
 		this.passwordField = mdp;
 		this.nomField = nom;
 		this.prenomField = prenom;
+		this.okButton = okButton;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
 			JComboBox<String> groupesComboBox = (JComboBox<String>) e.getSource();
-			String type = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
+			int index = groupesComboBox.getSelectedIndex();
+			String type = groupesComboBox.getItemAt(index);
 
-			if (type != null)
+			if (index == 0) {
+				this.typeUtilisateur = null;
+
+				if (this.okButton.isEnabled())
+					this.okButton.setEnabled(false);
+			} else {
 				this.typeUtilisateur = type;
+
+				if (!this.okButton.isEnabled())
+					this.okButton.setEnabled(true);
+			}
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
+			System.out.println(nomB);
 			if (nomB.equals("Création")) {
 				if (this.typeUtilisateur != null && !identifiantField.getText().isEmpty()
 						&& !passwordField.getText().isEmpty() && !nomField.getText().isEmpty()
-						&& !prenomField.getText().isEmpty())
-					DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
-							nomField.getText(), prenomField.getText(), typeUtilisateur);
-				
+						&& !prenomField.getText().isEmpty()) {
+
+					boolean res = DBConnection.getInstance().creerUtilisateur(identifiantField.getText(),
+							passwordField.getText(), nomField.getText(), prenomField.getText(), typeUtilisateur);
+
+					System.out.println(res);
+
+					if (!res) {
+						// TODO Afficher erreur
+					}
+				} else {
+					// TODO Afficher erreur
+				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);

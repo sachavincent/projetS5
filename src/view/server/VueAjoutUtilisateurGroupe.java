@@ -33,7 +33,7 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 		ListeGroupe = new JComboBox<String>(
 				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
 		listeUtilisateur = new JComboBox<String>(
-				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getNom()).toArray(String[]::new));
+				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getIdentifiant()).toArray(String[]::new));
 
 		ListeGroupe.setPreferredSize(new Dimension(300, 50));
 		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
@@ -58,8 +58,8 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 		panel[1].add(listeUtilisateur);
 		panel[2].add(listeGrp);
 		panel[2].add(ListeGroupe);
-		panel[3].add(ok);
 		panel[3].add(annuler);
+		panel[3].add(ok);
 		//panel[0].add(panel[5]);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);

@@ -29,7 +29,7 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 			String source = groupesComboBox.getItemAt(groupesComboBox.getSelectedIndex());
 
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
-					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
+					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
 			GroupeUtilisateurs groupe = DBConnection.getInstance().getListeGroupes().stream()
 					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
 
@@ -43,8 +43,17 @@ public class AjoutUtilisateurGroupeController implements ActionListener {
 			JButton b = (JButton) e.getSource();
 			String nomB = b.getText();
 			if (nomB.equals("OK")) {
-				if (this.utilisateur != null && this.groupe != null)
-					DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
+				if (this.utilisateur != null && this.groupe != null) {
+					boolean res = DBConnection.getInstance().ajouterUtilisateurAGroupe(utilisateur, groupe);
+
+					if (res) {
+						// TODO Message réussite
+					} else {
+						// TODO Message erreur
+					}
+				} else {
+					// TODO Message erreur
+				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);

@@ -34,10 +34,19 @@ public class SuppressionGroupeController implements ActionListener {
 			String nomB = b.getText();
 			if (nomB.equals("OK")) {
 				if (this.groupe != null) {
-					DBConnection.getInstance().supprimerGroupe(groupe);
+					boolean res = DBConnection.getInstance().supprimerGroupe(groupe);
+
+					System.out.println(res);
+
+					if (res) {
+						// TODO Afficher succès
+						groupe.setModelChanged();
+						groupe.notifyObservers();
+					} else {
+						// TODO Afficher erreur
+					}
 				}
-			}
-			else if (nomB.equals("Annuler")) {
+			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();

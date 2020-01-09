@@ -28,39 +28,53 @@ public class ModificationUtilisateurController implements ActionListener {
 			String source = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
 
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
-					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
+					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
 
 			switch (source) {
 			case "Identifiant":
 				String id = JOptionPane.showInputDialog("Nouvel identifiant");
 				identifiant = id;
+
+				break;
 			case "Mot de passe":
 				String mdp = JOptionPane.showInputDialog("Nouveau Mot de Passe");
 				password = mdp;
+
+				break;
 			case "Nom":
 				String Nom = JOptionPane.showInputDialog("Nouveau Nom");
 				nom = Nom;
+
+				break;
 			case "Prenom":
 				String Prenom = JOptionPane.showInputDialog("Nouveau Prenom");
 				prenom = Prenom;
 
+				break;
 			default:
-				;
+				break;
 			}
 
 			if (utilisateur != null)
-				this.utilisateur = new Utilisateur(identifiant, password, nom, prenom, utilisateur.getType(), true);
+				this.utilisateur = new Utilisateur(identifiant, password, nom, prenom, utilisateur.getType(), false);
 		} else if (e.getSource() instanceof JButton) {
 			JButton b = (JButton) e.getSource();
 			String nom = b.getText();
-			if (nom.equals("Ok")) {
+			if (nom.equals("OK")) {
 				if (this.utilisateur != null) {
 					// Mets à jour la base de données
-					DBConnection.getInstance().modifierUtilisateur(utilisateur);
+					boolean res = DBConnection.getInstance().modifierUtilisateur(utilisateur);
+
+					System.out.println(res);
+					if (res) {
+						// TODO Message réussite
+					} else {
+						// TODO Message erreur
+					}
+				} else {
+					// TODO Message erreur
 				}
-				
-			}
-			else if (nom.equals("Annuler")) {
+			} else if (nom.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();
