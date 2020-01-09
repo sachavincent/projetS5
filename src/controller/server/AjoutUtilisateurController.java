@@ -44,6 +44,7 @@ public class AjoutUtilisateurController implements ActionListener {
 						&& !prenomField.getText().isEmpty())
 					DBConnection.getInstance().creerUtilisateur(identifiantField.getText(), passwordField.getText(),
 							nomField.getText(), prenomField.getText(), typeUtilisateur);
+				
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
