@@ -18,7 +18,7 @@ import controller.server.ModificationGroupeController;
 import database.DBConnection;
 
 //Interface permettant la modification du nom d'un grouoe
-public class VueModificationGroupe extends JPanel implements Observer {
+public class VueModificationGroupe extends JFrame implements Observer {
 
 	private JButton okButton = new JButton("OK");
 	private JButton annulerButton = new JButton("Annuler");
@@ -76,8 +76,12 @@ public class VueModificationGroupe extends JPanel implements Observer {
 		panels[0].add(panels[2]);
 		panels[0].add(panels[3]);
 
-		add(panels[0], BorderLayout.NORTH);
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(panels[0], BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
 		
 	
 	}

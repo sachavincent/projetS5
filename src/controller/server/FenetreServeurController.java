@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import view.server.VueAjoutGroupe;
 import view.server.VueAjoutUtilisateur;
 import view.server.VueModificationGroupe;
 import view.server.VueSuppressionGroupe;
@@ -32,7 +33,7 @@ public class FenetreServeurController implements ActionListener {
 				new VueSuppressionUtilisateur();
 				break;
 			case "Ajouter un groupe":
-
+				new VueAjoutGroupe();
 				break;
 			case "Modifier un groupe":
 				new VueModificationGroupe();

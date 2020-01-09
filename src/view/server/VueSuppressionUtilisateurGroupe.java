@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -25,7 +26,7 @@ import model.Utilisateur;
 
 // Interface servant à la suppression d'un groupe
 // Elle affiche la liste de tous les groupes puis après la sélection du groupe à supprimer, affiche une fenêtre de confirmation.
-public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer {
+public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -128,7 +129,12 @@ public class VueSuppressionUtilisateurGroupe extends JPanel implements Observer 
 		panels[0].setBorder(new EmptyBorder(40, 10, 10, 10));		
 		panels[4].add(panels[0], BorderLayout.CENTER);
 
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[4], BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
 	}
 
 	@Override

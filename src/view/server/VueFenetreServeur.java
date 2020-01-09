@@ -8,14 +8,19 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import controller.server.FenetreServeurController;
+
 // Interface Serveur avec toutes les options auquel il a accés 
 
-public class VueFenetreServeur extends JPanel implements ActionListener {
+public class VueFenetreServeur extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,7 +47,7 @@ public class VueFenetreServeur extends JPanel implements ActionListener {
 		t.fill = GridBagConstraints.HORIZONTAL;
 		t.gridwidth = GridBagConstraints.REMAINDER;
 		t.insets = new Insets(50, 0, 0, 0);
-
+		FenetreServeurController fc = new FenetreServeurController();
 		for (int i = 0; i < 8; i++) {
 			buttons[i] = new JButton(nomsButtons[i]);
 
@@ -55,7 +60,8 @@ public class VueFenetreServeur extends JPanel implements ActionListener {
 			buttons[i].setPreferredSize(buttonsDimension);
 
 			// ActionListener
-			buttons[i].addActionListener(this);
+			
+			buttons[i].addActionListener(fc);
 
 			if (i < 6)
 				panels[i].add(buttons[i]);
@@ -74,31 +80,10 @@ public class VueFenetreServeur extends JPanel implements ActionListener {
 		add(panels[6], BorderLayout.CENTER);
 	}
 
-	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == buttons[0]) {
-			setVisible(false);
-			new VueAjoutUtilisateur();
-		}
-		if (event.getSource() == buttons[1]) {
-			new VueModificationUtilisateur();
-		}
-		if (event.getSource() == buttons[2]) {
-			new VueSuppressionUtilisateur();
-		}
-		if (event.getSource() == buttons[3]) {
-			String nom = JOptionPane.showInputDialog("Nom du groupe");
-		}
-		if (event.getSource() == buttons[4]) {
-			new VueModificationGroupe();
-		}
-		if (event.getSource() == buttons[5]) {
-			new VueSuppressionGroupe();
-		}
-		if (event.getSource() == buttons[6]) {
-			new VueAjoutUtilisateurGroupe();
-		}
-		if (event.getSource() == buttons[7]) {
-			new VueSuppressionUtilisateurGroupe();
-		}
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
+
 }

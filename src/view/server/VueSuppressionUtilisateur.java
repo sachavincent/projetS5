@@ -18,7 +18,7 @@ import controller.server.SuppressionUtilisateurController;
 import database.DBConnection;
 
 //Interface permettant de supprimé un utilisateur via un menu déroulant
-public class VueSuppressionUtilisateur extends JPanel implements Observer {
+public class VueSuppressionUtilisateur extends JFrame implements Observer {
 
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
@@ -61,8 +61,12 @@ public class VueSuppressionUtilisateur extends JPanel implements Observer {
 		panel[0].add(panel[2]);
 		panel[3].add(panel[0], BorderLayout.NORTH);
 
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panel[3], BorderLayout.NORTH);
-		
+		pack();
+		setResizable(false);
+		setVisible(true);
 		
 
 	}

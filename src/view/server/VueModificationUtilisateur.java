@@ -19,7 +19,7 @@ import controller.server.ModificationUtilisateurController;
 import database.DBConnection;
 
 //Affiche une interface permettant de modifier un paramètre d'un utilisateur via 2 menu déroulant.
-public class VueModificationUtilisateur extends JPanel implements Observer {
+public class VueModificationUtilisateur extends JFrame implements Observer {
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
 	private JLabel nomPanel = new JLabel("Modification d'un utilisateur",SwingConstants.CENTER);
@@ -72,17 +72,14 @@ public class VueModificationUtilisateur extends JPanel implements Observer {
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
 
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panel[4],BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
 		
-		
-		//affichage
-				JFrame frame = new JFrame();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(300, 600);
-				frame.setLocationRelativeTo(null);
-				frame.add(panel[4]);
-				frame.pack();
-				frame.setVisible(true);
+
 
 		
 	}

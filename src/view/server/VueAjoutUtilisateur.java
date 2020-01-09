@@ -20,7 +20,7 @@ import controller.server.AjoutUtilisateurController;
 import model.Utilisateur.TypeUtilisateur;
 
 //Interface permettant de créer un nouvel utilisateur.
-public class VueAjoutUtilisateur extends JPanel implements Observer {
+public class VueAjoutUtilisateur extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,16 +89,14 @@ public class VueAjoutUtilisateur extends JPanel implements Observer {
 		panels[6].add(panels[7], BorderLayout.NORTH);
 		panels[6].add(panels[8], BorderLayout.SOUTH);
 
-		add(panels[6], BorderLayout.NORTH);
 		
-		//affichage
-				JFrame frame = new JFrame();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(300, 600);
-				frame.setLocationRelativeTo(null);
-				frame.add(panels[6]);
-				frame.pack();
-				frame.setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(panels[6], BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
+
+		
 		
 	}
 

@@ -15,8 +15,8 @@ import database.DBConnection;
 import javafx.beans.Observable;
 
 //Interface permettant de supprimer un groupe via un menu déroulant contenant l'ensemble des groupes
-public class VueSuppressionGroupe extends JPanel implements Observer {
-
+public class VueSuppressionGroupe extends JFrame implements Observer {
+	
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
 	private JComboBox<String> ListeGroupe;
@@ -59,7 +59,14 @@ public class VueSuppressionGroupe extends JPanel implements Observer {
 		panels[0].add(panels[2]);
 		panels[3].add(panels[0], BorderLayout.NORTH);
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[3], BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
+		
+		
+		
 		
 		
 

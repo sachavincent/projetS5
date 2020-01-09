@@ -12,7 +12,7 @@ import com.sun.javafx.geom.AreaOp.AddOp;
 import controller.server.AjoutUtilisateurGroupeController;
 import database.DBConnection;
 
-public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
+public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 
 	// TODO fenetre de confirmation
 	private JButton ok = new JButton("OK");
@@ -65,16 +65,14 @@ public class VueAjoutUtilisateurGroupe extends JPanel implements Observer {
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
-		add(panel[4],BorderLayout.NORTH);
 		
-		//affichage
-				JFrame frame = new JFrame();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(300, 600);
-				frame.setLocationRelativeTo(null);
-				frame.add(panel[4]);
-				frame.pack();
-				frame.setVisible(true);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(panel[4],BorderLayout.NORTH);
+		pack();
+		setResizable(false);
+		setVisible(true);
+		
 	}
 
 	@Override
