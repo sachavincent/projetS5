@@ -20,7 +20,7 @@ import database.DBConnection;
 //Affiche une interface permettant de modifier un paramètre d'un utilisateur via 2 menu déroulant.
 public class VueModificationUtilisateur extends JPanel implements Observer {
 	private JButton ok = new JButton("OK");
-	private JButton annuler = new JButton("annuler");
+	private JButton annuler = new JButton("Annuler");
 	private JLabel nomPanel = new JLabel("Modification d'un utilisateur");
 	private JLabel listeU = new JLabel("liste des utilisateurs");
 	private JLabel type = new JLabel("liste des attributs à modifier");

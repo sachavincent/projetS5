@@ -5,16 +5,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import database.DBConnection;
-import model.*;
+import model.Utilisateur;
 import model.Utilisateur.TypeUtilisateur;
 
 public class ModificationUtilisateurController implements ActionListener {
 	private Utilisateur utilisateur;
 	private String identifiant, password, nom, prenom;
 	private TypeUtilisateur type;
+
 	public ModificationUtilisateurController() {
 	}
 
@@ -23,7 +26,7 @@ public class ModificationUtilisateurController implements ActionListener {
 		if (e.getSource() instanceof JComboBox) {
 			JComboBox<String> utilisateursComboBox = (JComboBox<String>) e.getSource();
 			String source = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
-			
+
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
 
@@ -40,7 +43,7 @@ public class ModificationUtilisateurController implements ActionListener {
 			case "Prenom":
 				String Prenom = JOptionPane.showInputDialog("Nouveau Prenom");
 				prenom = Prenom;
-				
+
 			default:
 				;
 			}
@@ -48,11 +51,19 @@ public class ModificationUtilisateurController implements ActionListener {
 			if (utilisateur != null)
 				this.utilisateur = new Utilisateur(identifiant, password, nom, prenom, utilisateur.getType(), true);
 		} else if (e.getSource() instanceof JButton) {
-			if (this.utilisateur != null) {
-
-				// Mets à jour la base de données
-				DBConnection.getInstance().modifierUtilisateur(utilisateur);
-
+			JButton b = (JButton) e.getSource();
+			String nom = b.getText();
+			if (nom.equals("Ok")) {
+				if (this.utilisateur != null) {
+					// Mets à jour la base de données
+					DBConnection.getInstance().modifierUtilisateur(utilisateur);
+				}
+				
+			}
+			else if (nom.equals("Annuler")) {
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 
 		}
