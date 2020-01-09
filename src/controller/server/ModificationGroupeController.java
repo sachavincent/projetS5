@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 import database.DBConnection;
 import model.GroupeUtilisateurs;
-import view.client.FenetreClient;
+import view.client.VueFenetreClient;
 
 public class ModificationGroupeController implements ActionListener {
 
