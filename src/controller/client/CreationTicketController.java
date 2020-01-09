@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import communication.ClientThread;
 import database.DBConnection;
@@ -43,15 +46,29 @@ public class CreationTicketController implements ActionListener {
 						Ticket ticket = ClientThread.getClient().creerTicket(titreField.getText(),
 								groupeUtilisateurs.getIdGroupe());
 						if (ticket == null) {
-							// TODO Afficher erreur
+							JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+							JOptionPane.showMessageDialog(topFrame, "Création Erreur");
+							topFrame.setVisible(false);
+							topFrame.dispose();
 						} else {
-							// TODO Afficher succès
+							JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+							JOptionPane.showMessageDialog(topFrame, "Création réussi");
+							topFrame.setVisible(false);
+							topFrame.dispose();
 							
 						}
 					} else {
-						// TODO Afficher erreur
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Erreur");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 					}
 				}
+			}
+			else if (nomB.equals("Annuler")) {
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 		}
 
