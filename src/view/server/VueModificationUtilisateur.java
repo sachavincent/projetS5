@@ -72,7 +72,7 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
 
-		
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panel[4],BorderLayout.NORTH);
 		pack();

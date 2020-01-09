@@ -93,7 +93,8 @@ public class VueAjoutUtilisateur extends JFrame implements Observer {
 		panels[6].setLayout(new BorderLayout());
 		panels[6].add(panels[7], BorderLayout.NORTH);
 		panels[6].add(panels[8], BorderLayout.SOUTH);
-
+		
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[6], BorderLayout.NORTH);
 		pack();

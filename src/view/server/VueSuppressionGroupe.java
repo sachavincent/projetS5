@@ -66,7 +66,8 @@ public class VueSuppressionGroupe extends JFrame implements Observer {
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
 		panels[3].add(panels[0], BorderLayout.NORTH);
-
+		
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[3], BorderLayout.NORTH);
 		pack();

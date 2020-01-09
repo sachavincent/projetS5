@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import database.DBConnection;
@@ -21,20 +22,17 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 	private JComboBox<String> groupesComboBox;
 	private JComboBox<String> utilisateursComboBox;
 	private JButton boutonOk;
-	private JLabel erreurLabel;
 
 	public SuppressionUtilisateurGroupeController(JComboBox<String> groupesComboBox,
-			JComboBox<String> utilisateursComboBox, JButton boutonOk, JLabel erreurLabel) {
+			JComboBox<String> utilisateursComboBox, JButton boutonOk) {
 		this.groupesComboBox = groupesComboBox;
 		this.utilisateursComboBox = utilisateursComboBox;
 		this.boutonOk = boutonOk;
-		this.erreurLabel = erreurLabel;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JComboBox) {
-			erreurLabel.setVisible(false);
 
 			JComboBox<String> sourceComboBox = (JComboBox<String>) e.getSource();
 			int index = sourceComboBox.getSelectedIndex();
@@ -80,23 +78,21 @@ public class SuppressionUtilisateurGroupeController implements ActionListener {
 						utilisateur.notifyObservers();
 
 						// Afficher réussite
-						erreurLabel.setForeground(Color.GREEN);
-						erreurLabel.setText("Suppression réussie");
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Suppression réussi");
+						topFrame.setVisible(false);
+						topFrame.dispose();
 
-						erreurLabel.setVisible(true);
 					} else {
 						// Afficher erreur
-						erreurLabel.setVisible(true);
-						erreurLabel.setText("Communication avec la base de données impossible");
-						erreurLabel.setForeground(Color.RED);
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+						JOptionPane.showMessageDialog(topFrame, "Erreur lors de la suppréssion");
 
 					}
 				} else {
 					// Afficher erreur
-					erreurLabel.setText("Veuillez renseigner tous les champs");
-					erreurLabel.setForeground(Color.RED);
-
-					erreurLabel.setVisible(true);
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+					JOptionPane.showMessageDialog(topFrame, "Merci de remplir tout les champs");
 				}
 			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

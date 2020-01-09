@@ -3,6 +3,7 @@ package view.server;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import javax.swing.*;
 //Interface permettant d'ajouter un utilisateur à un groupe via deux menu déroulant, l'un contenant les différents utilisateurs et l'autres les groupes.
@@ -11,6 +12,8 @@ import com.sun.javafx.geom.AreaOp.AddOp;
 
 import controller.server.AjoutUtilisateurGroupeController;
 import database.DBConnection;
+import model.GroupeUtilisateurs;
+import model.Utilisateur;
 
 public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 
@@ -20,9 +23,10 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 	private JLabel nomPanel = new JLabel("Ajout d'un utilisateur à un groupe");
 	private JLabel listeGrp = new JLabel("liste des groupes");
 	private JLabel listeU = new JLabel("liste des utilisateurs");
-	private JComboBox<String> ListeGroupe;
-	private JComboBox<String> listeUtilisateur;
+	private JComboBox<String> listeGroupeComboBox = new JComboBox<String>();;
+	private JComboBox<String> listeUtilisateurComboBox = new JComboBox<String>();;
 	private JPanel[] panel = new JPanel[6];
+	private DefaultListCellRenderer listRenderer;
 
 	public VueAjoutUtilisateurGroupe() {
 		// init
@@ -30,19 +34,34 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 		ok.setPreferredSize(new Dimension(300, 50));
 		annuler.setPreferredSize(new Dimension(300, 50));
 
-		ListeGroupe = new JComboBox<String>(
-				DBConnection.getInstance().getListeGroupes().stream().map(g -> g.getNom()).toArray(String[]::new));
-		listeUtilisateur = new JComboBox<String>(
-				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getIdentifiant()).toArray(String[]::new));
+		listeGroupeComboBox.addItem("Choisir un groupe");
+		
+		Set<GroupeUtilisateurs> listeGroupes = DBConnection.getInstance().getListeGroupes();
+		Set<Utilisateur> listeUtilisateurs = DBConnection.getInstance().getListeUtilisateurs();
+		
+		listeGroupes.forEach(g -> g.addObserver(this));
+		listeUtilisateurs.forEach(u -> u.addObserver(this));
+		
+		
+		listRenderer = new DefaultListCellRenderer();
+		listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
+		String[] array = listeUtilisateurs.stream().map(u -> u.getIdentifiant()).toArray(String[]::new);
+		listeUtilisateurComboBox = new JComboBox<String>();
+		listeUtilisateurComboBox.addItem("Choisir un utilisateur");
+		
+		for (String s : array)
+			listeUtilisateurComboBox.addItem(s);
+		
+		listeGroupeComboBox.setPreferredSize(new Dimension(300, 50));
+		listeUtilisateurComboBox.setPreferredSize(new Dimension(300, 50));
 
-		ListeGroupe.setPreferredSize(new Dimension(300, 50));
-		listeUtilisateur.setPreferredSize(new Dimension(300, 50));
 		for (int i = 0; i < 6; i++)
 			panel[i] = new JPanel();
+		ok.setEnabled(false);
 		// actionListener
-		AjoutUtilisateurGroupeController ajoutUtilisateurGroupeController = new AjoutUtilisateurGroupeController();
-		ListeGroupe.addActionListener(ajoutUtilisateurGroupeController);
-		listeUtilisateur.addActionListener(ajoutUtilisateurGroupeController);
+		AjoutUtilisateurGroupeController ajoutUtilisateurGroupeController = new AjoutUtilisateurGroupeController(ok,listeGroupeComboBox,listeUtilisateurComboBox);
+		listeGroupeComboBox.addActionListener(ajoutUtilisateurGroupeController);
+		listeUtilisateurComboBox.addActionListener(ajoutUtilisateurGroupeController);
 		ok.addActionListener(ajoutUtilisateurGroupeController);
 		annuler.addActionListener(ajoutUtilisateurGroupeController);
 		// layout
@@ -55,30 +74,30 @@ public class VueAjoutUtilisateurGroupe extends JFrame implements Observer {
 		// ajout
 		panel[5].add(nomPanel);
 		panel[1].add(listeU);
-		panel[1].add(listeUtilisateur);
+		panel[1].add(listeUtilisateurComboBox);
 		panel[2].add(listeGrp);
-		panel[2].add(ListeGroupe);
+		panel[2].add(listeGroupeComboBox);
 		panel[3].add(annuler);
 		panel[3].add(ok);
-		//panel[0].add(panel[5]);
+		// panel[0].add(panel[5]);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);
 		panel[4].add(panel[0], BorderLayout.NORTH);
-		
-		
+
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(panel[4],BorderLayout.NORTH);
+		add(panel[4], BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
-		
+
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

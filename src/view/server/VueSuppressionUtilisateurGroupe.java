@@ -39,7 +39,6 @@ public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer 
 	private JLabel listeULabel = new JLabel("Choisir l'utilisateur à supprimer");
 	private JLabel listeGLabel = new JLabel("Choisir le groupe dans lequel supprimer l'utilisateur");
 	private JLabel titreLabel = new JLabel("Suppression d'un utilisateur à un groupe", SwingConstants.CENTER);
-	private JLabel erreurLabel = new JLabel("", SwingConstants.CENTER);
 
 	private JComboBox<String> groupesComboBox;
 	private JComboBox<String> utilisateursComboBox;
@@ -61,11 +60,6 @@ public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer 
 
 		titreLabel.setFont(titreLabel.getFont().deriveFont(20f));
 
-		erreurLabel.setFont(titreLabel.getFont().deriveFont(20f));
-		erreurLabel.setForeground(Color.GREEN);
-		erreurLabel.setText("test");
-		erreurLabel.setOpaque(true);
-		erreurLabel.setVisible(false);
 
 		listeGroupes = DBConnection.getInstance().getListeGroupes();
 		listeUtilisateurs = DBConnection.getInstance().getListeUtilisateurs();
@@ -85,7 +79,7 @@ public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer 
 			utilisateursComboBox.addItem(s);
 
 		// actionListener
-		controller = new SuppressionUtilisateurGroupeController(groupesComboBox, utilisateursComboBox, okButton, erreurLabel);
+		controller = new SuppressionUtilisateurGroupeController(groupesComboBox, utilisateursComboBox, okButton);
 
 		String identifiant = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
 		controller.setSelectedUser(identifiant);
@@ -122,14 +116,13 @@ public class VueSuppressionUtilisateurGroupe extends JFrame implements Observer 
 		// panels[0].add(panels[5]);
 		panels[0].add(panels[1]);
 		panels[0].add(panels[2]);
-		panels[0].add(erreurLabel);
 		panels[0].add(panels[3]);
 //		panels[4].add(panels[0], BorderLayout.NORTH);
 		panels[4].add(titreLabel, BorderLayout.NORTH);
 		panels[0].setBorder(new EmptyBorder(40, 10, 10, 10));		
 		panels[4].add(panels[0], BorderLayout.CENTER);
 
-		
+		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panels[4], BorderLayout.NORTH);
 		pack();
