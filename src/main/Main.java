@@ -30,15 +30,15 @@ public class Main {
 		// Solution temporaire, faudra 2 applications séparées à la fin
 		{
 			Scanner sc = new Scanner(System.in);
-			int choix;
+			int choix = 1;
 			do {
-				System.out.println("Mode Serveur (0) ou mode Client (1) ?");
-				String next = sc.next();
-				try {
-					choix = Integer.parseInt(next);
-				} catch (NumberFormatException e) {
-					choix = -1;
-				}
+//				System.out.println("Mode Serveur (0) ou mode Client (1) ?");
+//				String next = sc.next();
+//				try {
+//					choix = Integer.parseInt(next);
+//				} catch (NumberFormatException e) {
+//					choix = -1;
+//				}
 			} while (choix != 0 && choix != 1);
 			sc.close();
 
@@ -99,13 +99,13 @@ public class Main {
 					}
 				});
 
-//				frame.setContentPane(new VueConnexion());
-//				// centrage + affichage
-//				frame.pack();
-//				frame.setVisible(true);
-//				frame.toFront();
-//				frame.requestFocus();
-				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
+				frame.setContentPane(new VueConnexion());
+				// centrage + affichage
+				frame.pack();
+				frame.setVisible(true);
+				frame.toFront();
+				frame.requestFocus();
+//				new VueCreationTicket(TypeUtilisateur.SECRETAIRE_PEDAGOGIQUE);
 				break;
 			}
 		}

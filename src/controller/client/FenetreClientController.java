@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,9 +21,10 @@ import view.client.VueCreationTicket;
 
 public class FenetreClientController implements ActionListener, MouseListener {
 
-	private ImageIcon openedTicketIcon = new ImageIcon("icons/opened_ticket.png", "Ticket ouvert");
-	private ImageIcon closedTicketIcon = new ImageIcon("icons/closed_ticket.png", "Ticket fermé");
-	private ImageIcon ticketIcon = new ImageIcon("icons/ticket.png", "Ticket");
+	private ImageIcon openedTicketIcon;
+	private ImageIcon closedTicketIcon;
+	private ImageIcon ticketIcon;
+	private ImageIcon invisibleIcon;
 
 	private JLabel servicesAdmLabel;
 	private JLabel servicesTechLabel;
@@ -43,6 +46,16 @@ public class FenetreClientController implements ActionListener, MouseListener {
 	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
 			JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2, JPanel panelTech2, JLabel plusAdm,
 			JLabel plusTech, JLabel plusSecr) {
+		try {
+			closedTicketIcon = new ImageIcon(
+					ImageIO.read(getClass().getResource("/resources/icons/closed_ticket.png")));
+			openedTicketIcon = new ImageIcon(
+					ImageIO.read(getClass().getResource("/resources/icons/opened_ticket.png")));
+			invisibleIcon = new ImageIcon(
+					ImageIO.read(getClass().getResource("/resources/icons/invisible_ticket.png")));
+		} catch (IOException | IllegalArgumentException e) {
+			e.printStackTrace();
+		}
 		servicesAdmLabel.setIcon(closedTicketIcon);
 		servicesTechLabel.setIcon(closedTicketIcon);
 		secretariatLabel.setIcon(closedTicketIcon);
@@ -116,7 +129,7 @@ public class FenetreClientController implements ActionListener, MouseListener {
 
 					JLabel jlabel2 = new JLabel("");
 					jlabel2.setBorder(new EmptyBorder(5, 20, 2, 0));
-					jlabel2.setIcon(new ImageIcon("icons/invisible_ticket.png", "Ticket"));
+					jlabel2.setIcon(invisibleIcon);
 					if (label.equals(servicesAdmLabel)) {
 						panelAdm.add(jlabel);
 						panelAdm2.add(jlabel2);

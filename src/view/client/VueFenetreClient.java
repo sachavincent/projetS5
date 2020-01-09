@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -29,7 +31,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
 
-	private ImageIcon plusIcon = new ImageIcon("icons/add_ticket.png", "Add ticket");
+	private ImageIcon plusIcon;
 
 	private JPanel panelTickets = new JPanel();
 
@@ -58,6 +60,12 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 		setLayout(layout);
 
+		try {
+			plusIcon = new ImageIcon(ImageIO.read(getClass().getResource("/resources/icons/add_ticket.png")));
+		} catch (IOException | IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
 		// init
 		servicesAdmLabel = new JLabel("Services administratifs");
 
@@ -72,10 +80,10 @@ public class VueFenetreClient extends JFrame implements Observer {
 		}
 
 		tickets = ClientThread.getUtilisateur().getTickets();
-		panelTickets.setPreferredSize(new Dimension(screenWidth / 6, screenHeight));
+		panelTickets.setPreferredSize(new Dimension(screenWidth / 4, screenHeight));
 		panelTickets.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-//		panelTickets.setLayout(new BoxLayout(panelTickets, BoxLayout.Y_AXIS));
+		// panelTickets.setLayout(new BoxLayout(panelTickets, BoxLayout.Y_AXIS));
 		panelTickets.setLayout(new GridLayout(1, 2));
 
 		panelAdm.setLayout(new BoxLayout(panelAdm, BoxLayout.Y_AXIS));
@@ -129,7 +137,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 		servicesAdmLabel.addMouseListener(fenetreClientController);
 		servicesTechLabel.addMouseListener(fenetreClientController);
 		secretariatLabel.addMouseListener(fenetreClientController);
-		
+
 		plus1.addMouseListener(fenetreClientController);
 		plus2.addMouseListener(fenetreClientController);
 		plus3.addMouseListener(fenetreClientController);
