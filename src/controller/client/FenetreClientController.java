@@ -193,7 +193,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			}
 		} else if (e.getSource().equals(plusAdm)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
-			
+
 //			JLabel l = (JLabel) e.getSource();
 //			JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(l);
 //			topFrame.setVisible(false);
@@ -241,7 +241,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			JTextField textField = (JTextField) e.getSource();
 			String message = textField.getText();
 
-			if (!message.isEmpty()) {
+			if (!message.isEmpty() && ticket != null) {
 				ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket());
 			}
 		}

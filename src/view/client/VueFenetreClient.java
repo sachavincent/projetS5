@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ import communication.ClientThread;
 import controller.client.FenetreClientController;
 import database.DBConnection;
 import model.Ticket;
+import view.VueMessage;
 
 //Interface pour le Client
 //contient le fils de discussion, une zone pour envoyer un message ainsi que toute les groupes auxquels appartient l'utilisateur
@@ -52,7 +54,8 @@ public class VueFenetreClient extends JFrame implements Observer {
 	private JPanel panelAdm = new JPanel();
 	private JPanel panelTech = new JPanel();
 	private JPanel panelSecr = new JPanel();
-
+	JPanel messages = new JPanel();
+	
 	private JPanel rightSidePanel = new JPanel();
 	private JTextField fieldMessage = new JTextField();
 
@@ -118,7 +121,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelLeft.add(secretariatLabel);
 		panelLeft.add(panelSecr);
 
-		JPanel messages = new JPanel();
+		
 		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS)); 
 		
 //		SpringLayout layoutMessages = new SpringLayout();
@@ -185,50 +188,21 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			messages.add(panelMessage2,BorderLayout.WEST);
 		}
-		JPanel panelMessage3 = new JPanel();
-		{
-			SpringLayout springLayout = new SpringLayout();
-			JLabel nom = new JLabel("Sacha V.");
-			JLabel dateMessage = new JLabel("Hier à 23:14");
-
-			JTextArea contenuMessage = new JTextArea(5, 2);
-			contenuMessage.setText("JE SUIS UN TEST");
-			contenuMessage.setBorder(new LineBorder(Color.BLACK, 2, true));
-			contenuMessage.setEditable(false);
-			panelMessage3.add(nom);
-			panelMessage3.add(contenuMessage);
-			panelMessage3.add(dateMessage);
-
-			springLayout.putConstraint(SpringLayout.NORTH, nom, 20, SpringLayout.NORTH, contenuMessage);
-
-			// panelMessage si 1er message sinon précédent
-			springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage3);
-			springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
-			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST,
-					panelMessage3);
-			springLayout.putConstraint(SpringLayout.EAST, panelMessage3, 20, SpringLayout.EAST, nom);
-			springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
-			springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
-
-			panelMessage3.setLayout(springLayout);
-
-			messages.add(panelMessage3,BorderLayout.WEST);
-		}
+		
 //		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
 //		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
 		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
 //		messages.setLayout(layoutMessages);7
 		
-		JPanel test = new JPanel();
-		JPanel test2 = new JPanel();
-		test2.setLayout(new GridLayout(1,1,1,2));
-		test.setLayout(new GridLayout(1,1,12,12));
-		test.add(messages);
-		test2.add(test);
-		panelMessages.getViewport().add(test);
+		// ajout dans m de tout les messages créer via creationM
+		JPanel m = creationM("str");
+		
+		panelMessages.getViewport().add(m);
 
 		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
+		JButton envoi = new JButton("Envoyer");
+		//rightSidePanel.add(envoi,BorderLayout.EAST);
 		rightSidePanel.add(fieldMessage, BorderLayout.SOUTH);
 
 		JLabel plus1 = new JLabel(plusIcon);
@@ -289,7 +263,19 @@ public class VueFenetreClient extends JFrame implements Observer {
 		pack();
 		setVisible(true);
 	}
+	public JPanel creationM(String str) {
+		VueMessage m = new VueMessage(str);
+		JPanel mp = m.test();
+		JPanel test = new JPanel();
+		JPanel test2 = new JPanel();
+		test2.setLayout(new GridLayout(1, 1));
 
+		messages.add(mp, BorderLayout.WEST);
+		test.setLayout(new GridLayout(1, 1, 12, 12));
+		test.add(messages);
+		test2.add(test);
+		return test2;
+	}
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
