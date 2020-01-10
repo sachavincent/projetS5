@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import database.DBConnection;
 import model.AssociationGroupeUtilisateur;
-import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
 import model.GroupeUtilisateurs;
 import model.Message;
@@ -287,7 +286,7 @@ public class ServerThread extends Thread {
 					// Marquage de fin
 					pw.println(DELIMITER + DELIMITER + DELIMITER);
 				}
-				
+
 				requeteActuelle = Requete.NONE;
 
 				break;

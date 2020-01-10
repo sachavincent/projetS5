@@ -52,10 +52,13 @@ public class CreationTicketController implements ActionListener {
 							topFrame.dispose();
 						} else {
 							JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+							JFrame test = (JFrame) SwingUtilities.getWindowAncestor(topFrame);
+
 							JOptionPane.showMessageDialog(topFrame, "Création du ticket réussie");
+
 							topFrame.setVisible(false);
 							topFrame.dispose();
-							
+
 						}
 					} else {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
@@ -64,8 +67,7 @@ public class CreationTicketController implements ActionListener {
 						topFrame.dispose();
 					}
 				}
-			}
-			else if (nomB.equals("Annuler")) {
+			} else if (nomB.equals("Annuler")) {
 				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
 				topFrame.setVisible(false);
 				topFrame.dispose();
