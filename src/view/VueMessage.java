@@ -13,15 +13,17 @@ import javax.swing.border.LineBorder;
 public class VueMessage extends JPanel{
 	JPanel panelMessage = new JPanel();
 	private String message;
-	public VueMessage(String message) {
+	private String d;
+	public VueMessage(String message, String d) {
 		this.message = message;
+		this.d = d;
 	}
 	public JPanel test(){
 		int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode()
 				.getWidth();
 		SpringLayout springLayout = new SpringLayout();
 		JLabel nom = new JLabel("Sacha V.");
-		JLabel dateMessage = new JLabel("Hier à 23:14");
+		JLabel dateMessage = new JLabel(d);
 
 		JTextArea contenuMessage = new JTextArea(5, 2);
 		contenuMessage.setText(message);
