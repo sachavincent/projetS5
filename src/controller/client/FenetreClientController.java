@@ -72,7 +72,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			e.printStackTrace();
 		}
 
-		this.tickets = tickets;
+		this.tickets = DBConnection.getInstance().getListeTickets();
 
 		servicesAdmLabel.setIcon(closedTicketIcon);
 		servicesTechLabel.setIcon(closedTicketIcon);
