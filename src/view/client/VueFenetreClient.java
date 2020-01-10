@@ -55,7 +55,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 	private JPanel panelTech = new JPanel();
 	private JPanel panelSecr = new JPanel();
 	JPanel messages = new JPanel();
-	
+
 	private JPanel rightSidePanel = new JPanel();
 	private JTextField fieldMessage = new JTextField();
 
@@ -121,17 +121,13 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelLeft.add(secretariatLabel);
 		panelLeft.add(panelSecr);
 
-
-		
-		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS)); 
-		
+		messages.setLayout(new BoxLayout(messages, BoxLayout.Y_AXIS));
 
 //		SpringLayout layoutMessages = new SpringLayout();
 
 		JPanel panelMessage = new JPanel();
 		JScrollPane panelMessages = new JScrollPane();
 //		panelMessages.setBorder(BorderFactory.createEmptyBorder());
-		
 
 //		JPanel panelMessage2 = new JPanel();
 //		{
@@ -180,12 +176,12 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			// panelMessage si 1er message sinon précédent
 			springLayout.putConstraint(SpringLayout.NORTH, contenuMessage, 100, SpringLayout.NORTH, panelMessage3);
-			springLayout.putConstraint(SpringLayout.WEST, nom, 8, SpringLayout.EAST, contenuMessage);
-			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, screenWidth / 2, SpringLayout.WEST,
-					panelMessage3);
-			springLayout.putConstraint(SpringLayout.EAST, panelMessage3, 20, SpringLayout.EAST, nom);
+			springLayout.putConstraint(SpringLayout.WEST, contenuMessage, 8,  SpringLayout.EAST, nom);
+			springLayout.putConstraint(SpringLayout.EAST, panelMessage3, screenWidth / 2, SpringLayout.EAST,
+					contenuMessage);
+			springLayout.putConstraint(SpringLayout.WEST, nom, 20, SpringLayout.WEST, panelMessage3);
 			springLayout.putConstraint(SpringLayout.NORTH, dateMessage, 5, SpringLayout.SOUTH, contenuMessage);
-			springLayout.putConstraint(SpringLayout.WEST, dateMessage, 0, SpringLayout.WEST, contenuMessage);
+			springLayout.putConstraint(SpringLayout.EAST, dateMessage, 0, SpringLayout.EAST, contenuMessage);
 
 			panelMessage3.setLayout(springLayout);
 
@@ -194,16 +190,12 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 //		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
 //		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
-		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
 //		messages.setLayout(layoutMessages);7
-
-		
-
 
 		rightSidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		rightSidePanel.add(panelMessages, BorderLayout.CENTER);
 		JButton envoi = new JButton("Envoyer");
-		//rightSidePanel.add(envoi,BorderLayout.EAST);
+		// rightSidePanel.add(envoi,BorderLayout.EAST);
 		rightSidePanel.add(fieldMessage, BorderLayout.SOUTH);
 
 		JLabel plus1 = new JLabel(plusIcon);
@@ -231,9 +223,8 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelTickets.add(panelLeft);
 		panelTickets.add(panelRight);
 
-		fenetreClientController = new FenetreClientController(servicesAdmLabel,
-				servicesTechLabel, secretariatLabel, panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1,
-				plus2, plus3,messages,panelMessages);
+		fenetreClientController = new FenetreClientController(servicesAdmLabel, servicesTechLabel, secretariatLabel,
+				panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1, plus2, plus3, messages, panelMessages);
 		servicesAdmLabel.addMouseListener(fenetreClientController);
 		servicesTechLabel.addMouseListener(fenetreClientController);
 		secretariatLabel.addMouseListener(fenetreClientController);
@@ -263,8 +254,9 @@ public class VueFenetreClient extends JFrame implements Observer {
 		pack();
 		setVisible(true);
 	}
-	public JPanel creationM(String str,String d) {
-		VueMessage m = new VueMessage(str,d);
+
+	public JPanel creationM(String str, String d) {
+		VueMessage m = new VueMessage(str, d);
 		JPanel mp = m.test();
 		JPanel test = new JPanel();
 		JPanel test2 = new JPanel();
@@ -276,6 +268,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 		test2.add(test);
 		return test2;
 	}
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
