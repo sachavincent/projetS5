@@ -3,6 +3,8 @@ package view.client;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,7 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import communication.ClientThread;
 import controller.client.CreationTicketController;
+import controller.client.FenetreClientController;
 import database.DBConnection;
 import model.Utilisateur.TypeUtilisateur;
 
@@ -36,7 +40,6 @@ public class VueCreationTicket extends JFrame implements Observer {
 	public VueCreationTicket(TypeUtilisateur typeUtilisateur) {
 		for (int i = 0; i < 7; i++)
 			panels[i] = new JPanel();
-			
 
 		DBConnection.getInstance().getListeGroupes().stream().filter(groupe -> {
 			return DBConnection.getInstance().getListeAssociationsGroupeUtilisateur().stream()
@@ -46,7 +49,7 @@ public class VueCreationTicket extends JFrame implements Observer {
 
 		// layout pour les panels
 		panels[0].setLayout(new GridLayout(2, 1));
-		
+
 		CreationTicketController controller = new CreationTicketController(titreField, groupesComboBox);
 
 		okButton.addActionListener(controller);
@@ -59,33 +62,26 @@ public class VueCreationTicket extends JFrame implements Observer {
 		panels[2].setLayout(new FlowLayout());
 		panels[4].setLayout(new FlowLayout());
 		panels[4].add(titreVue);
-		
+
 		panels[1].add(titreLabel);
 		panels[1].add(titreField);
-		
+
 		panels[0].add(groupesComboBox);
-		
+
 		panels[2].add(annulerButton);
 		panels[2].add(okButton);
-		panels[3].setLayout(new GridLayout(4,1));
+		panels[3].setLayout(new GridLayout(4, 1));
 		panels[3].add(panels[4]);
 		panels[3].add(panels[0]);
 		panels[3].add(panels[1]);
 		panels[3].add(panels[2]);
-		
-		
-//		JPanel pf = new JPanel();
-//		pf.setLayout(new BorderLayout());
-//		pf.add(panels[3],BorderLayout.NORTH);
-		
-		
+
 		setTitle("NeOCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(panels[3],BorderLayout.NORTH);
+		add(panels[3], BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
-
 	}
 
 	@Override

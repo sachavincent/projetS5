@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import database.DBConnection;
 import model.AssociationGroupeUtilisateur;
-import model.AssociationMessageUtilisateur;
 import model.AssociationMessageUtilisateur.EtatMessage;
 import model.GroupeUtilisateurs;
 import model.Message;

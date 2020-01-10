@@ -1,9 +1,13 @@
 package controller.client;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.Set;
 
@@ -13,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import communication.ClientThread;
@@ -106,7 +109,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 		System.out.println("closing");
 	}
 
-	private void openService(JLabel label) {
+	public void openService(JLabel label) {
 		label.setIcon(openedTicketIcon);
 
 		TypeUtilisateur type;
@@ -192,12 +195,50 @@ public class FenetreClientController implements MouseListener, KeyListener {
 					openService(secretariatLabel);
 			}
 		} else if (e.getSource().equals(plusAdm)) {
-			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
-			
-//			JLabel l = (JLabel) e.getSource();
-//			JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(l);
-//			topFrame.setVisible(false);
-//			topFrame.setVisible(true);
+			JFrame frame = new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
+			frame.addWindowListener(new WindowListener() {
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+					System.out.println("eee");
+					if (ticket != null) {
+						System.out.println("fff");
+						ticket.hasChanged();
+						ticket.notifyObservers();
+					}
+				}
+
+				@Override
+				public void windowActivated(WindowEvent e) {
+				}
+
+				@Override
+				public void windowClosed(WindowEvent e) {
+					System.out.println("eee");
+					if (ticket != null) {
+						System.out.println("fff");
+						ticket.hasChanged();
+						ticket.notifyObservers();
+					}
+				}
+
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowIconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowOpened(WindowEvent e) {
+				}
+
+			});
 		} else if (e.getSource().equals(plusTech)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
 		} else if (e.getSource().equals(plusSecr)) {
@@ -211,6 +252,29 @@ public class FenetreClientController implements MouseListener, KeyListener {
 
 			if (ticket != null && !ticket.equals(this.ticket)) {
 				this.ticket = ticket;
+
+				for (Component co : panelTech.getComponents()) {
+					if (co instanceof JLabel) {
+						JLabel label = (JLabel) co;
+						label.setForeground(Color.BLACK);
+					}
+				}
+
+				for (Component co : panelSecr.getComponents()) {
+					if (co instanceof JLabel) {
+						JLabel label = (JLabel) co;
+						label.setForeground(Color.BLACK);
+					}
+				}
+
+				for (Component co : panelAdm.getComponents()) {
+					if (co instanceof JLabel) {
+						JLabel label = (JLabel) co;
+						label.setForeground(Color.BLACK);
+					}
+				}
+				labelTicket.setForeground(Color.GREEN);
+				labelTicket.revalidate();
 
 				boolean res = ClientThread.getClient().ouvrirTicket(this.ticket.getIdTicket());
 				System.out.println("ouverture : " + res);
