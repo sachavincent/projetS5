@@ -1,25 +1,32 @@
 package controller.client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import communication.ClientThread;
 import database.DBConnection;
+import model.Message;
 import model.Ticket;
 import model.Utilisateur.TypeUtilisateur;
+import view.VueMessage;
 import view.client.VueCreationTicket;
 
 public class FenetreClientController implements MouseListener, KeyListener {
@@ -46,11 +53,13 @@ public class FenetreClientController implements MouseListener, KeyListener {
 	private JLabel plusTech;
 	private JLabel plusSecr;
 
+	private JPanel messages;
+	private JScrollPane panelMessages;
 	private Ticket ticket;
 
-	public FenetreClientController(Set<Ticket> tickets, JLabel servicesAdmLabel, JLabel servicesTechLabel,
-			JLabel secretariatLabel, JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2,
-			JPanel panelTech2, JLabel plusAdm, JLabel plusTech, JLabel plusSecr) {
+	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
+			JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2, JPanel panelTech2, JLabel plusAdm,
+			JLabel plusTech, JLabel plusSecr, JPanel messages, JScrollPane panelMessages) {
 		try {
 			closedTicketIcon = new ImageIcon(
 					ImageIO.read(getClass().getResource("/resources/icons/closed_ticket.png")));
@@ -83,6 +92,9 @@ public class FenetreClientController implements MouseListener, KeyListener {
 		this.plusAdm = plusAdm;
 		this.plusTech = plusTech;
 		this.plusSecr = plusSecr;
+
+		this.messages = messages;
+		this.panelMessages = panelMessages;
 	}
 
 	private void closeService(JLabel label) {
@@ -260,12 +272,20 @@ public class FenetreClientController implements MouseListener, KeyListener {
 			JTextField textField = (JTextField) e.getSource();
 			String message = textField.getText();
 
-			if (!message.isEmpty()) {
-				if (ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket()) != null) {
+			if (!message.isEmpty() && ticket != null) {
+				Message mns = ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket());
+				if (mns != null) {
 					textField.setText("");
-
+					Date date = mns.getDate();
+					
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E à HH:mm");
+					String d = simpleDateFormat.format(date);
 					textField.revalidate();
+					JPanel m = creationM(message, d);
+					panelMessages.getViewport().add(m);
+					panelMessages.revalidate();
 				}
+
 			}
 		}
 	}
@@ -277,6 +297,20 @@ public class FenetreClientController implements MouseListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+	}
+
+	public JPanel creationM(String str, String d) {
+		VueMessage m = new VueMessage(str, d);
+		JPanel mp = m.test();
+		JPanel test = new JPanel();
+		JPanel test2 = new JPanel();
+		test2.setLayout(new GridLayout(1, 1));
+
+		messages.add(mp, BorderLayout.WEST);
+		test.setLayout(new GridLayout(1, 1, 12, 12));
+		test.add(messages);
+		test2.add(test);
+		return test2;
 	}
 
 }
