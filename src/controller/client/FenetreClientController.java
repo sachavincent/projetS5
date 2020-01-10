@@ -6,14 +6,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -51,9 +48,9 @@ public class FenetreClientController implements MouseListener, KeyListener {
 
 	private Ticket ticket;
 
-	public FenetreClientController(JLabel servicesAdmLabel, JLabel servicesTechLabel, JLabel secretariatLabel,
-			JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2, JPanel panelTech2, JLabel plusAdm,
-			JLabel plusTech, JLabel plusSecr) {
+	public FenetreClientController(Set<Ticket> tickets, JLabel servicesAdmLabel, JLabel servicesTechLabel,
+			JLabel secretariatLabel, JPanel panelAdm, JPanel panelTech, JPanel panelSecr, JPanel panelAdm2,
+			JPanel panelTech2, JLabel plusAdm, JLabel plusTech, JLabel plusSecr) {
 		try {
 			closedTicketIcon = new ImageIcon(
 					ImageIO.read(getClass().getResource("/resources/icons/closed_ticket.png")));
@@ -65,6 +62,9 @@ public class FenetreClientController implements MouseListener, KeyListener {
 		} catch (IOException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
+
+		this.tickets = tickets;
+
 		servicesAdmLabel.setIcon(closedTicketIcon);
 		servicesTechLabel.setIcon(closedTicketIcon);
 		secretariatLabel.setIcon(closedTicketIcon);
@@ -72,8 +72,6 @@ public class FenetreClientController implements MouseListener, KeyListener {
 		this.servicesAdmLabel = servicesAdmLabel;
 		this.servicesTechLabel = servicesTechLabel;
 		this.secretariatLabel = secretariatLabel;
-
-		this.tickets = DBConnection.getInstance().getListeTickets();
 
 		this.panelAdm = panelAdm;
 		this.panelTech = panelTech;
@@ -195,50 +193,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 					openService(secretariatLabel);
 			}
 		} else if (e.getSource().equals(plusAdm)) {
-			JFrame frame = new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
-			frame.addWindowListener(new WindowListener() {
-
-				@Override
-				public void windowClosing(WindowEvent e) {
-					System.out.println("eee");
-					if (ticket != null) {
-						System.out.println("fff");
-						ticket.hasChanged();
-						ticket.notifyObservers();
-					}
-				}
-
-				@Override
-				public void windowActivated(WindowEvent e) {
-				}
-
-				@Override
-				public void windowClosed(WindowEvent e) {
-					System.out.println("eee");
-					if (ticket != null) {
-						System.out.println("fff");
-						ticket.hasChanged();
-						ticket.notifyObservers();
-					}
-				}
-
-				@Override
-				public void windowDeactivated(WindowEvent e) {
-				}
-
-				@Override
-				public void windowDeiconified(WindowEvent e) {
-				}
-
-				@Override
-				public void windowIconified(WindowEvent e) {
-				}
-
-				@Override
-				public void windowOpened(WindowEvent e) {
-				}
-
-			});
+			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);	
 		} else if (e.getSource().equals(plusTech)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
 		} else if (e.getSource().equals(plusSecr)) {

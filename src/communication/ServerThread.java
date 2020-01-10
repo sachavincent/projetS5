@@ -286,7 +286,7 @@ public class ServerThread extends Thread {
 					// Marquage de fin
 					pw.println(DELIMITER + DELIMITER + DELIMITER);
 				}
-				
+
 				requeteActuelle = Requete.NONE;
 
 				break;

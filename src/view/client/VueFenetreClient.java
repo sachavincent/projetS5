@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -94,9 +96,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 			return;
 		}
 
-		tickets = ClientThread.getUtilisateur().getTickets();
-		tickets.forEach(t -> t.addObserver(this));
-		
+		tickets = DBConnection.getInstance().getListeTickets();
 		panelTickets.setPreferredSize(new Dimension(screenWidth / 4, screenHeight));
 		panelTickets.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -220,6 +220,7 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 			messages.add(panelMessage3, BorderLayout.WEST);
 		}
+
 //		layoutMessages.putConstraint(SpringLayout.WEST, panelMessage, 50, SpringLayout.WEST, messages);
 //		layoutMessages.putConstraint(SpringLayout.NORTH, panelMessage, 50, SpringLayout.NORTH, messages);
 		messages.setBorder(BorderFactory.createLineBorder(Color.RED));
@@ -262,9 +263,8 @@ public class VueFenetreClient extends JFrame implements Observer {
 		panelTickets.add(panelLeft);
 		panelTickets.add(panelRight);
 
-		fenetreClientController = new FenetreClientController(servicesAdmLabel,
-				servicesTechLabel, secretariatLabel, panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1,
-				plus2, plus3);
+		fenetreClientController = new FenetreClientController(tickets, servicesAdmLabel, servicesTechLabel,
+				secretariatLabel, panelAdm, panelTech, panelSecr, panelAdm2, panelTech2, plus1, plus2, plus3);
 		servicesAdmLabel.addMouseListener(fenetreClientController);
 		servicesTechLabel.addMouseListener(fenetreClientController);
 		secretariatLabel.addMouseListener(fenetreClientController);
@@ -274,7 +274,6 @@ public class VueFenetreClient extends JFrame implements Observer {
 		plus3.addMouseListener(fenetreClientController);
 
 		fieldMessage.addKeyListener(fenetreClientController);
-
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (ClientThread.getUtilisateur() == null)
@@ -298,11 +297,6 @@ public class VueFenetreClient extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		panelAdm.removeAll();
-		fenetreClientController.openService(servicesAdmLabel);
-		panelSecr.removeAll();
-		fenetreClientController.openService(secretariatLabel);
-		panelTech.removeAll();
-		fenetreClientController.openService(servicesTechLabel);
+
 	}
 }
