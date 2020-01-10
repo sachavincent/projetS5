@@ -10,13 +10,13 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import database.DBConnection;
+import main.Encryption;
 import model.Utilisateur;
 import model.Utilisateur.TypeUtilisateur;
 
 public class ModificationUtilisateurController implements ActionListener {
 	private Utilisateur utilisateur;
-	private TypeUtilisateur type;
-	private String ancienMDP ;
+	private String nouveauMDP;
 	private boolean passwordSelect = false;
 	private JButton ok;
 
@@ -26,28 +26,31 @@ public class ModificationUtilisateurController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if (e.getSource() instanceof JComboBox) {
+			passwordSelect = false;
 			JComboBox<String> utilisateursComboBox = (JComboBox<String>) e.getSource();
 			String source = utilisateursComboBox.getItemAt(utilisateursComboBox.getSelectedIndex());
 			int index = utilisateursComboBox.getSelectedIndex();
-			
+
 			Utilisateur utilisateur = DBConnection.getInstance().getListeUtilisateurs().stream()
 					.filter(g -> g.getIdentifiant().equals(source)).findFirst().orElse(null);
-			if (index !=0)
+			if (index != 0)
 				ok.setEnabled(true);
 			if (utilisateur != null)
 				this.utilisateur = utilisateur;
+
 			switch (source) {
 			case "Identifiant":
 				String id = JOptionPane.showInputDialog("Nouvel identifiant");
 				this.utilisateur.setIdentifiant(id);
 				break;
 			case "Mot de passe":
-				String mdp = JOptionPane.showInputDialog("Nouveau Mot de Passe");
-				ancienMDP = this.utilisateur.getPassword();
-				this.utilisateur.modifierMotDePasse(this.utilisateur.getPassword(), mdp);
+				nouveauMDP = JOptionPane.showInputDialog("Nouveau Mot de Passe");
+				// nouveauMDP = this.utilisateur.getPassword();
+				// this.utilisateur.modifierMotDePasse(this.utilisateur.getPassword(),
+				// Encryption.SHA1(mdp));
 				passwordSelect = true;
-
 				break;
 			case "Nom":
 				String Nom = JOptionPane.showInputDialog("Nouveau Nom");
@@ -70,10 +73,11 @@ public class ModificationUtilisateurController implements ActionListener {
 					// Mets à jour la base de données
 					boolean res;
 					if (passwordSelect) {
-						 res = DBConnection.getInstance().modifierMotDePasseUtilisateur(
-								this.utilisateur.getIdentifiant(), this.utilisateur.getPassword(), ancienMDP);
+						res = DBConnection.getInstance().modifierMotDePasseUtilisateur(
+								this.utilisateur.getIdentifiant(), this.utilisateur.getPassword(),
+								Encryption.SHA1(nouveauMDP));
 					} else {
-						 res = DBConnection.getInstance().modifierUtilisateur(utilisateur);
+						res = DBConnection.getInstance().modifierUtilisateur(utilisateur);
 					}
 					if (res) {
 						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);

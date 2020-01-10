@@ -14,8 +14,12 @@ public class VueAjoutGroupe {
 
 	public VueAjoutGroupe() {
 		nom = JOptionPane.showInputDialog("Nom du groupe");
-		DBConnection.getInstance().creerGroupe(nom, new ArrayList<>());
-		JOptionPane.showMessageDialog(null, "Ajout réussi");
+		if (nom == null || nom.isEmpty())
+			return;
+
+		boolean res = DBConnection.getInstance().creerGroupe(nom, new ArrayList<>());
+		if (res)
+			JOptionPane.showMessageDialog(null, "Ajout réussi");
 	}
 
 }

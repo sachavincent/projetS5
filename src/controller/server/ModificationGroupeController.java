@@ -34,7 +34,7 @@ public class ModificationGroupeController implements ActionListener {
 
 			GroupeUtilisateurs groupe = DBConnection.getInstance().getListeGroupes().stream()
 					.filter(g -> g.getNom().equals(source)).findFirst().orElse(null);
-			if (index ==0) {
+			if (index == 0) {
 				this.groupe = null;
 
 				if (this.ok.isEnabled())
@@ -56,11 +56,11 @@ public class ModificationGroupeController implements ActionListener {
 					JOptionPane.showMessageDialog(topFrame, "Modification réussi");
 					topFrame.setVisible(false);
 					topFrame.dispose();
-				} else if(nom.equals("Annuler")) {
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
-					topFrame.setVisible(false);
-					topFrame.dispose();
 				}
+			} else if (nom.equals("Annuler")) {
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(b);
+				topFrame.setVisible(false);
+				topFrame.dispose();
 			}
 		}
 

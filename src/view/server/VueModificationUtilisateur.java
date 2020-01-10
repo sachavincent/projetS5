@@ -22,19 +22,19 @@ import database.DBConnection;
 public class VueModificationUtilisateur extends JFrame implements Observer {
 	private JButton ok = new JButton("OK");
 	private JButton annuler = new JButton("Annuler");
-	private JLabel nomPanel = new JLabel("Modification d'un utilisateur",SwingConstants.CENTER);
+	private JLabel nomPanel = new JLabel("Modification d'un utilisateur", SwingConstants.CENTER);
 	private JLabel listeU = new JLabel("liste des utilisateurs");
 	private JLabel type = new JLabel("liste des attributs à modifier");
 	private JComboBox<String> listeUtilisateur;
-	private String[] Attribut = { "Identifiant", "Mot de passe", "Nom", "Prenom", "Type" };
+	private String[] Attribut = { "Identifiant", "Mot de passe", "Nom", "Prenom" };
 	private JComboBox<String> AttributModif;
 	private JPanel[] panel = new JPanel[6];
 	private Dimension d = new Dimension(300, 50);
 
 	public VueModificationUtilisateur() {
 		// init
-		listeUtilisateur = new JComboBox<String>(
-				DBConnection.getInstance().getListeUtilisateurs().stream().map(g -> g.getIdentifiant()).toArray(String[]::new));
+		listeUtilisateur = new JComboBox<String>(DBConnection.getInstance().getListeUtilisateurs().stream()
+				.map(g -> g.getIdentifiant()).toArray(String[]::new));
 		AttributModif = new JComboBox<String>(Attribut);
 		nomPanel.setFont(nomPanel.getFont().deriveFont(15f));
 		for (int i = 0; i < 6; i++)
@@ -45,7 +45,7 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 		annuler.setPreferredSize(d);
 		listeUtilisateur.setPreferredSize(d);
 		AttributModif.setPreferredSize(d);
-		//actionListener
+		// actionListener
 		ModificationUtilisateurController modificationUtilisateurController = new ModificationUtilisateurController(ok);
 		ok.addActionListener(modificationUtilisateurController);
 		annuler.addActionListener(modificationUtilisateurController);
@@ -66,7 +66,7 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 		panel[2].add(AttributModif);
 		panel[3].add(annuler);
 		panel[3].add(ok);
-		//panel[0].add(panel[5]);
+		// panel[0].add(panel[5]);
 		panel[0].add(panel[1]);
 		panel[0].add(panel[2]);
 		panel[0].add(panel[3]);
@@ -74,14 +74,11 @@ public class VueModificationUtilisateur extends JFrame implements Observer {
 
 		setTitle("NeoCampus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(panel[4],BorderLayout.NORTH);
+		add(panel[4], BorderLayout.NORTH);
 		pack();
 		setResizable(false);
 		setVisible(true);
-		
 
-
-		
 	}
 
 	@Override
