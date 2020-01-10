@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -94,7 +95,8 @@ public class DBConnection {
 				int idGroupe = rs.getInt(5);
 				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
 						.orElseThrow(IllegalStateException::new); // TODO Change?
-				listeTickets.add(new Ticket(rs.getInt(1), rs.getString(2), rs.getTimestamp(3), groupe));
+				listeTickets
+						.add(new Ticket(rs.getInt(1), rs.getString(2), new Date(rs.getTimestamp(3).getTime()), groupe));
 			}
 
 			st.close();
@@ -119,7 +121,8 @@ public class DBConnection {
 
 				// Ajouts des messages
 				while (rs2.next())
-					utilisateur.getMessages().add(new Message(rs2.getInt(1), rs2.getString(2), rs2.getTimestamp(3)));
+					utilisateur.getMessages()
+							.add(new Message(rs2.getInt(1), rs2.getString(2), new Date(rs2.getTimestamp(3).getTime())));
 
 				st2.close();
 				rs2.close();
@@ -151,7 +154,7 @@ public class DBConnection {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				Message message = new Message(rs.getInt(1), rs.getString(2), rs.getTimestamp(3));
+				Message message = new Message(rs.getInt(1), rs.getString(2), new Date(rs.getTimestamp(3).getTime()));
 				int idTicket = rs.getInt(5);
 				Ticket ticket = listeTickets.stream().filter(t -> t.getIdTicket() == idTicket).findFirst()
 						.orElseThrow(IllegalStateException::new);
@@ -898,7 +901,7 @@ public class DBConnection {
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
 
-			Ticket ticket = new Ticket(idTicket, titre, rs.getTimestamp(1), groupe);
+			Ticket ticket = new Ticket(idTicket, titre, new Date(rs.getTimestamp(1).getTime()), groupe);
 			listeTickets.add(ticket);
 			utilisateur.getTickets().add(ticket);
 
@@ -1018,7 +1021,7 @@ public class DBConnection {
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
 
-			Message message = new Message(idMessage, contenu, rs.getTimestamp(1));
+			Message message = new Message(idMessage, contenu, new Date(rs.getTimestamp(1).getTime()));
 			listeMessages.add(message);
 			ticket.getMessages().add(message);
 			utilisateur.getMessages().add(message);
