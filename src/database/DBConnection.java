@@ -936,7 +936,7 @@ public class DBConnection {
 			// Insertion dans la base de données
 			st = this.connection.prepareStatement(
 					"UPDATE AssociationMessageUtilisateur SET etat = ? WHERE iduser = ? AND idmessage = ?");
-			st.setString(1, EtatMessage.EN_ATTENTE.toString().replace('_', ' '));
+			st.setString(1, EtatMessage.LU.toString().replace('_', ' '));
 			st.setString(2, utilisateur.getIdentifiant());
 
 			for (Message m : ticket.getMessages()) {

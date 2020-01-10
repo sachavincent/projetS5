@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -276,10 +277,10 @@ public class FenetreClientController implements MouseListener, KeyListener {
 				Message mns = ClientThread.getClient().envoyerMessage(message, ticket.getIdTicket());
 				if (mns != null) {
 					textField.setText("");
-					Date date = mns.getDate();
+					Date date = new Date();
 					
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E à HH:mm");
-					String d = simpleDateFormat.format(date);
+					String d = date.toString();
 					textField.revalidate();
 					JPanel m = creationM(message, d);
 					panelMessages.getViewport().add(m);
