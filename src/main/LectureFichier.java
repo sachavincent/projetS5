@@ -7,9 +7,11 @@ public class LectureFichier {
 	private Scanner x;
 	private int port;
 	private String ip;
+
 	public LectureFichier() {
 
 	}
+
 	public void fileReader() {
 		String txt;
 		String eq;
@@ -28,12 +30,15 @@ public class LectureFichier {
 		}
 
 	}
+
 	public int getPort() {
 		return port;
 	}
+
 	public String getIp() {
 		return ip;
 	}
+
 	public void openFile() {
 		try {
 			x = new Scanner(new File("settings.txt"));

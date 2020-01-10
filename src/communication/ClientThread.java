@@ -589,8 +589,8 @@ public class ClientThread extends Thread {
 		int idMessage = Integer.parseInt(parametres[0]);
 		String contenu = parametres[1];
 		Date date = null;
-		if (!parametres[2].equals("null"))
-			date = Date.valueOf(parametres[2]);
+//		if (!parametres[2].equals("null"))
+//			date = Date.valueOf(parametres[2]);
 
 		return new Message(idMessage, contenu, date);
 	}
@@ -614,8 +614,8 @@ public class ClientThread extends Thread {
 		int idTicket = Integer.parseInt(parametres[0]);
 		String titre = parametres[1];
 		Date date = null;
-		if (!parametres[2].equals("null"))
-			date = Date.valueOf(parametres[2]);
+//		if (!parametres[2].equals("null"))
+//			date = Date.valueOf(parametres[2]);
 
 		String groupe = parametres[3] + DELIMITER + parametres[4];
 		GroupeUtilisateurs groupeUtilisateurs = getGroupe(groupe);

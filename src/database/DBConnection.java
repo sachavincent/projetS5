@@ -94,9 +94,8 @@ public class DBConnection {
 			while (rs.next()) {
 				int idGroupe = rs.getInt(5);
 				GroupeUtilisateurs groupe = listeGroupes.stream().filter(g -> g.getIdGroupe() == idGroupe).findFirst()
-						.orElseThrow(IllegalStateException::new); // TODO Change?
-				listeTickets
-						.add(new Ticket(rs.getInt(1), rs.getString(2), new Date(rs.getTimestamp(3).getTime()), groupe));
+						.orElseThrow(IllegalStateException::new);
+				listeTickets.add(new Ticket(rs.getInt(1), rs.getString(2), rs.getTimestamp(3), groupe));
 			}
 
 			st.close();
@@ -154,7 +153,7 @@ public class DBConnection {
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				Message message = new Message(rs.getInt(1), rs.getString(2), new Date(rs.getTimestamp(3).getTime()));
+				Message message = new Message(rs.getInt(1), rs.getString(2), rs.getTimestamp(3));
 				int idTicket = rs.getInt(5);
 				Ticket ticket = listeTickets.stream().filter(t -> t.getIdTicket() == idTicket).findFirst()
 						.orElseThrow(IllegalStateException::new);
@@ -901,7 +900,7 @@ public class DBConnection {
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
 
-			Ticket ticket = new Ticket(idTicket, titre, new Date(rs.getTimestamp(1).getTime()), groupe);
+			Ticket ticket = new Ticket(idTicket, titre, rs.getTimestamp(1), groupe);
 			listeTickets.add(ticket);
 			utilisateur.getTickets().add(ticket);
 
@@ -1021,7 +1020,7 @@ public class DBConnection {
 			if (!rs.next()) // L'insertion n'a pas fonctionné
 				return null;
 
-			Message message = new Message(idMessage, contenu, new Date(rs.getTimestamp(1).getTime()));
+			Message message = new Message(idMessage, contenu, rs.getTimestamp(1));
 			listeMessages.add(message);
 			ticket.getMessages().add(message);
 			utilisateur.getMessages().add(message);

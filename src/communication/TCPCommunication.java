@@ -15,7 +15,7 @@ import main.LectureFichier;
 public class TCPCommunication {
 
 	public static int PORT = 1978;
-	public static String SERVER_IP = "90.55.189.128";
+	public static String SERVER_IP = "";
 
 	public final static Set<PrintWriter> CLIENTS = new HashSet<>();
 
@@ -25,7 +25,7 @@ public class TCPCommunication {
 	private static PrintWriter pw;
 	private static BufferedReader br;
 
-	public void majAdresse() {
+	public static void majAdresse() {
 		// modification IP et port
 		LectureFichier file = new LectureFichier();
 		file.openFile();
@@ -40,6 +40,7 @@ public class TCPCommunication {
 			return null;
 
 		try {
+			System.out.println(SERVER_IP);
 			ip = InetAddress.getByName(SERVER_IP);
 			socket = new Socket(ip, PORT);
 			pw = new PrintWriter(socket.getOutputStream(), true);

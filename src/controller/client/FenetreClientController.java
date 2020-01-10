@@ -206,7 +206,7 @@ public class FenetreClientController implements MouseListener, KeyListener {
 					openService(secretariatLabel);
 			}
 		} else if (e.getSource().equals(plusAdm)) {
-			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);	
+			new VueCreationTicket(TypeUtilisateur.SERVICE_ADMINISTRATIF);
 		} else if (e.getSource().equals(plusTech)) {
 			new VueCreationTicket(TypeUtilisateur.SERVICE_TECHNIQUE);
 		} else if (e.getSource().equals(plusSecr)) {
@@ -278,11 +278,10 @@ public class FenetreClientController implements MouseListener, KeyListener {
 				if (mns != null) {
 					textField.setText("");
 					Date date = new Date();
-					
+
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E à HH:mm");
-					String d = date.toString();
 					textField.revalidate();
-					JPanel m = creationM(message, d);
+					JPanel m = creationM(message, simpleDateFormat.format(date));
 					panelMessages.getViewport().add(m);
 					panelMessages.revalidate();
 				}
